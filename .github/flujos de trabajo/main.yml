@@ -1,0 +1,40 @@
+nombre : despliegue-libro
+
+# Solo ejecute esto cuando cambie la rama maestra
+en :
+  empujar :
+    ramas :
+    - principal
+    # Si su repositorio git tiene el Jupyter Book dentro de alguna subcarpeta junto a
+    # archivos no relacionados, puede hacer que esto se ejecute solo si un archivo dentro de ese específico
+    # carpeta ha sido modificada.
+    #
+    # caminos:
+    # - alguna subcarpeta/**
+
+# Este trabajo instala dependencias, compila el libro y lo envía a `gh-pages`
+trabajos :
+  despliegue-libro :
+    se ejecuta en : ubuntu-latest
+    pasos :
+    - usos : acciones/checkout@v2
+
+    # Instalar dependencias
+    - nombre : configurar Python 3.8
+      usos : acciones/setup-python@v2
+      con :
+        versión de Python : 3.8
+
+    - nombre : Instalar dependencias
+      ejecutar : |
+        pip install -r requisitos.txt
+    # Construye el libro
+    - nombre : Construye el libro
+      ejecutar : |
+        compilación del libro jupyter.
+    # Empuje el HTML del libro a github-pages
+    - nombre : acción de Páginas de GitHub
+      usos : Peaceiris/actions-gh-pages@v3.6.1
+      con :
+        github_token : ${{ secretos.GITHUB_TOKEN }}
+        publicar_dir : ./_build/html
