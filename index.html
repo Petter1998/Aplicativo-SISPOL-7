@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISPOL-7</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body class="fondo">
+    <div class="contenedor">
+        <img class="splashi" src="Images/Escudo.jpg" alt="SISPOL-7">
+        <span class="letra">
+            SISPOL-7
+        </span>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const splashi = document.querySelector('.splashi');
+            
+            setTimeout(() => {
+                splashi.style.opacity = '0';
+                
+                setTimeout(() => {
+                    window.location.href = 'loggininicio.html'; // Redirige a la página de login
+                }, 1000); // Tiempo adicional para la transición de desvanecimiento
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

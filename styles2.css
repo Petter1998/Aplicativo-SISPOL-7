@@ -1,0 +1,231 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .fondo {
+    background:rgba(255,255,255,1);
+    width: 100%;
+    height: 100%;
+    position:relative;
+  }
+
+  .logo {
+    top: 20px;
+	left: 33px;
+	width: 70.09px;
+	height: 70px;
+    position:absolute;
+    mix-blend-mode: multiply;
+  }
+
+  .logo1 {
+    top: 40px;
+	left: 1026px;
+	width: 30px;
+	height: 30px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+    border-radius: 50%;
+  }
+
+  .logo2 {
+    top: 40px;
+	left: 1085px;
+	width: 33px;
+	height: 33px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+  }
+
+  .logo3 {
+    top: 40px;
+	left: 1143px;
+	width: 30px;
+	height: 30px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+  }
+
+  .logo4 {
+    top: 40px;
+	left: 1201px;
+	width: 30px;
+	height: 30px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+  }
+
+  .logo5 {
+    top: 39px;
+	left: 1259px;
+	width: 37px;
+	height: 30px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+    
+  }
+
+  .logo6 {
+    top: 39px;
+	left: 1320px;
+	width: 30px;
+	height: 30px;
+	background:rgba(255,255,255,1);
+    position:absolute;
+    border-radius: 50%;
+  }
+
+  .logo7 {
+    width:40px;
+	height:40px;
+	position:absolute;
+	left:931px;
+	top:111px;
+    border-radius: 50%;
+    background:rgba(255,255,255,0);
+    z-index: 1;
+    mix-blend-mode: multiply;
+  } 
+
+  .inicio {
+    top: 107px;
+	left: 816px;
+	width: 101px;
+	height: 19px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 16px;
+	text-align: center;
+	color:#000000;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .boton-sesion {
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    color: inherit; /* Hereda el color del texto de su elemento padre */
+    display: inline-block; /* Para permitir que el elemento a tenga dimensiones y se pueda centrar */
+}
+
+.boton-sesion section {
+    cursor: pointer; /* Cambia el cursor a una mano para indicar que es clickeable */
+}
+
+  .policia {
+    top: 46px;
+	left: 141px;
+	width: 343.5px;
+	height: 22.5px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+    position:absolute;
+  }
+
+  .mission {
+    color:rgba(0, 0, 0, 1);
+	width:772px;
+	height:109px;
+	position:absolute;
+	left:116px;
+	top:245px;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+  }
+
+  .vision {
+    color:rgba(0, 0, 0, 1);
+	width:756px;
+	height:120px;
+	position:absolute;
+	left:116px;
+	top:402px;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+  }
+
+  .strategic-objectives{
+    color:rgba(0, 0, 0, 1);
+	width:756px;
+	height:240px;
+	position:absolute;
+	left:116px;
+	top:570px;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+  }
+
+  .foto {
+    top: 329px;
+	left: 938px;
+	width: 440px;
+	height: 419.05px;
+    position:absolute;
+  }
+
+  .rectangulo1 {
+    top: 101px;
+	left: 0px;
+	width: 1440px;
+	height: 60px;
+	background:rgba(15,57,155,1);
+    position:absolute;
+  }
+
+  .rectangulo2 {
+    top: 106px;
+	left: 793px;
+	width: 206px;
+	height: 50px;
+	-ms-border-radius: 12px;
+	-o-border-radius: 12px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	background:rgba(55,171,171,1);
+    position:absolute;
+  }
+
+  .rectangulo3 {
+    top: 919px;
+	left: 0px;
+	width: 1442px;
+	height: 105px;
+	background:rgba(15,57,155,1);
+    position:absolute;
+  }
+
+  .policia2 {
+    color:rgba(255, 255, 255, 1);
+	width:327px;
+	height:29px;
+	position:absolute;
+	left:557px;
+	top:925px;
+	font-family:Inter;
+	text-align:center;
+	font-size:24px;
+	letter-spacing:0;
+  }
+
+  .policia3 {
+    color:rgba(255, 255, 255, 1);
+	width:717px;
+	height:24px;
+	position:absolute;
+	left:362px;
+	top:968px;
+	font-family:Inter;
+	text-align:center;
+	font-size:20px;
+	letter-spacing:0;
+  }
