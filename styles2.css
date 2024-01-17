@@ -931,3 +931,164 @@ body, html {
 	text-decoration: none;
 }
 
+/* Estilos de loggirecuperacionusuario */
+
+.ingres{
+	top: 315px;
+	left: 546px;
+	width: 368.4px;
+	height: 36.4px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 24px;
+	text-align: left;
+	color:#000000;
+	position:absolute;
+}
+
+.identi{
+	top: 427px;
+	left: 436px;
+	width: 200px;
+	height: 40px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(39,81,177,1);
+	display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+	position:absolute;
+	text-decoration: none;
+}
+
+#identi{
+	top: 427px;
+	left: 686px;
+	width: 300px;
+	height: 40px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,1);
+	position:absolute;
+}
+
+/* Estilos de logirecuperacionusuario */
+
+#user1{
+	top: 425px;
+	left: 577px;
+	width: 300px;
+	height: 40px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,1);
+	position:absolute;
+}
+
+.estimado{
+	top: 315px;
+	left: 549px;
+	width: 361.4px;
+	height: 36.4px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 24px;
+	text-align: center;
+	color:#000000;
+	position:absolute;
+}
+
+/* Estilos de logirecuperacioncontraseña */
+
+.estimate{
+	top: 314px;
+	left: 458px;
+	width: 543.4px;
+	height: 36.4px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 24px;
+	text-align: center;
+	color:#000000;
+	position:absolute;
+}
+
+#passw1{
+	top: 425px;
+	left: 577px;
+	width: 300px;
+	height: 40px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,1);
+	position:absolute;
+}
+
+.estima{
+	top: 553px;
+	left: 458px;
+	width: 372.4px;
+	height: 36.4px;
+	overflow: hidden;
+	font-family: Inter;
+	font-size: 24px;
+	text-align: center;
+	color:#000000;
+	position: absolute;
+}
+
+#passw2{
+	top: 643px;
+	left: 577px;
+	width: 300px;
+	height: 40px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,1);
+	position:absolute;
+}
