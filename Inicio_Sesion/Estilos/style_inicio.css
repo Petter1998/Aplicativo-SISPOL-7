@@ -1,0 +1,30 @@
+main{
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: center;
+    gap: 5vw;
+    /*padding: 15.67vh 0 15.67vh 0;*/
+    /*min-height: 74vh; /* Altura mínima del 100% del viewport */
+}
+
+.colum1{
+    margin-left: 1vw;
+}
+
+.colum2{
+    margin-left: 1.39vw; 
+}
+
+.foto{
+    width: 30.56vw;
+    height: 41.02vh;
+}
+
+.mission, .vision, .strategic-objectives {
+    color:rgba(0, 0, 0, 1);
+	width:50vw;
+	text-align:left;
+	font-size:1.25rem;
+	letter-spacing:0;
+}
+
