@@ -1,0 +1,123 @@
+.contenedoraccs {
+	width: 39.31vw;
+	height: 32.25vh;
+	border-radius: 1.5vh;
+	border: 1px solid #d9d4d4;
+	box-shadow:4px 4px 4px 4px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,1);
+    padding: 20px;
+}
+
+.row1 {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4vw;
+    width: 100%;
+}
+
+.row2 {
+    text-align: center; /* Centra el texto del enlace */
+    margin-top: 5vh; /* Espacio entre row1 y row2 */
+}
+
+.col1 {
+    display: flex;
+    align-items: center;
+    margin-left: 1vw;
+    flex: 1;
+}
+
+.col2 {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2vw;
+    flex: 1;
+}
+
+.col1, .separador, .col2 {
+    justify-content: space-between;
+}
+.acceso {
+	font-family: Inter;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+	color:#062160;
+}
+
+.correoelec, .contras {
+	width: 16.32vw;
+	height: 3.42vh;
+	border-radius: 1vh;
+	border: 1px solid #000000;
+	background:rgba(217,217,217,1);
+    margin-bottom: 1.5vh;
+}
+
+.boton-inicio, .boton-registro {
+    width: 9vw;
+    height: 3.42vh;
+    border-radius: 1vh;
+    border: 1px solid #000;
+    background: #2751B1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-self: flex-end;
+    text-decoration: none;
+}
+
+.boton-inicio {
+    margin-left: 4vw;
+}
+
+.boton-registro {
+    margin-right: 1vw;
+}
+
+.boton-inicio:hover {
+    background-color: #0F3898; /* Cambio de color al pasar el mouse */
+}
+
+.boton-registro:hover {
+    background-color: #0F3898; /* Cambio de color al pasar el mouse */
+}
+
+.aceptar, .registrar {
+    font-family: Inter;
+	font-size: 1.15rem;
+	font-weight: bold;
+	text-align: center;
+	color:#FFF;
+}
+
+.separador{
+	background: #000;
+	width: 17vw;
+    border: 1px;
+    rotate: -90 deg;
+	width: 0.1vw;
+    height: 23.24vh;
+}
+
+.regist{
+	width: 7vw;
+    height: 9.5vh;
+    margin-bottom: 5vh;
+    margin-top: 4vh;
+    margin-left: 2vw;
+}
+
+.olvido{
+	font-family: Inter;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+	color:#062160;
+}
+
+.part {
+    text-decoration: none;
+}
