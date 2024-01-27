@@ -4,48 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISPOL-7</title>
-    <link rel="stylesheet" href="styles2.css">
+    <!-- Enlace a la primera hoja de estilo -->
+    <link rel="stylesheet" href="../../../Estilos_Globales/style_basic.css">
+    <!-- Enlace a la segunda hoja de estilo -->
+    <link rel="stylesheet" href="../../Estilos/style_rec_user.css">
 </head>
 <body class="fondo">
     <header>
-        <h1 class="policia">Policía Nacional del Ecuador - Subzona 7 Loja</h1>
-        <img class="logo" src="Images/Escudo.jpg" alt="SISPOL-7">
-        <img class="logo1" src="Images/Logo_de_Facebook.png" alt="Facebook">
-        <img class="logo2" src="Images/logo-instagram.jpg" alt="Instagram">
-        <img class="logo3" src="Images/logo_x.png" alt="X">
-        <img class="logo4" src="Images/logo_telegram.jpeg" alt="Telegram">
-        <img class="logo5" src="Images/logo_youtube.png" alt="Youtube">
-        <img class="logo6" src="Images/logo_tiktok.png" alt="Tiktok">
-        
-        <div class="cabecera"></div>
-        <a href="logginrecuperacion.html" class="boton-sesion">
+        <section class="cabeza">
+            <img class="logo" src="../../../Images/Escudo.jpg" alt="SISPOL-7">
+            <p class="policia">Policía Nacional del Ecuador - Subzona 7 Loja</p>
             <section>
-                <p class="salir">Salir</p>
-                <div class="bottonsession"></div>
-                <img class="logo7" src="Images/logo_inicio.jpg" alt="SISPOL-7">
+                <a href="https://www.facebook.com/policia.ecuador?locale=es_LA">
+                    <img class="logo1" src="../../../Images/Logo_de_Facebook.png" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/policiaecuadoroficial/?hl=es">
+                    <img class="logo2" src="../../../Images/logo-instagram.jpg" alt="Instagram">
+                </a>
+                <a href="https://twitter.com/PoliciaEcuador">
+                    <img class="logo3" src="../../../Images/logo_x.png" alt="X">
+                </a>
+                <a href="https://t.me/PoliciaNacionalEc">
+                    <img class="logo4" src="../../../Images/logo_telegram.jpeg" alt="Telegram">
+                </a>
+                <a href="https://www.youtube.com/@PoliciaNacionalDelEcuador">
+                    <img class="logo5" src="../../../Images/logo_youtube.png" alt="Youtube">
+                </a>
+                <a href="https://www.tiktok.com/@policiaecuadoroficial">
+                    <img class="logo6" src="../../../Images/logo_tiktok.png" alt="Tiktok">
+                </a>  
             </section>
-        </a>
+        </section>  
+        <section class="cabecera">
+            <a href="../../../Inicio_Sesion/Recuperacion/logginrecuperacion.html" class="boton-sesion">
+                <div >
+                    <p class="inicio">Regresar</p>
+                </div>
+             </a>
+        </section>
     </header>
     <main>
-        <section>
-            <p class="ingres">Ingrese su cédula de identidad</p>
-            <div class="identi">
-                <p class="identif">Identificación</p>
-            </div>
-            <div id="identi"></div>
-        </section>
-        <section>
-            <a href="loginrecuperacionusuario.html" class="boton-next">
-                <div class="reggrist">
-                    <p class="regrist">Siguiente</p>
-                </div>
-            </a>
+        <p class="ingres">Ingrese su cédula de identidad:</p>
+        <section class="formulari">
+            <form action="/Inicio_Sesion/Recuperacion/Recuperar Usuario/loginrecuperacionusuario.html" method="GET">
+                <section>
+                    <div>
+                        <label for="identification">Identificación</label>
+                        <input type="text" id="identification" name="identification">
+                    </div>
+                    <div class="col1">
+                        <button type="submit">SIGUIENTE</button>
+                    </div>
+            </form>
         </section>
     </main>
     <footer>
-        <div class="piepagina"></div>
-        <p class="policia2">Policía Nacional del Ecuador</p>
-        <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
+        <div class="piepagina">
+            <p class="policia2">Policía Nacional del Ecuador</p>
+            <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
+        </div>
     </footer>
 </body>
 </html>

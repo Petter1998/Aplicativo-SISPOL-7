@@ -72,6 +72,8 @@ body, html {
     background: rgba(255, 255, 255, 1);
   }
 
+  
+
  /* Zona del boton de inicio de sesion */
 
   .cabecera {
@@ -83,7 +85,15 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: space-between; /* Ajustado para mejor distribución */
-    
+  }
+
+  .welcome {
+    font-family: Inter;
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-align: center;
+    color:#FFF;
+    flex-grow: 1;
   }
 
   .boton-sesion {
@@ -122,6 +132,17 @@ body, html {
     display: inline-block;
   } 
 
+  .icon7 {
+    width:2.5vw;
+    height:3.3vh;
+    vertical-align: middle;
+    
+    background:rgba(255,255,255,0);
+    /*z-index: 1;*/
+    mix-blend-mode: multiply;
+    display: inline-block;
+  }
+
   .inicio, .salir {
     overflow: hidden;
     font-family: Inter;
@@ -159,6 +180,47 @@ body, html {
 
   .policia3 {
     font-size: 1.25rem;;
+  }
+
+  /* Menu estatico */
+
+  .menu {
+    background: rgba(15,57,155,1);
+    display: flex;
+    justify-self: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    list-style: none;
+    width: 17.4vw;
+    height: 73.95vh;
+    z-index: 1000;
+    
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white; /* Color del texto */
+    padding: 1vh; /* Espacio alrededor del texto e ícono */
+    border-bottom: 1px solid #ffffff30; /* Línea separadora entre ítems */
+    /*width: 100%;  El enlace ocupa todo el ancho del contenedor del menú */
+  }
+
+  .menu a img {
+    width: 5vw; /* O ajusta según sea necesario */
+    height: 3vh; /* O ajusta según sea necesario */
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    width: 30px; /* Ajusta el tamaño del ícono según necesites */
+    mix-blend-mode: multiply;
+  }
+
+  .menu a p {
+    flex-grow: 1; /* El texto ocupa el espacio restante */
+    text-align: left;
+    margin: 0; /* Elimina márgenes predeterminados */
+    font-size: 1.25rem;
   }
 
   /* Media queries para diferentes tamaños de pantalla */

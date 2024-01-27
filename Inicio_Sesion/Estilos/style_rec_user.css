@@ -1,0 +1,116 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.ingres, .estimado {
+	font-family: Inter;
+	font-size: 2rem;
+	text-align: center;
+	color:#000000;
+    display: flex;
+    align-items: flex-start;
+}
+
+.formulari {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en la siguiente línea en pantallas más pequeñas */
+    gap: 5vw;
+}
+
+label, button {
+    width: 14vw;
+    height: 4vh;
+    border-radius: 1vh;
+    border: 1px solid #000;
+    background: #2751B1;
+    font-family: Inter;
+	font-size: 1.15rem;
+	font-weight: bold;
+	text-align: center;
+	color:#FFF;
+}
+
+input, .user1 {
+    width: 20vw;
+	height: 4vh;
+	border-radius: 1vh;
+	border: 1px solid #000000;
+	background:rgba(217,217,217,1);
+    margin-bottom: 2vh;
+}
+
+label, input {
+    margin: 1vh 1vw; /* Añade margen vertical */
+}
+
+.formulari label {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.formulari form > section > div {
+    display: flex; /* Establece el contenedor div como un contenedor Flexbox */
+    align-items: center; /* Alinea los elementos verticalmente en el centro */
+}
+
+button {
+    cursor: pointer;
+}
+
+.col1 {
+    margin-top: 5vh;
+    margin-left: 1vw;
+}
+
+/* Estilos para loginrecuperacionusuario */
+
+main > section {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en la siguiente línea en pantallas más pequeñas */
+    gap: 5vw;
+}
+
+.boton-rec-passw, .boton-next {
+    width: 14vw;
+    height: 4vh;
+    border-radius: 1vh;
+    border: 1px solid #000;
+    background: #2751B1;
+    font-family: Inter;
+	font-size: 1.15rem;
+	font-weight: bold;
+	text-align: center;
+	color:#FFF;
+    text-decoration: none;
+    margin-bottom: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boton-rec-passw:hover {
+    background-color: #0F3898; /* Cambio de color al pasar el mouse */
+}
+
+.boton-next:hover {
+    background-color: #0F3898; /* Cambio de color al pasar el mouse */
+}
+
+.boton-next {
+    margin-top: 4vh;
+}
+
+/* Estilos para loginrecuperacioncontraseña */
+
+#estima, #passwor1, #password2 {
+    margin-bottom: 10vh;
+    margin-top: 5vh;
+}
+
