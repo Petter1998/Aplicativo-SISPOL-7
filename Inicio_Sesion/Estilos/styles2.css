@@ -1,69 +1,70 @@
-
-
-/* Estilos de logirecuperacioncontraseña */
-
-.estimate{
-	top: 314px;
-	left: 458px;
-	width: 543.4px;
-	height: 36.4px;
-	overflow: hidden;
-	font-family: Inter;
-	font-size: 24px;
-	text-align: center;
-	color:#000000;
-	position:absolute;
+.mennu-item {
+    position: relative; /* Para posicionar el submenú */
 }
 
-#passw1{
-	top: 425px;
-	left: 577px;
-	width: 300px;
-	height: 40px;
-	-ms-border-radius: 10px;
-	-o-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #000000;
-	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	background:rgba(255,255,255,1);
-	position:absolute;
+.submenu {
+    display: none; /* inicialmente oculto */
+    position: absolute; /* posicionamiento absoluto respecto al li */
+    top: 0; /* alineado con la parte superior del ítem del menú */
+    left: 100%; /* alineado a la derecha del ítem del menú */
+    width: 17vw; /* mismo ancho que el ítem del menú */
+    background: rgba(15,57,155,1); /* mismo color de fondo que el menú */
+    /* Añade cualquier otro estilo que necesites para el submenú */
+    z-index: 1000;
 }
 
-.estima{
-	top: 553px;
-	left: 458px;
-	width: 372.4px;
-	height: 36.4px;
-	overflow: hidden;
-	font-family: Inter;
-	font-size: 24px;
-	text-align: center;
-	color:#000000;
-	position: absolute;
+.mennu-.mennu-item .submenu {
+    display: block; /* muestra el submenú en hover */
 }
 
-#passw2{
-	top: 643px;
-	left: 577px;
-	width: 300px;
-	height: 40px;
-	-ms-border-radius: 10px;
-	-o-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #000000;
-	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	background:rgba(255,255,255,1);
-	position:absolute;
+.submenu a {
+    display: block;
+    /* Estilos para los enlaces dentro del submenú */
 }
+.submennu {
+    display: none;
+    /* Otros estilos para tu submenú, como posicionamiento y dimensiones */
+}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  // Obtener el ítem del menú 'ADMINISTRACIÓN'
+  var adminMenuItem = document.querySelector('.mennu-item');
+
+  // Obtener el submenú de 'ADMINISTRACIÓN'
+  var adminSubMenu = document.querySelector('.mennu-item .submennu');
+
+  // Función para mostrar el submenú
+  function showSubMenu() {
+    adminSubMenu.style.display = 'block';
+  }
+
+  // Función para ocultar el submenú
+  function hideSubMenu() {
+    adminSubMenu.style.display = 'none';
+  }
+
+  // Añadir eventos al ítem del menú 'ADMINISTRACIÓN'
+  adminMenuItem.addEventListener('mouseover', showSubMenu);
+  adminMenuItem.addEventListener('mouseout', hideSubMenu);
+});
+</script>
+
+<section class="mennu2">
+            <section>
+                <ul class="submennu">
+                    <li><a href="usuarios.html">Usuarios</a></li>
+                    <li><a href="personal.html">Personal</a></li>
+                    <li><a href="">Dependencias</a></li>
+                    <li><a href="">Contratos</a></li>
+                    <li><a href="">Flota Vehicular</a></li>
+                    <li><a href="">Repuestos</a></li>
+                    <li><a href="">Catálogos</a></li>
+                    <li><a href="">Items</a></li>
+                    <li><a href="">Vinculación de Personal a Subcircuito</a></li>
+                    <li><a href="">Vinculación de Vehículo a Subcircuito</a></li>
+                </ul>
+            </section>
+        </section>
+
+
+        
