@@ -1,6 +1,7 @@
 .adminis{ 
-    display: flex; 
-    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
 }
 
@@ -19,7 +20,21 @@
     transition: background-color 0.3s; /* Transición suave para el efecto hover */
     margin-left: 8vw;
     margin-top: 1vh;
+    font-family: Inter;
+    font-size: 1.2rem; /* Tamaño de fuente responsivo */
+    color: white; /* Color del texto */
 }
+
+.adminis > .bottonmenu {
+    margin-top: 10vh;
+    flex: 1 1 calc(50% -2vw);
+}
+
+main > .adminis {
+    display: flex; 
+    align-items: center; /* Centra los elementos verticalmente */
+}
+
 
 /* Usuarios*/
 
@@ -28,8 +43,8 @@ table {
     width: 90%;
     border-collapse: collapse;
     margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+    margin-right: auto;
+    text-align: center;
 }
   
 th, td {
@@ -62,7 +77,8 @@ tr:hover {
     align-items: center;
     justify-content: space-around;
     bottom: 0;
-    margin-top: 10vh;
+    margin-top: 5vh;
+    padding: 0 0 2vh;
 }
 
 .bottones {
@@ -95,6 +111,7 @@ tr:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 2vh;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan en la siguiente línea en pantallas más pequeñas */
     gap: 5vw;
 }
@@ -142,6 +159,8 @@ label, input, select {
     height: 21vh;
     margin-top: 4vh;
     margin-left: 2vw;
+    mix-blend-mode: multiply;
+    border-radius: 1vh;
 }
 
 
@@ -164,6 +183,7 @@ label, input, select {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 10vh;
 }
 
 /*Personal-Subcircuito*/
@@ -178,11 +198,6 @@ label, input, select {
     flex-direction: row;
     justify-content: center;
     gap: 2vw;
-}
-
-.asign > botonmenu {
-    
-    
 }
 
 .scroll-container {

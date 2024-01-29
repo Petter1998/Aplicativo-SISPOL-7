@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISPOL-7</title>
+    <!-- Enlace a la primera hoja de estilo -->
+    <link rel="stylesheet" href="../Estilos_Globales/style_module.css">
+    <!-- Enlace a la segunda hoja de estilo -->
+    <link rel="stylesheet" href="../Modulo_Documentos/Estilos/style_documentation.css">
+
+</head>
+<body class="fondo">
+    <header>
+        <section class="cabeza">
+            <img class="logo" src="../Images/Escudo.jpg" alt="SISPOL-7">
+            <p class="policia">Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía <br/> Nacional en Loja</p>
+            <section>
+                <a href="https://www.facebook.com/policia.ecuador?locale=es_LA">
+                    <img class="logo1" src="../Images/Logo_de_Facebook.png" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/policiaecuadoroficial/?hl=es">
+                    <img class="logo2" src="../Images/logo-instagram.jpg" alt="Instagram">
+                </a>
+                <a href="https://twitter.com/PoliciaEcuador">
+                    <img class="logo3" src="../Images/logo_x.png" alt="X">
+                </a>
+                <a href="https://t.me/PoliciaNacionalEc">
+                    <img class="logo4" src="../Images/logo_telegram.jpeg" alt="Telegram">
+                </a>
+                <a href="https://www.youtube.com/@PoliciaNacionalDelEcuador">
+                    <img class="logo5" src="../Images/logo_youtube.png" alt="Youtube">
+                </a>
+                <a href="https://www.tiktok.com/@policiaecuadoroficial">
+                    <img class="logo6" src="../Images/logo_tiktok.png" alt="Tiktok">
+                </a>  
+            </section>
+        </section>
+        <section class="cabecera">
+            <a href="#sidebar" class="botonmenu">
+                <div>
+                    <p class="menudesplegable">Menú</p>
+                </div>
+            </a>
+            <p class="welcome">NUEVA ORDEN DE TRABAJO</p>
+        </section>
+    </header>
+    <main>
+        <section class="sidebar" id="sidebar"> 
+           <section class="mennu">
+                <a href="../Modulo_Administracion/administracion.html" class="menu">
+                    <img id="admin" src="../Images/logo_admin.jpg" alt="ADMINISTRACION">
+                    <p class="admin">ADMINISTRACION</p>
+                </a>
+                <a href="../Modulo_Control_Acceso/access.html" class="menu">
+                    <img id="contro" src="../Images/logo_acceso.png" alt="ACCESO">
+                    <p class="contro">CONTROL DE ACCESO</p>
+                </a>
+                <a href="../Modulo_Mantenimiento/mantenimiento.html" class="menu">
+                    <img id="manten" src="../Images/logo_mantenimiento.jpg" alt="MANTENIMIENTO">
+                    <p class="manten">MANTENIMIENTOS</p>
+                </a>
+                <a href="../Modulo_Documentos/documentos.html" class="menu">
+                    <img id="documents" src="../Images/logo_documentos.jpg" alt="DOCUMENTOS">
+                    <p class="documents">DOCUMENTOS</p>
+                </a>
+                <a href="../Modulo_Reportes/reportes.html" class="menu">
+                    <img id="report" src="../Images/logo_reporte.png" alt="REPORTES">
+                    <p class="report">REPORTES</p>
+                </a>
+                <section class="back">
+                    <a href="../Inicio_Sesion/logginacceso.html" class="boton-back">
+                        <div>
+                            <p class="salir">Salir</p>
+                            <img class="logoback" src="../Images/icono_back.png" alt="SISPOL-7">
+                        </div>
+                    </a>
+                </section>
+           </section>
+        </section>
+        <section class="formularios">
+            <form action="/enviar-datos" method="post">
+                <section>
+                    <div class="form-colum1">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fechaIngreso">Fecha de Ingreso:</label>
+                                <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="horaIngreso">Hora de Ingreso:</label>
+                                <input type="time" id="horaIngreso" name="horaIngreso" required>
+                              </div>
+                        </div>
+                        
+                      <!-- Fila 2 -->
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="kilometraje">Kilometraje actual:</label>
+                          <input type="text" id="kilometraje" name="kilometraje" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="tipoVehiculo">Tipo de Vehículo:</label>
+                          <input type="text" id="tipoVehiculo" name="tipoVehiculo" required>
+                        </div>
+                      </div>
+                      
+                      <!-- Fila 3 -->
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="placa">Placa:</label>
+                          <input type="text" id="placa" name="placa" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="marca">Marca:</label>
+                          <input type="text" id="marca" name="marca" required>
+                        </div>
+                      </div>
+                      
+                      <!-- Fila 4 -->
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="modelo">Modelo:</label>
+                          <input type="text" id="modelo" name="modelo" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="identificacionResponsable">Identificación del Responsable:</label>
+                          <input type="text" id="identificacionResponsable" name="identificacionResponsable" required>
+                        </div>
+                      </div>
+                      
+                      <!-- Fila 5 -->
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="nombresResponsable">Nombres del Responsable:</label>
+                          <input type="text" id="nombresResponsable" name="nombresResponsable" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="asunto">Asunto:</label>
+                          <input type="text" id="asunto" name="asunto" required>
+                        </div>
+                      </div>
+                      
+                      <!-- Fila 6 -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="detalle">Detalle:</label>
+                                <textarea id="detalle" name="detalle" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-colum2">
+                        <!-- Sección de mantenimientos -->
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                              <input type="checkbox" id="mantenimiento1" name="mantenimiento1" onclick="toggleCheckbox()">
+                              <label for="mantenimiento1">Mantenimiento 1</label>
+                            </div>
+                          </div>
+                          
+                          <div class="form-row">
+                            <div class="form-group checkbox-group">
+                              <input type="checkbox" id="mantenimiento2" name="mantenimiento2">
+                              <label for="mantenimiento2">Mantenimiento 2</label>
+                            </div>
+                          </div>
+                          
+                          <div class="form-row">
+                            <div class="form-group checkbox-group">
+                              <input type="checkbox" id="mantenimiento3" name="mantenimiento3">
+                              <label for="mantenimiento3">Mantenimiento 3</label>
+                            </div>
+                          </div>
+                          
+                          <!-- Sección de totales -->
+                          <div class="form-row">
+                            <div class="form-group">
+                                <label for="subtotal">SUBTOTAL</label>
+                                <input type="text" id="subtotal" name="subtotal" >
+                            </div>
+                          </div>
+                          
+                          <div class="form-row">
+                            <div class="form-group">
+                                <label for="iva">IVA 12%</label>
+                              <input type="text" id="iva" name="iva" >
+                            </div>
+                          </div>
+                          
+                          <div class="form-row">
+                            <div class="form-group">
+                                <label for="total">TOTAL</label>
+                              <input type="text" id="total" name="total" >
+                            </div>
+                          </div>
+                    </div>
+                </section>
+            </form>
+
+        </section>
+        <section class="botones">
+            <a href="" onclick="window.print();return false;" class="bottones">
+                <div>
+                    <p class="bot1">Generar Orden</p>
+                </div>
+            </a>
+            <a href="../Modulo_Documentos/registro_orden_trabajo.html" class="bottones">
+                <div>
+                    <p class="bot1">Guardar Registro</p>
+                </div>
+            </a>
+        </section>
+    </main>
+    <footer>
+        <div class="piepagina">
+            <p class="policia2">Policía Nacional del Ecuador</p>
+            <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
+        </div>
+    </footer>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuButton = document.querySelector('.botonmenu');
+        var sidebar = document.querySelector('.sidebar');
+
+        menuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('visible');
+        });
+    });
+</script>
+<script>
+    function toggleCheckbox() {
+      var mantenimiento1 = document.getElementById('mantenimiento1');
+      var mantenimiento2 = document.getElementById('mantenimiento2');
+      
+      // Si mantenimiento 1 está marcado, deshabilitar o habilitar mantenimiento 2
+      mantenimiento2.disabled = mantenimiento1.checked;
+      
+      // Si mantenimiento 1 está marcado y mantenimiento 2 también, desmarcar mantenimiento 2
+      if (mantenimiento1.checked && mantenimiento2.checked) {
+        mantenimiento2.checked = false;
+      }
+    }
+  </script>
+</html>

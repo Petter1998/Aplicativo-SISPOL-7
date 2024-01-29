@@ -81,7 +81,13 @@ body, html {
     background: rgba(15,57,155,1);
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ajustado para mejor distribución */
+    justify-content: flex-start;
+  }
+
+  .cabecera > .welcome {
+    display: flex;
+    align-items: center;
+    margin-left: 25vw; /* Empuja el título hacia el centro */
   }
 
   .botonmenu {
@@ -97,7 +103,18 @@ body, html {
     border-radius: 1.27vh; /* Bordes redondeados */
     transition: background-color 0.3s; /* Transición suave para el efecto hover */
     margin-left: 8vw;
+    font-family: Inter;
+    font-size: 1.2rem; /* Tamaño de fuente responsivo */
+    color: white; /* Color del texto */
   } 
+
+  .botonmenu > .menudesplegable {
+    align-items: flex-end;
+  }
+
+  .menudesplegable {
+    margin: 0; /* Asegúrate de no tener márgenes que desplacen el texto */
+  }
 
   .welcome {
     font-family: Inter;
@@ -105,22 +122,19 @@ body, html {
     font-weight: bold;
     text-align: center;
     color:#FFF;
-    flex-grow: 1;
+    
   }
 
   .buscar {
     width:2.5vw;
     height:3.3vh;
-    /*vertical-align: middle;*/
-    margin-right: 0px;
+    vertical-align: middle;
+    margin: 0px;
     border-radius: 50%;
     background:rgba(255,255,255,0);
     /*z-index: 1;*/
     mix-blend-mode: multiply;
-    /*display: inline-block;*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
   }
 
   .sidebar {
@@ -134,6 +148,7 @@ body, html {
     overflow-x: hidden;
     transition: 0.5s;
     z-index: 1;
+    border-radius: 1vh;
   }
   
   .sidebar.visible {
@@ -184,6 +199,7 @@ body, html {
     height: 73.95vh;
     z-index: 1000;  
     flex: 1; 
+    border-radius: 0.2vw;
 }
   
 .mennu a {
@@ -254,5 +270,5 @@ body, html {
 .salir {
     font-family: Inter;
     font-size: 1.2rem; /* Tamaño de fuente responsivo */
-    color: black; /* Color del texto */
+    color: white; /* Color del texto */
 }
