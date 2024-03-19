@@ -15,17 +15,22 @@
             </span>
         </div>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const splashi = document.querySelector('.splashi');
-            
-            setTimeout(() => {
-                splashi.style.opacity = '0';
-                setTimeout(() => {
-                    window.location.href = '../Inicio_Sesion/loggininicio.html'; // Redirige a la página de login
-                }, 1000); // Tiempo adicional para la transición de desvanecimiento
-            }, 2000);
-        });
-    </script>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const splashi = document.querySelector('.splashi');
+        const letra = document.querySelector('.letra');
+        // Animación para el escudo 
+
+        setTimeout(() => {
+            splashi.classList.add('fade-out');
+            letra.classList.add('fade-out');
+
+            setTimeout(() => {
+                window.location.href = '../Inicio_Sesion/loggininicio.html'; // Redirige a la página de login
+            }, 2000); // Coincide con la duración de la transición CSS
+        }, 2000); // Espera antes de comenzar el desvanecimiento
+    });
+</script>
 </html>

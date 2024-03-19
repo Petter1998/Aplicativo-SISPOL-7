@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISPOL-7</title>
+    <title>Inicio de Sesión</title>
     <!-- Enlace a la primera hoja de estilo -->
     <link rel="stylesheet" href="../Estilos_Globales/style_basic.css">
     <!-- Enlace a la segunda hoja de estilo -->
@@ -45,36 +45,52 @@
         </section>
     </header>
     <main>
-        <section class="contenedoraccs">
-            <section class="row1">
-                <section class="col1">
-                    <form action="../Dashboard/inicio.html" method="GET"> <!-- A donde se van a mandar los datos -->
-                        <p class="acceso">Acceso a Usuarios <br/>Registrados</p>
-                        
-                        <input type="email" id="email" name="email" class="correoelec" placeholder="Correo electrónico" disabled>
-                        <input type="password" id="password" name="password" class="contras" placeholder="Contraseña" disabled>
-                        
-                        <button type="submit" class="boton-inicio">
-                            <section>
-                                <p class="aceptar">Aceptar</p>
-                            </section>
-                        </button>
-                    </form>
-                </section>
-                <div class="separador"></div>
-                <section class="col2">
-                    <img class="regist" src="../Images/logo_inicio.jpg" alt="SISPOL-7">
-                    <a href="logginregistro.html" class="boton-registro">
-                        <p class="registrar">Registrarse</p>
-                    </a>
-                </section>
+       <section class="contenedoraccs">
+            <h6><span>Log In </span><span>Sign Up</span></h6>
+                <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                <label for="reg-log"></label>
+            <section class="card-3d-wrap mx-auto">
+               <section class="card-3d-wrapper">
+                    <section class="card-front">
+                        <section class="center-wrap">
+                            <div class="section text-center">
+                                <h4 class="mb-4 pb-3">Acceso a Usuarios</h4>
+                                <div class="form-group">
+                                    <input type="email" name="logemail" class="form-style" placeholder="Email" id="logemail" autocomplete="off">
+                                    <i class="input-icon uil uil-at"></i>
+                                </div>	
+                                <div class="form-group mt-2">
+                                    <input type="password" name="logpass" class="form-style" placeholder="Password" id="logpass" autocomplete="off">
+                                    <i class="input-icon uil uil-lock-alt"></i>
+                                </div>
+                                <a href="#" class="btn mt-4">submit</a>
+                                <p class="mb-0 mt-4 text-center"><a href="#0" class="link">¿Olvidó su Contraseña o Usuario?</a></p>
+                          </div>
+                        </section>
+                    </section>
+                    <section class="card-back">
+                        <section class="center-wrap">
+                            <div class="section text-center">
+                                <h4 class="mb-4 pb-3">Sign Up</h4>
+                                <div class="form-group">
+                                    <input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
+                                    <i class="input-icon uil uil-user"></i>
+                                </div>	
+                                <div class="form-group mt-2">
+                                    <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+                                    <i class="input-icon uil uil-at"></i>
+                                </div>	
+                                <div class="form-group mt-2">
+                                    <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+                                    <i class="input-icon uil uil-lock-alt"></i>
+                                </div>
+                                <a href="#" class="btn mt-4">submit</a>
+                            </div>
+                        </section>
+                    </section>
+               </section> 
             </section>
-            <section class="row2">
-                <a href="Recuperacion/logginrecuperacion.html" class="part">
-                    <p class="olvido">¿Olvidó su Contraseña o Usuario?</p>
-                </a>
-            </section>
-        </section>
+       </section> 
     </main>
     <footer>
         <div class="piepagina">

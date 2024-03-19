@@ -1,70 +1,79 @@
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
   
-  .fondo {
-    background-color: rgba(15, 57, 155, 1);
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.fondo {
+  background-color: rgba(15, 57, 155, 1);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
   
+.contenedor {
+  position: relative; /* Contenedor para .splashi y .letra */
+  width: 50vw; /* Ancho basado en el ancho del viewport */
+  max-width: 800px; /* Máximo ancho posible para .splashi */
+  transition: opacity 2s ease-in-out;
+}
+  
+.splashi {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100%; /* Uso del ancho del contenedor */
+  aspect-ratio: 1; /* Mantiene la relación de aspecto */
+  border-radius: 84px;
+  background: url(Images/Escudo.jpg) no-repeat center center;
+  background-size: cover;
+  transition: opacity 2s ease; /* Transición más suave y duradera */
+  opacity: 1; /* Estado inicial visible */
+}
+
+  
+.letra {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  font-size: calc(1rem + 2vw); /* Combinación de vw y tamaño fijo */
+  position: absolute;
+  left: 50%;
+  width: 100%; /* Ocupa el ancho del contenedor */
+  top: 100%; /* Posición debajo de .splashi */
+  transform: translateY(35px); /* Desplaza hacia abajo desde la parte superior de .splashi */
+  transform: translateX(-50%); /* Centra horizontalmente */
+  white-space: nowrap;
+  transition: opacity 2s ease; /* Transición más suave y duradera */
+  opacity: 1; /* Estado inicial visible */
+}
+
+/* Estado de desvanecimiento */
+.fade-out {
+  opacity: 0;
+}
+  
+@media (max-width: 768px) {
   .contenedor {
-    position: relative; /* Contenedor para .splashi y .letra */
-    width: 50vw; /* Ancho basado en el ancho del viewport */
-    max-width: 800px; /* Máximo ancho posible para .splashi */
+    width: 70vw; /* Incrementa el tamaño en pantallas más pequeñas */
   }
-  
-  .splashi {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 100%; /* Uso del ancho del contenedor */
-    aspect-ratio: 1; /* Mantiene la relación de aspecto */
-    border-radius: 84px;
-    background: url(Images/Escudo.jpg) no-repeat center center;
-    background-size: cover;
-  }
-  
   .letra {
-    color: white;
-    font-family: 'Inter', sans-serif;
-    text-align: center;
-    font-size: calc(1rem + 2vw); /* Combinación de vw y tamaño fijo */
-    position: absolute;
-    left: 50%;
-    width: 100%; /* Ocupa el ancho del contenedor */
-    top: 100%; /* Posición debajo de .splashi */
-    transform: translateY(35px); /* Desplaza hacia abajo desde la parte superior de .splashi */
-    transform: translateX(-50%); /* Centra horizontalmente */
-    white-space: nowrap;
+    font-size: calc(1.5rem + 2vw);
   }
+}
   
-  @media (max-width: 768px) {
-    .contenedor {
-      width: 70vw; /* Incrementa el tamaño en pantallas más pequeñas */
-    }
-    
-    .letra {
-      font-size: calc(1.5rem + 2vw);
-    }
+@media (max-width: 480px) {
+  .contenedor {
+    width: 90vw; /* Incrementa aún más el tamaño en pantallas muy pequeñas */
   }
-  
-  @media (max-width: 480px) {
-    .contenedor {
-      width: 90vw; /* Incrementa aún más el tamaño en pantallas muy pequeñas */
-    }
-    
-    .letra {
-      font-size: calc(2rem + 2vw);
-    }
+  .letra {
+    font-size: calc(2rem + 2vw);
   }
+}
   
   
   
