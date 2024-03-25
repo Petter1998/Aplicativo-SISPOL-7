@@ -45,52 +45,114 @@
         </section>
     </header>
     <main>
-       <section class="contenedoraccs">
-            <h6><span>Log In </span><span>Sign Up</span></h6>
-                <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
-                <label for="reg-log"></label>
-            <section class="card-3d-wrap mx-auto">
-               <section class="card-3d-wrapper">
-                    <section class="card-front">
-                        <section class="center-wrap">
-                            <div class="section text-center">
-                                <h4 class="mb-4 pb-3">Acceso a Usuarios</h4>
-                                <div class="form-group">
-                                    <input type="email" name="logemail" class="form-style" placeholder="Email" id="logemail" autocomplete="off">
-                                    <i class="input-icon uil uil-at"></i>
-                                </div>	
-                                <div class="form-group mt-2">
-                                    <input type="password" name="logpass" class="form-style" placeholder="Password" id="logpass" autocomplete="off">
-                                    <i class="input-icon uil uil-lock-alt"></i>
-                                </div>
-                                <a href="#" class="btn mt-4">submit</a>
-                                <p class="mb-0 mt-4 text-center"><a href="#0" class="link">¿Olvidó su Contraseña o Usuario?</a></p>
-                          </div>
-                        </section>
-                    </section>
-                    <section class="card-back">
-                        <section class="center-wrap">
-                            <div class="section text-center">
-                                <h4 class="mb-4 pb-3">Sign Up</h4>
-                                <div class="form-group">
-                                    <input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
-                                    <i class="input-icon uil uil-user"></i>
-                                </div>	
-                                <div class="form-group mt-2">
-                                    <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-                                    <i class="input-icon uil uil-at"></i>
-                                </div>	
-                                <div class="form-group mt-2">
-                                    <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-                                    <i class="input-icon uil uil-lock-alt"></i>
-                                </div>
-                                <a href="#" class="btn mt-4">submit</a>
-                            </div>
-                        </section>
-                    </section>
-               </section> 
-            </section>
-       </section> 
+        <section class="form">
+            <ul class="tab-group">
+                <li class="tab"><a href="#login">Acceder</a></li>
+                <li class="tab active"><a href="#signup">Registrar</a></li>
+              </ul>
+              
+              <section class="tab-content">
+                <div id="signup">   
+                  <h1>Ingrese sus datos</h1>
+                  
+                  <form action="/" method="post">
+                  
+                  <div class="top-row">
+                    <div class="field-wrap">
+                      <label>
+                        Identificación<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" />
+                    </div>
+                    
+                    <div class="field-wrap">
+                      <label>
+                        Fecha de Nacimiento<span class="req">*</span>
+                      </label>
+                      <input type="date" required autocomplete="off" />
+                    </div>
+                   </div>
+                    
+                  <div class="top-row">
+                    <div class="field-wrap">
+                      <label>
+                        Nombres<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" />
+                    </div>
+                
+                    <div class="field-wrap">
+                      <label>
+                        Apellidos<span class="req">*</span>
+                      </label>
+                      <input type="text"required autocomplete="off"/>
+                    </div>
+                  </div>
+        
+                    <div class="top-row">
+                    <div class="field-wrap">
+                      <label>
+                        Teléfono celular<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" />
+                    </div>
+                
+                    <div class="field-wrap">
+                      <label>
+                        Cargo<span class="req">*</span>
+                      </label>
+                      <input type="text"required autocomplete="off"/>
+                    </div>
+                  </div>
+                    
+                  <div class="field-wrap">
+                    <label>
+                      Correo electrónico<span class="req">*</span>
+                    </label>
+                    <input type="email"required autocomplete="off"/>
+                  </div>
+                  
+                  <div class="field-wrap">
+                    <label>
+                      Contraseña<span class="req">*</span>
+                    </label>
+                    <input type="password"required autocomplete="off"/>
+                  </div>
+                  
+                  <button type="submit" class="button1 button-block"/>REGISTRARSE</button>
+                  
+                  </form>
+                </div>
+                
+                <div id="login">   
+                  <h1>Bienvenido</h1>
+                  
+                  <form action="/" method="post">
+                  
+                    <div class="field-wrap">
+                    <label>
+                      Correo Electrónico<span class="req">*</span>
+                    </label>
+                    <input type="email"required autocomplete="off"/>
+                  </div>
+                  
+                  <div class="field-wrap">
+                    <label>
+                      Contraseña<span class="req">*</span>
+                    </label>
+                    <input type="password"required autocomplete="off"/>
+                  </div>
+                  
+                  <p class="forgot"><a href="#">¿Olvidó su Contraseña o Usuario?</a></p>
+                  
+                  <button class="button1 button-block"/>Ingresar</button>
+                  
+                  </form>
+        
+                </div>
+                
+              </section><!-- tab-content -->
+        
     </main>
     <footer>
         <div class="piepagina">
@@ -99,4 +161,49 @@
         </div>
     </footer>
 </body>
+<script>
+    $('.form').find('input, textarea').on('keyup blur focus', function (e) {
+  
+  var $this = $(this),
+      label = $this.prev('label');
+
+	  if (e.type === 'keyup') {
+			if ($this.val() === '') {
+          label.removeClass('active highlight');
+        } else {
+          label.addClass('active highlight');
+        }
+    } else if (e.type === 'blur') {
+    	if( $this.val() === '' ) {
+    		label.removeClass('active highlight'); 
+			} else {
+		    label.removeClass('highlight');   
+			}   
+    } else if (e.type === 'focus') {
+      
+      if( $this.val() === '' ) {
+    		label.removeClass('highlight'); 
+			} 
+      else if( $this.val() !== '' ) {
+		    label.addClass('highlight');
+			}
+    }
+
+});
+
+$('.tab a').on('click', function (e) {
+  
+  e.preventDefault();
+  
+  $(this).parent().addClass('active');
+  $(this).parent().siblings().removeClass('active');
+  
+  target = $(this).attr('href');
+
+  $('.tab-content > div').not(target).hide();
+  
+  $(target).fadeIn(600);
+  
+});
+</script>
 </html>
