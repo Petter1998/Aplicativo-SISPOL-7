@@ -84,7 +84,6 @@ body {
   background: rgba(15,57,155,1);
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Ajustado para mejor distribución */
 }
 
 .welcome {
@@ -96,7 +95,7 @@ body {
   flex-grow: 1;
 }
 
-.boton-sesion {
+.boton-sesion, .boton-back {
   display: flex; 
   align-items: center; /* Centra los elementos verticalmente */
   justify-content: center; /* Centra los elementos horizontalmente */
@@ -111,16 +110,18 @@ body {
   margin-left: 69vw;
 }
 
-.boton-sesion:hover {
+
+.boton-sesion:hover , .boton-back:hover {
   background-color: #8FDFDF; /* Cambio de color al pasar el mouse */
 }
 
-.boton-sesion div {
+
+.boton-sesion div, .boton-back div {
   display: flex;
   align-items: center;
 }
 
-.logo7 {
+.logo7, .logoback {
   width:auto;
   height:3.3vh;
   vertical-align: middle;
@@ -137,15 +138,14 @@ body {
   height:3.3vh;
   vertical-align: middle;
   background:rgba(255,255,255,0);
-  /*z-index: 1;*/
   mix-blend-mode: multiply;
   display: inline-block;
 }
 
-.inicio, .salir {
+.inicio, .salir, .back {
   overflow: hidden;
   font-family: Inter;
-  font-size: 1.2rem; /* Tamaño de fuente responsivo */
+  font-size: 1.25rem; /* Tamaño de fuente responsivo */
   text-align: center;
   margin-right: 1.39vw;
 }
@@ -196,9 +196,6 @@ main{
   .logo{
     margin-top: 1vh;
   }
-  .logo7 {
-    
-  }
   .cabeza {
     height: auto; /* Altura automática para acomodar el contenido */
     flex-direction: column; /* Cambio a columna para mejor disposición */
@@ -211,7 +208,7 @@ main{
     justify-content: center;
   }
   
-  .boton-sesion {
+  .boton-sesion, .boton-back {
     margin-left: 1rem; /* Ajuste para pantallas pequeñas */
     margin-right: 1rem; /* Ajuste para pantallas pequeñas */
     margin: 10px 0; /* Margen para separar de otros elementos */
@@ -239,7 +236,7 @@ main{
   .cabeza section {
     gap: 1rem; /* Reducción del espacio entre iconos */
   }
-  .boton-sesion {
+  .boton-sesion, .boton-back {
     padding: 5px 10px; /* Ajuste del relleno para botones más pequeños */
   }
 }

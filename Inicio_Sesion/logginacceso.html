@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../Estilos_Globales/style_basic.css">
     <!-- Enlace a la segunda hoja de estilo -->
     <link rel="stylesheet" href="Estilos/style_acceso.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body class="fondo">
     <header>
@@ -46,113 +49,115 @@
     </header>
     <main>
         <section class="form">
-            <ul class="tab-group">
-                <li class="tab"><a href="#login">Acceder</a></li>
-                <li class="tab active"><a href="#signup">Registrar</a></li>
-              </ul>
+          <ul class="tab-group">
+            <li class="tab active "><a href="#login">Acceder</a></li>
+            <li class="tab "><a href="#signup">Registrar</a></li>
+          </ul>
+
+          <section class="avatar">
+            <img class="avatarpolicias" src="../Images/avatarpolicias.jpg" alt="Avatar Policia Nacional del Ecuador">
+          </section>
+
+          <section class="tab-content">
+            <div id="login"> 
+                
+              <h1>Bienvenido</h1>
+
+              <form action="../Dashboard/inicio.html" method="get">
               
-              <section class="tab-content">
-                <div id="signup">   
-                  <h1>Ingrese sus datos</h1>
-                  
-                  <form action="/" method="post">
-                  
-                  <div class="top-row">
-                    <div class="field-wrap">
-                      <label>
-                        Identificación<span class="req">*</span>
-                      </label>
-                      <input type="text" required autocomplete="off" />
-                    </div>
-                    
-                    <div class="field-wrap">
-                      <label>
-                        Fecha de Nacimiento<span class="req">*</span>
-                      </label>
-                      <input type="date" required autocomplete="off" />
-                    </div>
-                   </div>
-                    
-                  <div class="top-row">
-                    <div class="field-wrap">
-                      <label>
-                        Nombres<span class="req">*</span>
-                      </label>
-                      <input type="text" required autocomplete="off" />
-                    </div>
-                
-                    <div class="field-wrap">
-                      <label>
-                        Apellidos<span class="req">*</span>
-                      </label>
-                      <input type="text"required autocomplete="off"/>
-                    </div>
-                  </div>
-        
-                    <div class="top-row">
-                    <div class="field-wrap">
-                      <label>
-                        Teléfono celular<span class="req">*</span>
-                      </label>
-                      <input type="text" required autocomplete="off" />
-                    </div>
-                
-                    <div class="field-wrap">
-                      <label>
-                        Cargo<span class="req">*</span>
-                      </label>
-                      <input type="text"required autocomplete="off"/>
-                    </div>
-                  </div>
-                    
+                <div class="field-wrap">
+                  <label>
+                    Correo Electrónico<span class="req">*</span>
+                  </label>
+                  <input type="email"required autocomplete="off"/>
+                </div>
+              
+                <div class="field-wrap">
+                  <label>
+                    Contraseña<span class="req">*</span>
+                  </label>
+                  <input type="password"required autocomplete="off"/>
+                </div>
+              
+                <p class="forgot"><a href="../Inicio_Sesion/Recuperacion/logginrecuperacion.html">¿Olvidó su Contraseña o Usuario?</a></p>
+              
+                <button class="button1 button-block">Ingresar</button>
+              
+              </form>
+            </div>
+
+            <div id="signup">   
+              <h1>Ingrese sus datos</h1>
+              
+              <form action="/" method="post">
+              
+                <div class="top-row">
                   <div class="field-wrap">
                     <label>
-                      Correo electrónico<span class="req">*</span>
+                      Identificación<span class="req">*</span>
                     </label>
-                    <input type="email"required autocomplete="off"/>
+                    <input type="text" required autocomplete="off" />
                   </div>
                   
                   <div class="field-wrap">
                     <label>
-                      Contraseña<span class="req">*</span>
+                      Fecha de Nacimiento<span class="req">*</span>
                     </label>
-                    <input type="password"required autocomplete="off"/>
+                    <input type="date" required autocomplete="off" />
                   </div>
+                </div>
                   
-                  <button type="submit" class="button1 button-block"/>REGISTRARSE</button>
+                <div class="top-row">
+                  <div class="field-wrap">
+                    <label>
+                      Nombres<span class="req">*</span>
+                    </label>
+                    <input type="text" required autocomplete="off" />
+                  </div>
+              
+                  <div class="field-wrap">
+                    <label>
+                      Apellidos<span class="req">*</span>
+                    </label>
+                    <input type="text" required autocomplete="off"/>
+                  </div>
+                </div>
+      
+                <div class="top-row">
+                  <div class="field-wrap">
+                    <label>
+                      Teléfono celular<span class="req">*</span>
+                    </label>
+                    <input type="text" required autocomplete="off" />
+                  </div>
+              
+                  <div class="field-wrap">
+                    <label>
+                      Cargo<span class="req">*</span>
+                    </label>
+                    <input type="text"required autocomplete="off"/>
+                  </div>
+                </div>
                   
-                  </form>
+                <div class="field-wrap">
+                  <label>
+                    Correo electrónico<span class="req">*</span>
+                  </label>
+                  <input type="email"required autocomplete="off"/>
                 </div>
                 
-                <div id="login">   
-                  <h1>Bienvenido</h1>
-                  
-                  <form action="/" method="post">
-                  
-                    <div class="field-wrap">
-                    <label>
-                      Correo Electrónico<span class="req">*</span>
-                    </label>
-                    <input type="email"required autocomplete="off"/>
-                  </div>
-                  
-                  <div class="field-wrap">
-                    <label>
-                      Contraseña<span class="req">*</span>
-                    </label>
-                    <input type="password"required autocomplete="off"/>
-                  </div>
-                  
-                  <p class="forgot"><a href="#">¿Olvidó su Contraseña o Usuario?</a></p>
-                  
-                  <button class="button1 button-block"/>Ingresar</button>
-                  
-                  </form>
-        
+                <div class="field-wrap">
+                  <label>
+                    Contraseña<span class="req">*</span>
+                  </label>
+                  <input type="password"required autocomplete="off"/>
                 </div>
                 
-              </section><!-- tab-content -->
-        
+                <button type="submit" class="button1 button-block">REGISTRARSE</button>
+              </form>
+            </div>
+          </section><!-- tab-content --> 
+        </section>
     </main>
     <footer>
         <div class="piepagina">
@@ -161,13 +166,14 @@
         </div>
     </footer>
 </body>
+
 <script>
-    $('.form').find('input, textarea').on('keyup blur focus', function (e) {
+$('.form').find('input').on('keyup blur focus', function (e) {
   
   var $this = $(this),
       label = $this.prev('label');
 
-	  if (e.type === 'keyup') {
+	  if (e.type === 'keyup'|| e.type === 'change') { // Añadir chequeo para 'change'
 			if ($this.val() === '') {
           label.removeClass('active highlight');
         } else {
@@ -191,6 +197,20 @@
 
 });
 
+$(document).ready(function() {
+  // Selecciona el label que precede inmediatamente a mi input de tipo 'date'
+  var dateLabel = $('input[type="date"]').prev('label');
+
+  // Añade  la clase 'active' al cargar la página
+  dateLabel.addClass('active');
+
+  // Manejar eventos de focus y blur
+  $('input[type="date"]').on('focus blur', function(e) {
+    // Mantener la etiqueta siempre activa
+    dateLabel.addClass('active');
+  });
+});
+
 $('.tab a').on('click', function (e) {
   
   e.preventDefault();
@@ -205,5 +225,6 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
 </script>
 </html>

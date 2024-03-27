@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+.boton-sesion, .boton-sesion:before, .boton-sesion:after {
+  box-sizing: content-box;
+}
+
 .form a {
   text-decoration:none;
   color:#0F399B;
@@ -30,11 +34,11 @@
     clear: both;
   }
   li a {
-    display:flex;
     text-decoration:none;
-    padding:15px;
-    background:#0F399B;
-    color:white;
+    padding:1.2vh;
+    border:1px solid black;
+    background:#38ABAB;
+    color:black;
     font-size:1.5rem;
     float:left;
     width:50%;
@@ -47,9 +51,27 @@
     }
   }
   .active a {
-    background:white;
-    color:black;
+    background:#0F399B;
+    color:white;
   }
+}
+
+.avatar {
+  display: flex; /* Esto convierte al contenedor en flex */
+  justify-content: center; /* Esto centrará la imagen horizontalmente */
+  align-items: center; /* Esto centrará la imagen verticalmente */
+  margin-top: 1vh;
+} 
+
+.avatarpolicias {
+  margin-top: 1vh;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center;
+  width: auto; /* Ajusta según sea necesario */
+  height: 12vh;
+  min-width: 20px; /* Ancho mínimo para que las imágenes no sean demasiado pequeñas */
+  min-height: 20px; /* Altura mínima para mantener la proporción */
+  border-radius: 50%; /* Para hacerlo casi circular */
 }
 
 .tab-content > div:last-child {
@@ -60,14 +82,15 @@ h1 {
   text-align:center;
   color:black;
   font-family: Inter;
+  font-weight: bold;
   font-size: 2rem;
-  margin:0 0 40px;
+  margin:10px 0 20px;
 }
 
 label {
   position:absolute;
-  transform:translateY(6px);
-  left:13px;
+  transform:translateY(7px);
+  left:0.5vw;
   color:black;
   transition:all 0.25s ease;
   -webkit-backface-visibility: hidden;
@@ -82,7 +105,7 @@ label {
 label.active {
   transform:translateY(50px);
   left:2px;
-  font-size:14px;
+  font-size:0.8rem;
   .req {
     opacity:0;
   }
@@ -92,8 +115,9 @@ label.highlight {
 	color:black;
 }
 
-input, textarea {
-  font-size:22px;
+input {
+  font-size:1.5rem;
+  font-family: Inter;
   display:block;
   width:100%;
   height:100%;
@@ -101,7 +125,7 @@ input, textarea {
   background:none;
   background-image:none;
   border:1px solid black;
-  color:white;
+  color:black;
   border-radius:0;
   transition:border-color .25s ease, box-shadow .25s ease;
   &:focus {
@@ -110,14 +134,9 @@ input, textarea {
   }
 }
 
-textarea {
-  border:2px solid gray;
-  resize: vertical;
-}
-
 .field-wrap {
   position:relative;
-  margin-bottom:40px;
+  margin-bottom:3vh;
 }
 
 .top-row {
@@ -142,16 +161,16 @@ textarea {
   outline:none;
   border-radius:0;
   padding:15px 0;
-  font-size:2rem;
+  font-size:1.75rem;
   font-weight:bold;
   text-transform:uppercase;
   letter-spacing:.1em;
-  background:#0F399B ;
-  color:white;
+  background:#38ABAB ;
+  color:black;
   transition:all.5s ease;
   -webkit-appearance: none;
   &:hover, &:focus {
-    background:black;
+    background:#8FDFDF;
   }
 }
 
@@ -161,6 +180,43 @@ textarea {
 }
 
 .forgot {
-  margin-top:-20px;
-  text-align:right;
+  margin-top:2vh;
+  font-size: 1.2rem;
+  font-family: Inter;
+  font-weight: bold;
+  text-align:center;
+}
+
+@media (max-width: 480px) {
+ .tab-group{
+   li a {
+    font-size: 1.25rem;
+   }
+ } 
+
+ h1 {
+  font-size: 1.5rem;
+ }
+
+ label {
+  font-size: 1rem;
+  .req {
+  	margin:1px;
+  	color:black;
+  }
+ }
+
+ label.active {
+  font-size: 0.8rem;
+  transform:translateY(4vh);
+ }
+ input {
+  font-size: 1.25rem;
+ }
+ .button1 {
+  font-size: 1.5rem;
+ }
+ .avatarpolicias {
+  height: 9vh;
+ }
 }
