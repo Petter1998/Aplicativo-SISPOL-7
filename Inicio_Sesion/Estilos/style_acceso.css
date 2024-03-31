@@ -90,7 +90,7 @@ h1 {
 label {
   position:absolute;
   transform:translateY(7px);
-  left:0.5vw;
+  left:0.8vw;
   color:black;
   transition:all 0.25s ease;
   -webkit-backface-visibility: hidden;
@@ -200,6 +200,7 @@ input {
 
  label {
   font-size: 1rem;
+  left: 3vw;
   .req {
   	margin:1px;
   	color:black;
@@ -211,7 +212,7 @@ input {
   transform:translateY(4vh);
  }
  input {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
  }
  .button1 {
   font-size: 1.5rem;

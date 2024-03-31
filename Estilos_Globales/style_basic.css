@@ -195,11 +195,16 @@ main{
 @media (max-width: 768px) {
   .logo{
     margin-top: 1vh;
+    margin-left: 0vw;
   }
   .cabeza {
     height: auto; /* Altura automática para acomodar el contenido */
     flex-direction: column; /* Cambio a columna para mejor disposición */
     align-items: center; /* Alineación central */
+  }
+
+  .cabeza section{
+    margin-right: 0vw;
   }
   
   .cabecera { 
@@ -223,6 +228,10 @@ main{
     height: auto; /* Altura automática para acomodar el contenido */
     flex-direction: column; /* Cambio a columna para mejor disposición */
     align-items: center; /* Alineación central */
+  }
+
+  .cabeza section{
+    margin-right: 0vw;
   }
   
   .cabecera { 

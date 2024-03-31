@@ -127,8 +127,29 @@ main > section {
 /* Estilos para loginrecuperacioncontraseña */
 
 #estima, #passwor1, #password2 {
-    margin-bottom: 10vh;
+    margin-bottom: 4vh;
     margin-top: 5vh;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente */
+    margin-top: 0vh; /* Espacio encima del contenedor del checkbox */
+}
+  
+/* Estilos específicos para la etiqueta del checkbox que no afectan a otros labels */
+.checkbox-label {
+    margin-left: 1vw; /* Espacio entre el checkbox y la etiqueta */
+    font-size: 1.25rem; /* O cualquier tamaño que desees */
+    font-weight: normal; /* O el peso que prefieras */
+    color: black;
+    background: none;
+    border: none;
+    align-items: center;
+    width: auto;
+    height: auto;
+    text-align: left;
+    padding: 0;
 }
 
 @media (max-width: 480px) {

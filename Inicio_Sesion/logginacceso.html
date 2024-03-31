@@ -46,8 +46,8 @@
                 </div>
             </a>
         </section>
-    </header>
-    <main>
+  </header>
+  <main>
         <section class="form">
           <ul class="tab-group">
             <li class="tab active "><a href="#login">Acceder</a></li>
@@ -89,24 +89,8 @@
             <div id="signup">   
               <h1>Ingrese sus datos</h1>
               
-              <form action="/" method="post">
-              
-                <div class="top-row">
-                  <div class="field-wrap">
-                    <label>
-                      Identificación<span class="req">*</span>
-                    </label>
-                    <input type="text" required autocomplete="off" />
-                  </div>
-                  
-                  <div class="field-wrap">
-                    <label>
-                      Fecha de Nacimiento<span class="req">*</span>
-                    </label>
-                    <input type="date" required autocomplete="off" />
-                  </div>
-                </div>
-                  
+              <form action="../Inicio_Sesion/logginmensaje.html" method="post">
+               
                 <div class="top-row">
                   <div class="field-wrap">
                     <label>
@@ -122,11 +106,28 @@
                     <input type="text" required autocomplete="off"/>
                   </div>
                 </div>
-      
+
                 <div class="top-row">
                   <div class="field-wrap">
                     <label>
+                      Identificación<span class="req">*</span>
+                    </label>
+                    <input type="text" required autocomplete="off" />
+                  </div>
+                  
+                  <div class="field-wrap">
+                    <label>
                       Teléfono celular<span class="req">*</span>
+                    </label>
+                    <input type="text" required autocomplete="off" />
+                  </div>
+                </div>
+      
+                <div class="top-row">
+                  
+                  <div class="field-wrap">
+                    <label>
+                      Define tu Usuario<span class="req">*</span>
                     </label>
                     <input type="text" required autocomplete="off" />
                   </div>
@@ -158,13 +159,36 @@
             </div>
           </section><!-- tab-content --> 
         </section>
-    </main>
-    <footer>
+  </main>
+  <footer>
         <div class="piepagina">
             <p class="policia2">Policía Nacional del Ecuador</p>
             <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
         </div>
-    </footer>
+  </footer>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDkeEI9T5NbV05QZfnI3Rrkkshj8QXmhdU",
+      authDomain: "sispol-7.firebaseapp.com",
+      projectId: "sispol-7",
+      storageBucket: "sispol-7.appspot.com",
+      messagingSenderId: "1073007695140",
+      appId: "1:1073007695140:web:7405f6609155f6eaea0fb1",
+      measurementId: "G-JZW0S7ZGPQ"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 </body>
 
 <script>

@@ -4,3 +4,15 @@
 	text-align: center;
 	color:#000000;
 }
+
+@media (max-width: 768px) {
+   .mensajje {
+	font-size: 1.75rem;
+   }
+}
+
+@media (max-width: 480px) {
+    .mensajje {
+		font-size: 1.5rem;
+	}
+}
