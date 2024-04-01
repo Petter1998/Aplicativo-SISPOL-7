@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="Estilos/style_acceso.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 </head>
 <body class="fondo">
     <header>
@@ -89,21 +88,21 @@
             <div id="signup">   
               <h1>Ingrese sus datos</h1>
               
-              <form action="../Inicio_Sesion/logginmensaje.html" method="post">
+              <form id="registroForm" action="../Inicio_Sesion/logginmensaje.html" method="post">
                
                 <div class="top-row">
                   <div class="field-wrap">
                     <label>
                       Nombres<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" />
+                    <input type="text" required autocomplete="off" name="Nombres"/>
                   </div>
               
                   <div class="field-wrap">
                     <label>
                       Apellidos<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off"/>
+                    <input type="text" required autocomplete="off" name="Apellidos"/>
                   </div>
                 </div>
 
@@ -112,14 +111,14 @@
                     <label>
                       Identificación<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" />
+                    <input type="text" required autocomplete="off" name="Identificación"/>
                   </div>
                   
                   <div class="field-wrap">
                     <label>
                       Teléfono celular<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" />
+                    <input type="text" required autocomplete="off" name="Telefono"/>
                   </div>
                 </div>
       
@@ -129,14 +128,14 @@
                     <label>
                       Define tu Usuario<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" />
+                    <input type="text" required autocomplete="off" name="Usuario"/>
                   </div>
               
                   <div class="field-wrap">
                     <label>
                       Cargo<span class="req">*</span>
                     </label>
-                    <input type="text"required autocomplete="off"/>
+                    <input type="text"required autocomplete="off" name="Cargo"/>
                   </div>
                 </div>
                   
@@ -144,14 +143,14 @@
                   <label>
                     Correo electrónico<span class="req">*</span>
                   </label>
-                  <input type="email"required autocomplete="off"/>
+                  <input type="email"required autocomplete="off" name="Email"/>
                 </div>
                 
                 <div class="field-wrap">
                   <label>
                     Contraseña<span class="req">*</span>
                   </label>
-                  <input type="password"required autocomplete="off"/>
+                  <input type="password"required autocomplete="off" name="Password"/>
                 </div>
                 
                 <button type="submit" class="button1 button-block">REGISTRARSE</button>
@@ -176,13 +175,13 @@
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-      apiKey: "AIzaSyDkeEI9T5NbV05QZfnI3Rrkkshj8QXmhdU",
-      authDomain: "sispol-7.firebaseapp.com",
-      projectId: "sispol-7",
-      storageBucket: "sispol-7.appspot.com",
-      messagingSenderId: "1073007695140",
-      appId: "1:1073007695140:web:7405f6609155f6eaea0fb1",
-      measurementId: "G-JZW0S7ZGPQ"
+      apiKey: "AIzaSyBZe6edAdhwn05UaB0xP37WAtPxyiXpicw",
+      authDomain: "sispol-7-913ef.firebaseapp.com",
+      projectId: "sispol-7-913ef",
+      storageBucket: "sispol-7-913ef.appspot.com",
+      messagingSenderId: "588005836404",
+      appId: "1:588005836404:web:c581cd61489d2ab7c4b321",
+      measurementId: "G-80JG1B10Q4"
     };
   
     // Initialize Firebase
@@ -190,65 +189,5 @@
     const analytics = getAnalytics(app);
   </script>
 </body>
-
-<script>
-$('.form').find('input').on('keyup blur focus', function (e) {
-  
-  var $this = $(this),
-      label = $this.prev('label');
-
-	  if (e.type === 'keyup'|| e.type === 'change') { // Añadir chequeo para 'change'
-			if ($this.val() === '') {
-          label.removeClass('active highlight');
-        } else {
-          label.addClass('active highlight');
-        }
-    } else if (e.type === 'blur') {
-    	if( $this.val() === '' ) {
-    		label.removeClass('active highlight'); 
-			} else {
-		    label.removeClass('highlight');   
-			}   
-    } else if (e.type === 'focus') {
-      
-      if( $this.val() === '' ) {
-    		label.removeClass('highlight'); 
-			} 
-      else if( $this.val() !== '' ) {
-		    label.addClass('highlight');
-			}
-    }
-
-});
-
-$(document).ready(function() {
-  // Selecciona el label que precede inmediatamente a mi input de tipo 'date'
-  var dateLabel = $('input[type="date"]').prev('label');
-
-  // Añade  la clase 'active' al cargar la página
-  dateLabel.addClass('active');
-
-  // Manejar eventos de focus y blur
-  $('input[type="date"]').on('focus blur', function(e) {
-    // Mantener la etiqueta siempre activa
-    dateLabel.addClass('active');
-  });
-});
-
-$('.tab a').on('click', function (e) {
-  
-  e.preventDefault();
-  
-  $(this).parent().addClass('active');
-  $(this).parent().siblings().removeClass('active');
-  
-  target = $(this).attr('href');
-
-  $('.tab-content > div').not(target).hide();
-  
-  $(target).fadeIn(600);
-  
-});
-
-</script>
+<script src="../Inicio_Sesion/registro_inicio.js"></script>
 </html>
