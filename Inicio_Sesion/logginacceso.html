@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="Estilos/style_acceso.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.10.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -62,25 +68,25 @@
                 
               <h1>Bienvenido</h1>
 
-              <form action="../Dashboard/inicio.html" method="get">
+              <form  method="get">
               
                 <div class="field-wrap">
                   <label>
                     Correo Electrónico<span class="req">*</span>
                   </label>
-                  <input type="email"required autocomplete="off"/>
+                  <input type="email" id="email" autocomplete="off"/>
                 </div>
               
                 <div class="field-wrap">
                   <label>
                     Contraseña<span class="req">*</span>
                   </label>
-                  <input type="password"required autocomplete="off"/>
+                  <input type="password" id="pass" autocomplete="off"/>
                 </div>
               
                 <p class="forgot"><a href="../Inicio_Sesion/Recuperacion/logginrecuperacion.html">¿Olvidó su Contraseña o Usuario?</a></p>
               
-                <button class="button1 button-block">Ingresar</button>
+                <button type="submit" class="button1 button-block">Ingresar</button>
               
               </form>
             </div>
@@ -88,7 +94,7 @@
             <div id="signup">   
               <h1>Ingrese sus datos</h1>
               
-              <form id="registroForm" action="../Inicio_Sesion/logginmensaje.html" method="post">
+              <form id="registroForm" method="post">   <!--action="../Inicio_Sesion/logginmensaje.html"-->
                
                 <div class="top-row">
                   <div class="field-wrap">
@@ -111,7 +117,7 @@
                     <label>
                       Identificación<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Identificación"/>
+                    <input type="text" required autocomplete="off" name="Identificacion"/>
                   </div>
                   
                   <div class="field-wrap">
@@ -177,17 +183,20 @@
     const firebaseConfig = {
       apiKey: "AIzaSyBZe6edAdhwn05UaB0xP37WAtPxyiXpicw",
       authDomain: "sispol-7-913ef.firebaseapp.com",
+      databaseURL: "https://sispol-7-913ef-default-rtdb.firebaseio.com",
       projectId: "sispol-7-913ef",
       storageBucket: "sispol-7-913ef.appspot.com",
       messagingSenderId: "588005836404",
       appId: "1:588005836404:web:c581cd61489d2ab7c4b321",
       measurementId: "G-80JG1B10Q4"
+
     };
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   </script>
+  <script type="module" src="../Inicio_Sesion/firebase.js"></script>
 </body>
 <script src="../Inicio_Sesion/registro_inicio.js"></script>
 </html>

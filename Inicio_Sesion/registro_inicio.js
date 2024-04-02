@@ -65,31 +65,3 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
-
-
-
-// Referencia al formulario
-const form = document.querySelector('#registroForm');
-
-form.addEventListener('submit', (e) => {
-  // Prevén el comportamiento predeterminado de envío del formulario
-  e.preventDefault();
-
-  // Agrega un nuevo documento con una ID generada
-  addDoc(collection(db, "Usuarios"), {
-    Nombres: form['Nombres'].value,
-    Apellidos: form['Apellidos'].value,
-    Identificación: form['Identificación'].value,
-    Teléfono: form['Telefono'].value,
-    Usuario: form['Usuario'].value,
-    Cargo: form['Cargo'].value,
-    Correo: form['Email'].value,
-    Contraseña: form['Password'].value
-  }).then(() => {
-    // Limpia el formulario o redirige al usuario
-    form.reset();
-    console.log("Documento añadido con éxito");
-  }).catch((error) => {
-    console.error("Error al añadir el documento: ", error);
-  });
-});
