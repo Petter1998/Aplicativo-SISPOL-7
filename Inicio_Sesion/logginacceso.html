@@ -10,12 +10,7 @@
     <link rel="stylesheet" href="Estilos/style_acceso.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/10.10.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="../Inicio_Sesion/firebase.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -101,14 +96,14 @@
                     <label>
                       Nombres<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Nombres"/>
+                    <input type="text" required autocomplete="off" id="Nombres"/>
                   </div>
               
                   <div class="field-wrap">
                     <label>
                       Apellidos<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Apellidos"/>
+                    <input type="text" required autocomplete="off" id="Apellidos"/>
                   </div>
                 </div>
 
@@ -117,14 +112,14 @@
                     <label>
                       Identificación<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Identificacion"/>
+                    <input type="text" required autocomplete="off" id="Identificacion"/>
                   </div>
                   
                   <div class="field-wrap">
                     <label>
                       Teléfono celular<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Telefono"/>
+                    <input type="text" required autocomplete="off" id="Telefono"/>
                   </div>
                 </div>
       
@@ -134,14 +129,14 @@
                     <label>
                       Define tu Usuario<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" name="Usuario"/>
+                    <input type="text" required autocomplete="off" id="Usuario"/>
                   </div>
               
                   <div class="field-wrap">
                     <label>
                       Cargo<span class="req">*</span>
                     </label>
-                    <input type="text"required autocomplete="off" name="Cargo"/>
+                    <input type="text"required autocomplete="off" id="Cargo"/>
                   </div>
                 </div>
                   
@@ -149,16 +144,20 @@
                   <label>
                     Correo electrónico<span class="req">*</span>
                   </label>
-                  <input type="email"required autocomplete="off" name="Email"/>
+                  <input type="email"required autocomplete="off" id="Email"/>
                 </div>
                 
                 <div class="field-wrap">
                   <label>
                     Contraseña<span class="req">*</span>
                   </label>
-                  <input type="password"required autocomplete="off" name="Password"/>
+                  <input type="password"required autocomplete="off" id="Password"/>
+                  <label class="show-password">
+                    <input type="checkbox" id="togglePassword"> Mostrar Contraseña
+                  </label>
                 </div>
-                
+
+  
                 <button type="submit" class="button1 button-block">REGISTRARSE</button>
               </form>
             </div>
@@ -171,32 +170,6 @@
             <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
         </div>
   </footer>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyBZe6edAdhwn05UaB0xP37WAtPxyiXpicw",
-      authDomain: "sispol-7-913ef.firebaseapp.com",
-      databaseURL: "https://sispol-7-913ef-default-rtdb.firebaseio.com",
-      projectId: "sispol-7-913ef",
-      storageBucket: "sispol-7-913ef.appspot.com",
-      messagingSenderId: "588005836404",
-      appId: "1:588005836404:web:c581cd61489d2ab7c4b321",
-      measurementId: "G-80JG1B10Q4"
-
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
-  <script type="module" src="../Inicio_Sesion/firebase.js"></script>
 </body>
 <script src="../Inicio_Sesion/registro_inicio.js"></script>
 </html>

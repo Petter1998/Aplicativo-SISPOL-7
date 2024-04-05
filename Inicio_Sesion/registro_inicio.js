@@ -65,3 +65,16 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
+
+//Checkbox de Mostrar contraseña en Registrar
+document.addEventListener('DOMContentLoaded', (e) => {
+  const togglePassword = document.getElementById('togglePassword');
+  const password = document.getElementById('Password');
+
+  togglePassword.addEventListener('change', (e) => {
+    const type = togglePassword.checked ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // Esto cambia el tipo de input y muestra/oculta la contraseña
+  });
+});

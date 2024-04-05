@@ -187,6 +187,13 @@ input {
   text-align:center;
 }
 
+.show-password {
+  position: absolute;
+  right: 2vw; /* O ajustar según sea necesario para alinearlo correctamente */
+  top: 0; /* Ajusta esto para que coincida con la altura de tu etiqueta 'Contraseña' */
+  /* Otros estilos para hacerlo ver como necesites */
+}
+
 @media (max-width: 480px) {
  .tab-group{
    li a {
