@@ -11,6 +11,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module" src="../Inicio_Sesion/firebase.js"></script>
+    <script type="module" src="../Inicio_Sesion/firebase_auth.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -77,6 +78,8 @@
                     Contraseña<span class="req">*</span>
                   </label>
                   <input type="password" id="pass" autocomplete="off"/>
+                   <!-- Icono para mostrar/ocultar contraseñas -->
+                   <span id="togglePassword" class="toggle-password">&#x1F441;</span> <!-- Cambiar por un ícono de ojo adecuado -->
                 </div>
               
                 <p class="forgot"><a href="../Inicio_Sesion/Recuperacion/logginrecuperacion.html">¿Olvidó su Contraseña o Usuario?</a></p>
@@ -147,14 +150,13 @@
                   <input type="email"required autocomplete="off" id="Email"/>
                 </div>
                 
-                <div class="field-wrap">
+                <div class="field-wrap" id="Passw">
                   <label>
                     Contraseña<span class="req">*</span>
                   </label>
                   <input type="password"required autocomplete="off" id="Password"/>
-                  <label class="show-password">
-                    <input type="checkbox" id="togglePassword"> Mostrar Contraseña
-                  </label>
+                  <!-- Icono para mostrar/ocultar contraseñas -->
+                  <span id="togglePassword" class="toggle-password">&#x1F441;</span> <!-- Cambiar por un ícono de ojo adecuado -->
                 </div>
 
   

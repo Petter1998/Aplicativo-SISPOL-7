@@ -34,16 +34,17 @@ label, button {
 	color:#FFF;
 }
 
+
 input, .user1 {
-    width: auto;
+    width: 12vw;
 	height: 4vh;
 	border-radius: 1vh;
 	border: 1px solid #000000;
 	background:rgba(217,217,217,1);
     margin-bottom: 2vh;
-    padding-left: 2vw;
     font-family: Inter;
 	font-size: 1.5rem;
+    text-align: center;
 }
 
 label, input {

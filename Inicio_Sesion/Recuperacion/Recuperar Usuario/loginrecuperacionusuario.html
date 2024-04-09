@@ -47,7 +47,9 @@
     <main>
         <section>
             <p class="estimado">Estimado, su usuario es:</p>
-            <div class="user1"></div>
+            <div class="user1">
+                
+            </div>
             <a href="../Restablecer Contraseña/logginrecuperacioncontraseña.html" class="boton-rec-passw">
                 <p class="forget-passw">¿Olvidó su Contraseña?</p>
             </a>
@@ -67,4 +69,16 @@
         </div>
     </footer>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const recoveredUser = sessionStorage.getItem('recoveredUser'); // Obtener el usuario de sessionStorage
+        if(recoveredUser) {
+            document.querySelector('.user1').textContent = recoveredUser; // Mostrar el usuario
+            sessionStorage.removeItem('recoveredUser'); // Limpiar sessionStorage
+        } else {
+            // Manejar el caso de que no se haya encontrado el usuario
+            document.querySelector('.estimado').textContent = 'No se ha podido recuperar el usuario.';
+        }
+    });
+</script>
 </html>

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -41,56 +41,39 @@ document.addEventListener('DOMContentLoaded', function() {
       const usuario = document.querySelector('input[id="Usuario"]').value;
       const cargo = document.querySelector('input[id="Cargo"]').value;
   
-      // Agrega un nuevo documento con un ID generado automáticamente
-      addDoc(collection(firestore, "usuarios"), {
-        nombres: nombres,
-        apellidos: apellidos,
-        cedula: identificacion,
-        telefono: telefono,
-        email: email,
-        password: password,
-        usuario: usuario,
-        cargo: cargo
-      })
-      .then((docRef) => {
-        console.log("Documento escrito con ID: ", docRef.id);
-        // Redirigir a otra página
-        window.location.href = "../Inicio_Sesion/logginmensaje.html";
-      })
+      // Registrar al usuario en Authentication
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+
+          // Agrega un nuevo documento con un ID generado automáticamente
+          addDoc(collection(firestore, "usuarios"), {
+            nombres: nombres,
+            apellidos: apellidos,
+            cedula: identificacion,
+            telefono: telefono,
+            email: email,
+            password: password,
+            usuario: usuario,
+            cargo: cargo,
+            uid: userCredential.user.uid // Guardar también el UID para relacionar los datos
+          })
+          .then((docRef) => {
+            console.log("Documento escrito con ID: ", docRef.id);
+            // Redirigir a otra página
+            window.location.href = "../Inicio_Sesion/logginmensaje.html";
+          })
+          .catch((error) => {
+            console.error("Error al añadir el documento: ", error);
+          });
+        })
       .catch((error) => {
-        console.error("Error al añadir el documento: ", error);
+          // Manejo de errores de registro en Authentication
+          console.error("Error al registrar usuario en Authentication: ", error.code, error.message);
       });
-    });
+  });
 });
 
 
-// Función para manejar el inicio de sesión
-function handleLogin(event) {
-  event.preventDefault(); // Prevenir el envío predeterminado del formulario
-
-  // Obtener el correo electrónico y la contraseña del formulario
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('pass').value;
-
-  // Iniciar sesión utilizando Firebase Authentication
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Inicio de sesión exitoso
-      console.log('¡Inicio de sesión exitoso!');
-      // Aquí puedes redirigir al usuario a otra página o realizar acciones adicionales
-      window.location.href = 'ruta_a_tu_aplicativo.html'; // Cambia esto por la ruta correspondiente
-    })
-    .catch((error) => {
-      // Manejo de errores
-      console.error('Error al iniciar sesión: ', error);
-      // Puedes mostrar un mensaje de error al usuario aquí
-    });
-}
-
-// Adjuntar el evento de envío al formulario
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('login').addEventListener('submit', handleLogin);
-});
   
 
 

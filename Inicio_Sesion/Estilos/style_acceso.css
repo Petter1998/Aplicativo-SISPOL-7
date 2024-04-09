@@ -103,7 +103,7 @@ label {
 }
 
 label.active {
-  transform:translateY(50px);
+  transform:translateY(3.5vh);
   left:2px;
   font-size:0.8rem;
   .req {
@@ -136,7 +136,7 @@ input {
 
 .field-wrap {
   position:relative;
-  margin-bottom:3vh;
+  margin-bottom:2.5vh;
 }
 
 .top-row {
@@ -187,12 +187,19 @@ input {
   text-align:center;
 }
 
-.show-password {
-  position: absolute;
-  right: 2vw; /* O ajustar según sea necesario para alinearlo correctamente */
-  top: 0; /* Ajusta esto para que coincida con la altura de tu etiqueta 'Contraseña' */
-  /* Otros estilos para hacerlo ver como necesites */
+#Passw {
+  display: flex;
 }
+
+
+.toggle-password {
+  cursor: pointer;
+  position: absolute; /* Ajustar según sea necesario */
+  right: 1vw; /* Ajustar según sea necesario */
+  top: -0.8vh; /* Ajustar según sea necesario */
+  font-size: 2.5rem; /* Ajustar según sea necesario */
+}
+
 
 @media (max-width: 480px) {
  .tab-group{

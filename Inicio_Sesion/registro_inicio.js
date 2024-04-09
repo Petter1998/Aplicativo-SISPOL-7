@@ -67,14 +67,29 @@ $('.tab a').on('click', function (e) {
 });
 
 
-//Checkbox de Mostrar contraseña en Registrar
-document.addEventListener('DOMContentLoaded', (e) => {
-  const togglePassword = document.getElementById('togglePassword');
-  const password = document.getElementById('Password');
+//Icono de Mostrar contraseña en Registrar
+function togglePassword() {
+  var password = document.getElementById('Password');
+  if (password.type === 'password') {
+      password.type = 'text';
+  } else {
+      password.type = 'password';
+  }
+}
 
-  togglePassword.addEventListener('change', (e) => {
-    const type = togglePassword.checked ? 'text' : 'password';
-    password.setAttribute('type', type);
-    // Esto cambia el tipo de input y muestra/oculta la contraseña
-  });
-});
+// Añadir listener para el ícono de ojo
+document.getElementById('togglePassword').addEventListener('click', togglePassword);
+
+
+//Icono de Mostrar contraseña en Acceder
+function togglePassword() {
+  var password = document.getElementById('pass');
+  if (password.type === 'password') {
+      password.type = 'text';
+  } else {
+      password.type = 'password';
+  }
+}
+
+// Añadir listener para el ícono de ojo
+document.getElementById('togglePassword').addEventListener('click', togglePassword);
