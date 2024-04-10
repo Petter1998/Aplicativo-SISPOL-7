@@ -197,6 +197,12 @@ main{
     margin-top: 1vh;
     margin-left: 0vw;
   }
+
+  .policia {
+    text-align: center;
+    margin-left: 0vw;
+  }
+  
   .cabeza {
     height: auto; /* Altura automática para acomodar el contenido */
     flex-direction: column; /* Cambio a columna para mejor disposición */
@@ -224,6 +230,12 @@ main{
   .logo{
     margin-top: 1vh;
   }
+
+  .policia {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-left: 0vw;
+  }
   .cabeza {
     height: auto; /* Altura automática para acomodar el contenido */
     flex-direction: column; /* Cambio a columna para mejor disposición */
@@ -239,7 +251,7 @@ main{
     justify-content: center;
   }
 
-  .policia, .policia2, .policia3 {
+  .policia2, .policia3 {
     font-size: 1rem; /* Reducción del tamaño de fuente para mejor legibilidad */
   }
   .cabeza section {

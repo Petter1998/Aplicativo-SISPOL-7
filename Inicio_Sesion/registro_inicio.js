@@ -82,7 +82,7 @@ document.getElementById('togglePassword').addEventListener('click', togglePasswo
 
 
 //Icono de Mostrar contraseña en Acceder
-function togglePassword() {
+function togglePassword2() {
   var password = document.getElementById('pass');
   if (password.type === 'password') {
       password.type = 'text';
@@ -92,4 +92,4 @@ function togglePassword() {
 }
 
 // Añadir listener para el ícono de ojo
-document.getElementById('togglePassword').addEventListener('click', togglePassword);
+document.getElementById('togglePassword2').addEventListener('click', togglePassword2);

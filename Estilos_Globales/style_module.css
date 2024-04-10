@@ -38,7 +38,7 @@ body, html {
 
   .logo {
     box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 4.5vw;
+    width: auto;
     height: 6vh;
     background: url(../Images/Escudo.jpg), lightgray 50% / cover no-repeat;
     border-radius: 10px;
@@ -60,16 +60,22 @@ body, html {
     justify-content: center; /* Centra los logos horizontalmente */
     gap: 2vw; /* Espacio entre los logos */
     margin-right: 3vw;
+    margin-left: 3vw;
   }
 
   .cabeza section img{
-    width: 3vw; /* O ajusta según sea necesario */
+    width: auto; /* O ajusta según sea necesario */
     height: 4vh; /* O ajusta según sea necesario */
+    min-width: 20px; /* Ancho mínimo para que las imágenes no sean demasiado pequeñas */
+    min-height: 20px; /* Altura mínima para mantener la proporción */
     border-radius: 50%; /* Para hacerlos circulares */
     background: rgba(255, 255, 255, 1);
+    transition: transform 0.3s ease; /* Animación suave para el efecto de escala */
   }
 
-  
+  .cabeza section img:hover {
+    transform: scale(1.5); /* Aumenta el tamaño del icono al 150% */
+  }
 
  /* Zona del boton de inicio de sesion */
 
@@ -81,13 +87,18 @@ body, html {
     background: rgba(15,57,155,1);
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
-  .cabecera > .welcome {
+  .welcome {
+    font-family: Inter;
+    font-size: 1.75rem;
+    text-align: center;
+    color:#FFF;
+    flex-grow: 1;
     display: flex;
     align-items: center;
-    margin-left: 25vw; /* Empuja el título hacia el centro */
+    justify-content: center;
   }
 
   .botonmenu {
@@ -114,15 +125,6 @@ body, html {
 
   .menudesplegable {
     margin: 0; /* Asegúrate de no tener márgenes que desplacen el texto */
-  }
-
-  .welcome {
-    font-family: Inter;
-    font-size: 1.35rem;
-    font-weight: bold;
-    text-align: center;
-    color:#FFF;
-    
   }
 
   .buscar {
@@ -185,90 +187,81 @@ body, html {
     font-size: 1.25rem;;
   }
 
-/* Menu estatico */
 
-.mennu {
-    background: rgba(15,57,155,1);
-    display: flex;
-    justify-content: center;
-    align-items: left;
-    flex-direction: column;
-    padding: 0;
-    list-style: none;
-    width: 17vw;
-    height: 73.95vh;
-    z-index: 1000;  
-    flex: 1; 
-    border-radius: 0.2vw;
-}
+
+@media (max-width: 768px) {
+  .logo{
+    margin-top: 1vh;
+    margin-left: 0vw;
+    height: 5vh;
+  }
+
+  .policia {
+    text-align: center;
+    margin-left: 0vw;
+    padding: 0vh 1vw;
+  }
+
+  .cabeza {
+    height: auto; /* Altura automática para acomodar el contenido */
+    flex-direction: column; /* Cambio a columna para mejor disposición */
+    align-items: center; /* Alineación central */
+  }
+
+  .cabeza section{
+    margin-right: 0vw;
+  }
   
-.mennu a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: white; /* Color del texto */
-    padding: 2vh; /* Espacio alrededor del texto e ícono */
-    margin-bottom: 5vh; /* Línea separadora entre ítems */
-}
-
-.mennu a img {
-    width: 2.1vw; /* O ajusta según sea necesario */
-    height: 3vh; /* O ajusta según sea necesario */
-    margin-right: 2vw; /* Espacio entre el ícono y el texto */
-    mix-blend-mode: multiply;
-}
-
-.mennu a p {
-    flex-grow: 1; /* El texto ocupa el espacio restante */
-    text-align: left;
-    margin: 0; /* Elimina márgenes predeterminados */
-    font-size: 1.15rem;
-    font-family: Inter;
-}
-
-.mennu section {
-    display: flex;
-    align-items: center;
+  .cabecera { 
+    align-items: center; /* Alineación central */
     justify-content: center;
+  }
+
+  .welcome {
+    font-size: 1.5rem;
+  }
+
+  .boton-sesion, .boton-back {
+    margin-left: 1rem; /* Ajuste para pantallas pequeñas */
+    margin-right: 1rem; /* Ajuste para pantallas pequeñas */
+    margin: 10px 0; /* Margen para separar de otros elementos */
+  }
 }
 
+@media (max-width: 480px) {
+  .logo{
+    margin-top: 1vh;
+  }
 
-.boton-back {
-    display: flex; 
-    align-items: center;
-    align-self: flex-end;
+  .policia {
+    font-size: 1rem;
+  }
+  .cabeza {
+    height: auto; /* Altura automática para acomodar el contenido */
+    flex-direction: column; /* Cambio a columna para mejor disposición */
+    align-items: center; /* Alineación central */
+  }
+
+  .cabeza section{
+    margin-right: 0vw;
+  }
+  
+  .cabecera { 
+    align-items: center; /* Alineación central */
     justify-content: center;
-    text-decoration: none; /* Elimina el subrayado del enlace */
-    width: 8vw;
-    height: 1vh;
-    background-color: #38ABAB; /* Color de fondo del botón */
-    border-radius: 1.27vh; /* Bordes redondeados */
-    transition: background-color 0.3s; /* Transición suave para el efecto hover */
-}
+  }
 
-.boton-back:hover {
-    background-color: #169F9F; /* Cambio de color al pasar el mouse */
-}
+  .welcome {
+    font-size: 1.25rem;
+  }
 
-.boton-back div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1vw;
-}
-
-.logoback {
-    width:2.8vw;
-    height:3.3vh;
-    border-radius: 50%;
-    background:rgba(255,255,255,0);
-    /*z-index: 1;*/
-    mix-blend-mode: multiply;
-    margin-left: 0.5vw;
-} 
-
-.salir {
-    font-family: Inter;
-    font-size: 1.2rem; /* Tamaño de fuente responsivo */
-    color: white; /* Color del texto */
+  .policia2, .policia3 {
+    font-size: 1rem; /* Reducción del tamaño de fuente para mejor legibilidad */
+  }
+  .cabeza section {
+    gap: 1rem; /* Reducción del espacio entre iconos */
+  }
+  .boton-sesion, .boton-back {
+    padding: 5px 10px; /* Ajuste del relleno para botones más pequeños */
+  }
 }

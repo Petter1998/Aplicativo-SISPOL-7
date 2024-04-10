@@ -47,6 +47,15 @@ input, .user1 {
     text-align: center;
 }
 
+.user1{
+    display: flex; /* Esto permitirá centrar el contenido de forma flexible */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    width: auto;
+    padding: 0vh 2vw;
+    font-weight: bold;
+}
+
 label, input {
     margin: 1vh 1vw; /* Añade margen vertical */
 }
@@ -127,9 +136,14 @@ main > section {
 
 /* Estilos para loginrecuperacioncontraseña */
 
-#estima, #passwor1, #password2 {
+#estima, #password1, #password2 {
     margin-bottom: 4vh;
     margin-top: 5vh;
+}
+
+#password1, #password2 {
+    width: auto;
+    padding: ovh 2vw;
 }
 
 .checkbox-container {
@@ -137,10 +151,15 @@ main > section {
     align-items: center; /* Alinea verticalmente */
     margin-top: 0vh; /* Espacio encima del contenedor del checkbox */
 }
+
+#showPasswords {
+    width: 2vw;
+    height: 1vh;
+}
   
 /* Estilos específicos para la etiqueta del checkbox que no afectan a otros labels */
 .checkbox-label {
-    margin-left: 1vw; /* Espacio entre el checkbox y la etiqueta */
+    margin-left: 0.1vw; /* Espacio entre el checkbox y la etiqueta */
     font-size: 1.25rem; /* O cualquier tamaño que desees */
     font-weight: normal; /* O el peso que prefieras */
     color: black;
@@ -151,6 +170,12 @@ main > section {
     height: auto;
     text-align: left;
     padding: 0;
+}
+
+@media (max-width: 768px) {
+    input, .user1 {
+        width: 20vw;
+    }
 }
 
 @media (max-width: 480px) {
@@ -166,5 +191,10 @@ main > section {
 
     button {
         font-size: 1.5rem;
+    }
+
+    input, .user1 {
+        width: 30vw;
+        font-size: 1.35rem;
     }
 }

@@ -234,4 +234,7 @@ input {
  .avatarpolicias {
   height: 9vh;
  }
+ .toggle-password {
+  font-size: 2rem;
+ }
 }
