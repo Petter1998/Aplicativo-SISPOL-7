@@ -8,8 +8,8 @@
     --color-menu-hover:rgb(238,238,238);
     --color-menu-hover-texto:rgb(0,0,0);
 
-    --color-boton:rgb(0,0,0);
-    --color-boton-texto:rgb(255,255,255);
+    --color-boton:#38ABAB;
+    --color-boton-texto:black;
 
     --color-linea:rgb(180,180,180);
 
@@ -94,7 +94,7 @@
 }
 .barra-lateral .nombre-pagina span{
     margin-left: 5px;
-    font-size: 25px;
+    font-size: 33px;
 }
 
 
@@ -113,12 +113,15 @@
     text-decoration: none; /* Remueve la decoración de texto del enlace */
     box-sizing: border-box;
     cursor: pointer;
+    font-family: Inter;
 }
 .barra-lateral .boton ion-icon{
     min-width: 50px;
     font-size: 25px;
 }
-
+.boton:hover {
+    background:#8FDFDF;
+}
 
 /* ------------Estilos comunes para navegación */
 .navegacion, .navegacion-administracion {
@@ -176,21 +179,12 @@
     font-size: 20px;
 }
 
- 
-
-/*-----------------> Linea*/
-.barra-lateral .linea{
-    width: 100%;
-    height: 1px;
-    margin-top: 15px;
-    background-color: var(--color-linea);
-}
-
 
 /*---------------> Usuario*/
 .barra-lateral .usuario{
     width: 100%;
     display: flex;
+    margin-top: 1vh;
 }
 .barra-lateral .usuario img{
     width: 50px;
@@ -212,17 +206,53 @@
     margin-left: 5px;
 }
 .barra-lateral .usuario .nombre{
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
 }
 .barra-lateral .usuario .email{
     font-size: 13px;
 }
-.barra-lateral .usuario ion-icon{
-    font-size: 20px;
+
+/*-----------------> Linea*/
+.barra-lateral .linea{
+    width: 100%;
+    height: 1px;
+    margin-top: 15px;
+    background-color: var(--color-linea);
 }
 
+/*-----------------> Boton de Salir de Aplicativo */
+.boton-exit {
+    width: 100%;
+    height: 45px;
+    margin-bottom: 20px;
+    margin-top: 1vh;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+    text-decoration: none; /* Remueve la decoración de texto del enlace */
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: Inter;
+}
 
+.boton-exit ion-icon {
+    min-width: 50px;
+    font-size: 40px;
+    transform: rotate(180deg);
+}
+
+.boton-exit:hover {
+    background:#8FDFDF;
+} 
+
+.boton-exit span {
+    font-size: 25px;
+    margin-left: 0.5vw;
+}
 /*-------------main*/
 main{
     margin-left: 250px;
@@ -239,15 +269,16 @@ main.min-main{
     position: fixed;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     left: -250px; /* Inicia oculta */
-    top: 16vh;
+    /*top: 16vh;*/
     width: 250px;
     height: 67vh;
     overflow: hidden;
     padding: 20px 15px;
     background-color: var(--color-barra-lateral);
     transition: left 0.3s ease;
-    z-index: 60; /* Asegúrate de que sea mayor que la z-index de la barra lateral principal */
+    z-index: 60; /* Mayor que la z-index de la barra lateral principal */
 }
 
 /* ----------------Estilo para los botones de regresar */

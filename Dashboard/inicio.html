@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../Dashboard/Estilos/style_start.css">
     <!-- Enlace a la tercera hoja de estilo -->
     <link rel="stylesheet" href="../Estilos_Globales/style_menu.css">
+    <!-- menu -->
+    <script src="/Dashboard/menu.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -40,235 +42,9 @@
         <section class="cabecera">
             <p class="welcome">Bienvenido a SISPOL - 7</p>
         </section>
-        <div class="menu">
-            <ion-icon name="menu-outline"></ion-icon>
-            <ion-icon name="close-outline"></ion-icon>
-        </div>
-        <div class="barra-lateral">
-            <div>
-                <div class="nombre-pagina">
-                    <ion-icon id="cloud" name="earth-outline"></ion-icon>
-                    <span>SISPOL - 7</span>
-                </div>
-                <button class="boton" onclick="window.location.href='/Modulo_Mantenimiento/Nueva Solicitud/solicitud_mantenimiento.html'">
-                    <ion-icon name="add-outline"></ion-icon>
-                    <span>Nuevo Mantenimiento</span>
-                </button>
-                <button class="boton" onclick="window.location.href='/Modulo_Reportes/nuevo_reporte.html'">
-                    <ion-icon name="add-outline"></ion-icon>
-                    <span>Nuevo Reporte</span>
-                </button>
-            </div>
-            <nav class="navegacion">
-                <ul>
-                    <li>
-                        <a id="admin">
-                            <ion-icon name="settings-outline"></ion-icon>
-                            <span>Administración</span>
-                        </a>
-                        
-                    </li>
-                    <li>
-                        <a id="control">
-                            <ion-icon name="key-outline"></ion-icon>
-                            <span>Control de Acceso</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="doc">
-                            <ion-icon name="newspaper-outline"></ion-icon>
-                            <span>Documentos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="mant">
-                            <ion-icon name="build-outline"></ion-icon>
-                            <span>Mantenimiento</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="report">
-                            <ion-icon name="receipt-outline"></ion-icon>
-                            <span>Reportes</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="account">
-                            <ion-icon name="person-circle-outline"></ion-icon>
-                            <span>Cuenta</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div>
-                <div class="linea"></div>
-                <div class="usuario">
-                    <img src="/Images/logo_inicio.jpg" alt="">
-                    <div class="info-usuario">
-                        <div class="nombre-email">
-                            <span class="nombre">Pedro</span>
-                            <span class="email">petterarevalo1998@gmail.com</span>
-                        </div>
-                        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="barra-lateral-administracion">
-            <button class="boton-regresar">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-                <span>Regresar</span>
-            </button>
-            <nav class="navegacion-administracion">
-                <!-- Contenido de la nueva barra lateral para Administración -->
-                <!-- Submenú para Mantenimiento -->
-                <ul>
-                    <li><a href="/Modulo_Administracion/Catalogos/catalogos.html">
-                        <ion-icon name="reader-outline"></ion-icon>
-                        <span>Catálogos</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Contratos/contratos.html">
-                        <ion-icon name="folder-open-outline"></ion-icon>
-                        <span>Contratos</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Dependencias/dependencias.html">
-                        <ion-icon name="business-outline"></ion-icon>
-                        <span>Dependencias</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Flota_vehicular/flota_vehicular.html">
-                        <ion-icon name="car-outline"></ion-icon>
-                        <span>Flota Vehicular</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Items/items.html">
-                        <ion-icon name="file-tray-stacked-outline"></ion-icon>
-                        <span>Items</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Personal/personal.html">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span>Personal</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Personal_subcircuito/personal_en_subcircuito.html">
-                        <ion-icon name="people-circle-outline"></ion-icon>
-                        <span>Personal - Subcircuito</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Repuestos/repuestos.html">
-                        <ion-icon name="hammer-outline"></ion-icon>
-                        <span>Repuestos</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Usuarios/usuarios.html">
-                        <ion-icon name="man-outline"></ion-icon>
-                        <span>Usuarios</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Administracion/Vehiculo_subcircuito/vehiculo_en_subcircuito.html">
-                        <ion-icon name="car-sport-outline"></ion-icon>
-                        <span>Vehiculo - Subcircuito</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="barra-lateral-control">
-            <button class="boton-regresar1">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-                <span>Regresar</span>
-            </button>
-            <nav class="navegacion-administracion">
-                <!-- Contenido de la nueva barra lateral para Administración -->
-                <ul>
-                    <li><a href="/Modulo_Control_Acceso/modulos.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Módulos</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Control_Acceso/modulos_roles.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Módulos por Roles</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Control_Acceso/Roles/roles.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Roles</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Control_Acceso/Usuarios/usuarios.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Usuarios</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="barra-lateral-documento">
-            <button class="boton-regresar2">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-                <span>Regresar</span>
-            </button>
-            <nav class="navegacion-administracion">
-                <ul>
-                    <li><a href="/Modulo_Documentos/nueva_orden.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Nueva Orden</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Documentos/registro_orden_trabajo.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Registro de Orden de Trabajo</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="barra-lateral-mantenimiento">
-            <button class="boton-regresar3">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-                <span>Regresar</span>
-            </button>
-            <nav class="navegacion-administracion">
-                <ul>
-                    <li><a href="/Modulo_Mantenimiento/Nueva Solicitud/solicitud_mantenimiento.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Nueva Solicitud</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Mantenimiento/registros_mantenimiento.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Registro de Mantenimientos</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="barra-lateral-reporte">
-            <button class="boton-regresar4">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-                <span>Regresar</span>
-            </button>
-            <nav class="navegacion-administracion">
-                <ul>
-                    <li><a href="/Modulo_Reportes/nuevo_reporte.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Nuevo Reporte</span>
-                        </a>
-                    </li>
-                    <li><a href="/Modulo_Reportes/registro_reportes.html">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Registro de Reportes</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <div id="barra-menu"></div>
     </header>
-    <main class="basic">
+    <main>
         
     </main>
     <footer>
@@ -277,9 +53,22 @@
             <p class="policia3">© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés</p>
         </div>
     </footer>
-    <script src="/Dashboard/menu.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        fetch('/Dashboard/menu.html')
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('barra-menu').innerHTML = data;
+                // Asegúrate de que menu.js está cargado antes de llamar a initializeMenu
+                if(window.initializeMenu) {
+                    window.initializeMenu();
+                }
+        })
+        .catch(error => {
+            console.error('Error al cargar el menú:', error);
+        });
+      </script>
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

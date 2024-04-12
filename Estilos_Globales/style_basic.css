@@ -121,17 +121,12 @@ body {
   align-items: center;
 }
 
-.logo7, .logoback {
-  width:auto;
-  height:3.3vh;
-  vertical-align: middle;
-  margin-right: 0px;
-  border-radius: 50%;
-  background:rgba(255,255,255,0);
-  /*z-index: 1;*/
-  mix-blend-mode: multiply;
-  display: inline-block;
-} 
+.boton-sesion ion-icon, 
+.boton-back ion-icon {
+  min-width: 50px;
+  font-size: 40px;
+}
+
 
 .icon7 {
   width:2.5vw;
@@ -147,7 +142,7 @@ body {
   font-family: Inter;
   font-size: 1.25rem; /* Tamaño de fuente responsivo */
   text-align: center;
-  margin-right: 1.39vw;
+  margin-right: 1vw;
 }
 
 

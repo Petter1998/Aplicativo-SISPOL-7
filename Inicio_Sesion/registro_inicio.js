@@ -70,10 +70,13 @@ $('.tab a').on('click', function (e) {
 //Icono de Mostrar contraseña en Registrar
 function togglePassword() {
   var password = document.getElementById('Password');
+  var toggleIcon = document.getElementById('togglePassword').querySelector('ion-icon');
   if (password.type === 'password') {
       password.type = 'text';
+      toggleIcon.name = 'eye-outline'; // Cambia el icono a ojo abierto
   } else {
       password.type = 'password';
+      toggleIcon.name = 'eye-off-outline'; // Cambia el icono a ojo cerrado
   }
 }
 
@@ -84,10 +87,13 @@ document.getElementById('togglePassword').addEventListener('click', togglePasswo
 //Icono de Mostrar contraseña en Acceder
 function togglePassword2() {
   var password = document.getElementById('pass');
+  var toggleIcon = document.getElementById('togglePassword2').querySelector('ion-icon');
   if (password.type === 'password') {
       password.type = 'text';
+      toggleIcon.name = 'eye-outline'; // Cambia el icono a ojo abierto
   } else {
       password.type = 'password';
+      toggleIcon.name = 'eye-off-outline'; // Cambia el icono a ojo cerrado
   }
 }
 

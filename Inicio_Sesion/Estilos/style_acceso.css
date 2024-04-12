@@ -196,7 +196,7 @@ input {
   cursor: pointer;
   position: absolute; /* Ajustar según sea necesario */
   right: 1vw; /* Ajustar según sea necesario */
-  top: -0.8vh; /* Ajustar según sea necesario */
+  top: 0.04vh; /* Ajustar según sea necesario */
   font-size: 2.5rem; /* Ajustar según sea necesario */
 }
 
