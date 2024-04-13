@@ -11,7 +11,7 @@
     <!-- Enlace a la tercera hoja de estilo -->
     <link rel="stylesheet" href="../Estilos_Globales/style_menu.css">
     <!-- menu -->
-    <script src="/Dashboard/menu.js"></script>
+    <script src="../Dashboard/menu.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -45,7 +45,7 @@
         <div id="barra-menu"></div>
     </header>
     <main>
-        
+        <a href="../Modulo_Documentos/nueva_orden.html"></a>
     </main>
     <footer>
         <div class="piepagina">
@@ -54,7 +54,7 @@
         </div>
     </footer>
     <script>
-        fetch('/Dashboard/menu.html')
+        fetch('../Dashboard/menu.html')
           .then(response => response.text())
           .then(data => {
             document.getElementById('barra-menu').innerHTML = data;

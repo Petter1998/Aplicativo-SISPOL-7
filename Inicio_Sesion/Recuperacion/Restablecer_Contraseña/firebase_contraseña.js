@@ -33,7 +33,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
         // Usuario encontrado, redirigir y mostrar su información
         const user = querySnapshot.docs[0].data().usuario;
         sessionStorage.setItem('recoveredUser', user); // Guardar el usuario en sessionStorage
-        window.location.href = '/Inicio_Sesion/Recuperacion/Restablecer Contraseña/loginrecuperacioncontraseña.html';
+        window.location.href = '../Restablecer_Contraseña/loginrecuperacioncontraseña.html';
       } else {
         // Usuario no encontrado, manejar el caso adecuadamente
         alert('Identificación no encontrada.');

@@ -38,7 +38,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
         // Actualiza la contraseña usando Firebase Authentication
         updatePassword(user, nuevaContraseña).then(() => {
           // Redirigir al usuario a la página de confirmación de cambio de contraseña exitoso
-          window.location.href = "../Restablecer Contraseña/mensajenovappasw.html";
+          window.location.href = "../Restablecer_Contraseña/mensajenovappasw.html";
         }).catch((error) => {
           // Manejo de errores, por ejemplo, si el usuario no ha iniciado sesión recientemente
           console.error("Error al actualizar la contraseña: ", error);

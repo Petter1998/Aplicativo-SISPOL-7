@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
             cedula: identificacion,
             telefono: telefono,
             email: email,
-            password: password,
             usuario: usuario,
             cargo: cargo,
-            uid: userCredential.user.uid // Guardar también el UID para relacionar los datos
+            uid: userCredential.user.uid, // Guardar también el UID para relacionar los datos
+            fechaCreacion: new Date() // Aquí agregas la fecha de creación
           })
           .then((docRef) => {
             console.log("Documento escrito con ID: ", docRef.id);
