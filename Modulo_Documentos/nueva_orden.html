@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../Modulo_Documentos/Estilos/style_documentation.css">
     <!-- Enlace a la tercera hoja de estilo -->
     <link rel="stylesheet" href="../Estilos_Globales/style_menu.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body class="fondo">
     <header>
@@ -284,126 +286,86 @@
       </section>
     </header>
     <main>
-        <section class="formularios">
-            <form action="/enviar-datos" method="post">
-                <section>
-                    <div class="form-colum1">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fechaIngreso">Fecha de Ingreso:</label>
-                                <input type="date" id="fechaIngreso" name="fechaIngreso" required>
-                              </div>
-                              <div class="form-group">
-                                <label for="horaIngreso">Hora de Ingreso:</label>
-                                <input type="time" id="horaIngreso" name="horaIngreso" required>
-                              </div>
-                        </div>
-                        
-                      <!-- Fila 2 -->
-                      <div class="form-row">
-                        <div class="form-group">
-                          <label for="kilometraje">Kilometraje actual:</label>
-                          <input type="text" id="kilometraje" name="kilometraje" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="tipoVehiculo">Tipo de Vehículo:</label>
-                          <input type="text" id="tipoVehiculo" name="tipoVehiculo" required>
-                        </div>
-                      </div>
-                      
-                      <!-- Fila 3 -->
-                      <div class="form-row">
-                        <div class="form-group">
-                          <label for="placa">Placa:</label>
-                          <input type="text" id="placa" name="placa" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="marca">Marca:</label>
-                          <input type="text" id="marca" name="marca" required>
-                        </div>
-                      </div>
-                      
-                      <!-- Fila 4 -->
-                      <div class="form-row">
-                        <div class="form-group">
-                          <label for="modelo">Modelo:</label>
-                          <input type="text" id="modelo" name="modelo" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="identificacionResponsable">Identificación del Responsable:</label>
-                          <input type="text" id="identificacionResponsable" name="identificacionResponsable" required>
-                        </div>
-                      </div>
-                      
-                      <!-- Fila 5 -->
-                      <div class="form-row">
-                        <div class="form-group">
-                          <label for="nombresResponsable">Nombres del Responsable:</label>
-                          <input type="text" id="nombresResponsable" name="nombresResponsable" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="asunto">Asunto:</label>
-                          <input type="text" id="asunto" name="asunto" required>
-                        </div>
-                      </div>
-                      
-                      <!-- Fila 6 -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="detalle">Detalle:</label>
-                                <textarea id="detalle" name="detalle" required></textarea>
-                            </div>
-                        </div>
+        <section class="form">
+            
+            <section class="avatar">
+                <ion-icon name="document-text-outline"></ion-icon>
+            </section>
+  
+            <section class="tab-content">
+              
+                <form id="registroForm" method="post">   <!--action="../Inicio_Sesion/logginmensaje.html"-->
+                 
+                  <div class="top-row">
+                    <div class="field-wrap">
+                      <label>
+                        Fecha de Ingreso<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" id="Nombres"/>
                     </div>
-
-                    <div class="form-colum2">
-                        <!-- Sección de mantenimientos -->
-                        <div class="form-row">
-                            <div class="form-group checkbox-group">
-                              <input type="checkbox" id="mantenimiento1" name="mantenimiento1" onclick="toggleCheckbox()">
-                              <label for="mantenimiento1">Mantenimiento 1</label>
-                            </div>
-                          </div>
-                          
-                          <div class="form-row">
-                            <div class="form-group checkbox-group">
-                              <input type="checkbox" id="mantenimiento2" name="mantenimiento2">
-                              <label for="mantenimiento2">Mantenimiento 2</label>
-                            </div>
-                          </div>
-                          
-                          <div class="form-row">
-                            <div class="form-group checkbox-group">
-                              <input type="checkbox" id="mantenimiento3" name="mantenimiento3">
-                              <label for="mantenimiento3">Mantenimiento 3</label>
-                            </div>
-                          </div>
-                          
-                          <!-- Sección de totales -->
-                          <div class="form-row">
-                            <div class="form-group">
-                                <label for="subtotal">SUBTOTAL</label>
-                                <input type="text" id="subtotal" name="subtotal" >
-                            </div>
-                          </div>
-                          
-                          <div class="form-row">
-                            <div class="form-group">
-                                <label for="iva">IVA 12%</label>
-                              <input type="text" id="iva" name="iva" >
-                            </div>
-                          </div>
-                          
-                          <div class="form-row">
-                            <div class="form-group">
-                                <label for="total">TOTAL</label>
-                              <input type="text" id="total" name="total" >
-                            </div>
-                          </div>
+                
+                    <div class="field-wrap">
+                      <label>
+                        Hora de Ingreso<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" id="Apellidos"/>
                     </div>
-                </section>
-            </form>
-        </section>
+                  </div>
+  
+                  <div class="top-row">
+                    <div class="field-wrap">
+                      <label>
+                        Kilometraje actual<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" id="Identificacion"/>
+                    </div>
+                    
+                    <div class="field-wrap">
+                      <label>
+                        Tipo de Vehiculo<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" id="Telefono"/>
+                    </div>
+                  </div>
+        
+                  <div class="top-row">
+                    
+                    <div class="field-wrap">
+                      <label>
+                        Define tu Usuario<span class="req">*</span>
+                      </label>
+                      <input type="text" required autocomplete="off" id="Usuario"/>
+                    </div>
+                
+                    <div class="field-wrap">
+                      <label>
+                        Cargo<span class="req">*</span>
+                      </label>
+                      <input type="text"required autocomplete="off" id="Cargo"/>
+                    </div>
+                  </div>
+                    
+                  <div class="field-wrap">
+                    <label>
+                      Correo electrónico<span class="req">*</span>
+                    </label>
+                    <input type="email"required autocomplete="off" id="Email"/>
+                  </div>
+                  
+                  <div class="field-wrap" id="Passw">
+                    <label>
+                      Contraseña<span class="req">*</span>
+                    </label>
+                    <input type="password"required autocomplete="off" id="Password"/>
+                    <!-- Icono para mostrar/ocultar contraseñas -->
+                    <span id="togglePassword" class="toggle-password"><ion-icon name="eye-off-outline"></ion-icon></span> <!-- Cambiar por un ícono de ojo adecuado -->
+                  </div>
+  
+    
+                  <button type="submit" class="button1 button-block">REGISTRARSE</button>
+                </form>
+            </section><!-- tab-content --> 
+          </section>
         <section class="botones">
             <a href="" onclick="window.print();return false;" class="bottones">
                 <div>
@@ -428,16 +390,6 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var menuButton = document.querySelector('.botonmenu');
-        var sidebar = document.querySelector('.sidebar');
-
-        menuButton.addEventListener('click', function() {
-            sidebar.classList.toggle('visible');
-        });
-    });
-</script>
 <script>
     function toggleCheckbox() {
       var mantenimiento1 = document.getElementById('mantenimiento1');
