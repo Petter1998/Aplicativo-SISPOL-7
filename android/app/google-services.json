@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "588005836404",
+    "firebase_url": "https://sispol-7-913ef-default-rtdb.firebaseio.com",
+    "project_id": "sispol-7-913ef",
+    "storage_bucket": "sispol-7-913ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588005836404:android:c9232f84d9319425c4b321",
+        "android_client_info": {
+          "package_name": "Sispol_7.sispol_2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_vFE0GqbrR9Gt9olXI79VWrt3QjHoXno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588005836404:android:2fc85513363a443ec4b321",
+        "android_client_info": {
+          "package_name": "com.example.sispol_7"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_vFE0GqbrR9Gt9olXI79VWrt3QjHoXno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
