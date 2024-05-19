@@ -293,7 +293,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/new-request'),
 
-    CDM(Icons.settings_power_sharp, "Cerrar Sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
+    CDM(Icons.settings_power_sharp, "Setting", [], route: '/login'), // Este es el ícono de cerrar sesión
   ];
 
   void expandOrShrinkDrawer() {
