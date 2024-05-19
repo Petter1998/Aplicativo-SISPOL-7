@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISPOL-7</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body class="fondo">
+    <main>
+        <div class="contenedor">
+            <img class="splashi" src="../Images/Escudo.jpg" alt="SISPOL-7">
+            <span class="letra">
+                SISPOL-7
+            </span>
+        </div>
+    </main>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const splashi = document.querySelector('.splashi');
+        const letra = document.querySelector('.letra');
+        // Animación para el escudo 
+
+        setTimeout(() => {
+            splashi.classList.add('fade-out');
+            letra.classList.add('fade-out');
+
+            setTimeout(() => {
+                window.location.href = '../Inicio_Sesion/loggininicio.html'; // Redirige a la página de login
+            }, 2000); // Coincide con la duración de la transición CSS
+        }, 2000); // Espera antes de comenzar el desvanecimiento
+    });
+</script>
+</html>

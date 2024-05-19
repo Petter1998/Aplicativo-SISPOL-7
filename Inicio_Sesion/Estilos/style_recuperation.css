@@ -1,0 +1,36 @@
+.boton-rec-user, .boton-rec-passw {
+	width: auto;
+    height: 4vh;
+	border-radius: 1vh;
+	border: 1px solid #000000;
+	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:#38ABAB;
+	display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+	text-decoration: none;
+    margin-bottom: 3vh;
+	padding: 0.5vh 2vw;
+}
+
+.boton-rec-user:hover {
+    background-color: #8FDFDF; /* Cambio de color al pasar el mouse */
+}
+
+.boton-rec-passw:hover {
+    background-color: #8FDFDF; /* Cambio de color al pasar el mouse */
+}
+
+.forget-user, .forget-passw {
+    font-family: Inter;
+	font-size: 1.75rem;
+	font-weight: bold;
+	text-align: center;
+	color:black;
+}
+
+@media (max-width: 480px) {
+	.forget-user, .forget-passw {
+		font-size: 1.5rem;
+	}
+}

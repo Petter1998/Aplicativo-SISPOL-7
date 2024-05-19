@@ -1,0 +1,275 @@
+.adminis{ 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottonmenu {
+    margin-bottom: 2vh;
+    display: flex; 
+    align-items: center; /* Centra los elementos verticalmente */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    width: 11vw;
+    height: 3.4vh;
+    background-color: #38ABAB; /* Color de fondo del botón */
+    color: black; /* Color del texto */
+    padding: 0.8vh 1.2vw; /* Espaciado interno del botón */
+    border-radius: 1.27vh; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave para el efecto hover */
+    margin-left: 8vw;
+    margin-top: 1vh;
+    font-family: Inter;
+    font-size: 1.2rem; /* Tamaño de fuente responsivo */
+    color: white; /* Color del texto */
+}
+
+.formularios {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en la siguiente línea en pantallas más pequeñas */
+    gap: 5vw;
+}
+
+label {
+    width: 14vw;
+    height: 4vh;
+    border-radius: 1vh;
+    border: 1px solid #000;
+    background: #2751B1;
+    font-family: Inter;
+	font-size: 1.15rem;
+	font-weight: bold;
+	text-align: center;
+	color:#FFF;
+}
+
+input, select, #detalle {
+    width: 20vw;
+	height: 4vh;
+	border-radius: 1vh;
+	border: 1px solid #000000;
+	background:rgba(217,217,217,1);
+    margin-bottom: 2vh;
+}
+
+label, input, select, textarea {
+    margin: 1vh 1vw; /* Añade margen vertical */
+}
+
+.formularios label {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.formularios form > section > div{
+    display: flex; /* Establece el contenedor div como un contenedor Flexbox */
+    align-items: center; /* Alinea los elementos verticalmente en el centro */
+    
+} 
+
+.adminis > .bottonmenu {
+    margin-top: 10vh;
+    flex: 1 1 calc(50% -2vw);
+}
+
+main > .adminis {
+    display: flex; 
+    align-items: center; /* Centra los elementos verticalmente */
+}
+
+
+/* Usuarios*/
+
+table {
+    margin-top: 1vh;
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+  
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+td > a{
+    text-decoration: none;
+}
+  
+th {
+    background:rgba(15,57,155,1);
+    font-family: Inter;
+    font-size: 1.2rem; /* Tamaño de fuente responsivo */
+    color: white; /* Color del texto */
+}
+  
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+  
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.botones {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    bottom: 0;
+    margin-top: 5vh;
+    padding: 0 0 2vh;
+}
+
+.bottones , #botonExportar, #formatoExportacion{
+    display: flex; 
+    align-items: center; /* Centra los elementos verticalmente */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    width: 14vw;
+    height: 4vh;
+    background: #2751B1;
+    color: white; /* Color del texto */
+    padding: 0.8vh 1.2vw; /* Espaciado interno del botón */
+    border-radius: 1.27vh; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave para el efecto hover */
+}
+
+.bottones:hover {
+    background-color: #0F3898; /* Cambio de color al pasar el mouse */
+}
+
+.bot1 {
+    font-family: Inter;
+    font-size: 1.25rem; /* Tamaño de fuente responsivo */
+    text-align: center;
+}
+
+.tabla {
+    margin-top: 2vh;
+}
+
+.tabla > table > tbody > tr > td > input {
+    width: 4vw;
+}
+
+.form-colum1, .form-colum2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-group label {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.formularios form > section > div > div >div{
+    display: flex; /* Establece el contenedor div como un contenedor Flexbox */
+    align-items: center; /* Alinea los elementos verticalmente en el centro */
+    
+} 
+
+.regist{
+	width: 16vw;
+    height: 21vh;
+    margin-top: 4vh;
+    margin-left: 2vw;
+    mix-blend-mode: multiply;
+    border-radius: 1vh;
+}
+
+.smsj {
+    font-family: Inter;
+	font-size: 2rem;
+	text-align: center;
+	color:#000000;
+}
+
+.subcir1 {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-top: 3vh;
+    text-decoration: none;
+}
+
+.subcir {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 2vh;
+}
+
+.module-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 2vh;
+}
+
+.module {
+    border-radius: 10px;
+    width: 18%;
+}
+
+.module-header {
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-color: #38ABAB; /* Color de fondo del botón */
+    color: white;
+    padding: 0.8vh 1.2vw; /* Espaciado interno del botón */
+    border-radius: 1.27vh; /* Bordes redondeados */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.module-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.module-list input {
+    margin-left: 0vw;
+}
+
+.module-list li {
+    border: 1px solid #000000;
+	background:rgba(217,217,217,1);
+    margin-bottom: 1vh;
+    padding: 0.8vh 1.2vw; /* Espaciado interno del botón */
+    border-radius: 1.27vh; /* Bordes redondeados */
+    display: flex;
+    align-items: center;
+}
+
+.module-list li .checkbox {
+    display: flex;
+    align-items: flex-start;
+    
+}
+
+.checkbox {
+    accent-color: #077F7F;
+}
+
+.module-list li input[type="checkbox"] {
+    margin-right: 1vw; /* Asegura que haya espacio entre el checkbox y el texto */
+}
