@@ -1,0 +1,158 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/administration/users/users_controller.dart';
+import 'package:sispol_7/models/administration/users/users_model.dart';
+import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
+import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
+import 'package:sispol_7/widgets/footer.dart';
+import 'package:intl/intl.dart';
+
+class UserView extends StatefulWidget {
+  const UserView({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _UserViewState createState() => _UserViewState();
+}
+
+
+class _UserViewState extends State<UserView> {
+  final UserController _controller = UserController();
+  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
+
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  
+  @override
+  Widget build(BuildContext context) {
+
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Determinar el tamaño de la fuente basado en el ancho de la pantalla
+    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 24);
+    double bodyFontSize = screenWidth < 600 ? 15 : (screenWidth < 1200 ? 18 : 20);
+
+    // Determinando el tamaño de los iconos basado en el ancho de la pantalla
+    double iconSize = screenWidth > 480 ? 34.0 : 20.0;
+
+    // ignore: no_leading_underscores_for_local_identifiers
+    DataColumn _buildColumn(String label) {
+      return DataColumn(
+        label: Text(
+          label,
+          style: GoogleFonts.inter(fontSize: titleFontSize,fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+      );
+    }
+
+    // ignore: no_leading_underscores_for_local_identifiers
+    DataCell _buildCell(String text) {
+      return DataCell(
+        Text(
+          text,
+          style: GoogleFonts.inter(fontSize: bodyFontSize, color: Colors.black),
+        ),
+      );
+    }
+
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
+      drawer: const ComplexDrawer(),
+      body: FutureBuilder<List<User>>(
+        future: _controller.fetchUsers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final users = snapshot.data!;
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: [
+                  _buildColumn('ID'),
+                  _buildColumn('Nombres'),
+                  _buildColumn('Apellidos'),
+                  _buildColumn('Email'),
+                  _buildColumn('Cedula'),
+                  _buildColumn('Cargo'),
+                  _buildColumn('Fecha de Creación'),
+                  _buildColumn('Telefono'),
+                  _buildColumn('Usuario'),
+                  _buildColumn('Opciones'),
+                ],
+                rows: users.map((user) {
+                  return DataRow(cells:[
+                    _buildCell(user.id.toString()),
+                    _buildCell(user.name),
+                    _buildCell(user.surname),
+                    _buildCell(user.email),
+                    _buildCell(user.cedula),
+                    _buildCell(user.cargo),
+                    _buildCell(user.fechacrea != null 
+                      ? _dateFormat.format(user.fechacrea!) 
+                      : 'N/A'),
+                    _buildCell(user.telefono),
+                    _buildCell(user.user),
+                    DataCell(Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/edituser',
+                              arguments: user,
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            _controller.deleteUser(user.uid);
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    )),
+                  ]);
+                }).toList(),
+              ),
+            );
+          }
+        },
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RegistrationUsersScreen()),
+              );
+            },
+            // ignore: sort_child_properties_last
+            child: Icon(Icons.add, size: iconSize,color:  Colors.black),
+            tooltip: 'Register New User',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+          ),
+          const SizedBox(width: 20),
+
+          FloatingActionButton(
+            onPressed: () {
+              // Implement generate report functionality
+            },
+            // ignore: sort_child_properties_last
+            child: const Icon(Icons.picture_as_pdf),
+            tooltip: 'Generate Report',
+          ),
+        ],
+      ),
+      bottomNavigationBar: Footer(screenWidth: screenWidth),
+    );
+  }
+}

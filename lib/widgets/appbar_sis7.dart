@@ -6,12 +6,13 @@ import 'package:url_launcher/url_launcher.dart';
 class AppBarSis7 extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onDrawerPressed;
+  @override
   final Key? key;
 
   //GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 
-  const AppBarSis7({this.key, this.title = "Título por Defecto", this.onDrawerPressed}) : super(key: key);
+  const AppBarSis7({this.key, this.title = "Menu", this.onDrawerPressed}) : super(key: key);
      
   @override
   final Size preferredSize = const Size.fromHeight(55.0);  // Asegura un tamaño preferido constante

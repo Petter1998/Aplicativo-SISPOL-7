@@ -209,7 +209,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           //mainAxisAlignment: MainAxisAlignment.center, 
         ),
-      //),
       bottomNavigationBar: Footer(screenWidth: screenWidth),
     );
   } 

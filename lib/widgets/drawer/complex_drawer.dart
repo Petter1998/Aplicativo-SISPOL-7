@@ -7,6 +7,7 @@ class ComplexDrawer extends StatefulWidget {
   
 
   @override
+  // ignore: library_private_types_in_public_api
   _ComplexDrawerState createState() => _ComplexDrawerState();
 
 }
@@ -27,6 +28,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
       width: 270,
       height: MediaQuery.of(context).size.height,
       
+      // ignore: sort_child_properties_last
       child: row(),
       color: Colors.transparent,
     );
@@ -90,8 +92,10 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                     return ListTile(
                       title: Text(subMenu, style: GoogleFonts.inter(color: Colors.white)),
                       onTap: () {
-                        if (cdm.route.isNotEmpty) {
-                          Navigator.pushNamed(context, cdm.route);
+                        if (subMenu == "Usuarios") { //cdm.route.isNotEmpty
+                          Navigator.pushNamed(context, '/listuser');
+                        } else if (subMenu == "Otra Opción") {
+                          Navigator.pushNamed(context, '/another-view');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -125,6 +129,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                   if(index==0) return Container(height:95);
                 bool selected = selectedIndex == index;
                 bool isValidSubMenu = selected && cmd.submenus.isNotEmpty;
+                // ignore: prefer_spread_collections
                 return subMenuWidget([cmd.title]..addAll(cmd.submenus), isValidSubMenu, cmd.route);
               }
             ),
@@ -151,7 +156,19 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
         itemCount: isValidSubMenu ? submenus.length : 0,
         itemBuilder: (context, index) {
           String subMenu = submenus[index];
-          return sMenuButton(subMenu, index == 0);
+          //return sMenuButton(subMenu, index == 0);
+          return ListTile(
+            title: Text(
+              subMenu,
+              style: const TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              if (subMenu == "Usuarios") {
+                Navigator.pushNamed(context, '/listuser');  // Redirige a la vista de usuarios
+              }
+              // Agrega más condiciones aquí para otros submenús y sus rutas
+            },
+          );
         }
       ),
     );
@@ -169,17 +186,26 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
             child: ListView.builder(
                 itemCount: cdms.length,
                 itemBuilder: (contex, index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    child: Container(
-                      height: 45,
-                      alignment: Alignment.center,
-                      child: Icon(cdms[index].icon, size: 27, color: Colors.white),
-                    ),
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+
+                          if (cdms[index].submenus.isEmpty && cdms[index].route.isNotEmpty) {
+                            Navigator.pushNamed(context, cdms[index].route);  // Redirige a la ruta si no hay submenú
+                          }
+                        },
+                        child: Container(
+                          height: 45,
+                          alignment: Alignment.center,
+                          child: Icon(cdms[index].icon, size: 35, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(height: 15),  // Aumenta la distancia entre íconos
+                    ],
                   );
                 }),
           ),
@@ -192,13 +218,13 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
 //
   Widget controlButton() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 30),
+      padding: const EdgeInsets.only(top: 20, bottom: 40),
       child: InkWell(
         onTap: expandOrShrinkDrawer,
         child: Container(
           height: 45,
           alignment: Alignment.center,
-          child: const Icon(Icons.house_outlined, size: 55, color: Colors.white),
+          child: const Icon(Icons.house_outlined, size: 65, color: Colors.white),
         ),
       ),
     );
@@ -293,7 +319,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/new-request'),
 
-    CDM(Icons.settings_power_sharp, "Setting", [], route: '/login'), // Este es el ícono de cerrar sesión
+    CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
   ];
 
   void expandOrShrinkDrawer() {

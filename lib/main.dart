@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sispol_7/firebase_options.dart';
+import 'package:sispol_7/models/administration/users/users_model.dart' as MyUserModel;
+import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
+import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
+import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
+import 'package:sispol_7/views/administration/usuarios/user_view.dart';
 import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/login_screen.dart';
 import 'package:sispol_7/views/recuperation/changue_password_screen.dart';
@@ -31,17 +37,33 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'SISPOL - 7',
+      
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  DashboardScreen(),  //const HomePage
+        '/home': (context) =>  const UserView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
         '/successPage': (context) => const SuccessPage(),
         '/registration': (context) => const RegistrationScreen(),
         '/registwin': (context) => const RegistrationWin(),
-        //'/dashboard': (context) => const DashboardScreen(),
+        '/listuser': (context) => const UserView(),
+        '/registusers': (context) => const RegistrationUsersScreen(),
+        '/registwins': (context) => RegistrationWins(),
+        '/edituser': (context) =>  EditUserScreen(user: ModalRoute.of(context)!.settings.arguments as MyUserModel.User),
 
+        //'/dashboard': (context) =>  DashboardScreen(),
+
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/edituser') {
+          final user = settings.arguments as MyUserModel.User;
+          return MaterialPageRoute(
+            builder: (context) => EditUserScreen(user: user),
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
       },
     );
   }

@@ -9,7 +9,7 @@ class UserController {
     try {
       await userModel.registerUser(userData);
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/registwin'); // Asegúrate de tener esta ruta definida para la pantalla de éxito.
+      Navigator.pushNamed(context, '/registwin'); 
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
