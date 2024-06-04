@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/users/users_controller.dart';
 import 'package:sispol_7/models/administration/users/users_model.dart';
+import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
@@ -102,11 +103,9 @@ class _UserViewState extends State<UserView> {
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/edituser',
-                              arguments: user,
-                            );
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EditUserScreen(user: user),
+                            ));
                           },
                         ),
                         IconButton(

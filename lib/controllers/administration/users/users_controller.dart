@@ -35,28 +35,14 @@ class UserController {
   }
 
   Future<void> updateUser(User user) async {
+    await usersCollection.doc(user.uid).update(user.toMap());
     try {
-      await usersCollection.doc(user.uid).update(user.toMap());
-      // ignore: avoid_print
-      print("Usuario actualizado correctamente en Firestore: ${user.uid}");
-    } catch (e) {
-      // ignore: avoid_print
-      print("Error al actualizar el usuario en Firestore: $e");
-    }
-  }
-
-  Future<void> updateUserEmail(String uid, String newEmail) async {
-    try {
-      auth.User? currentUser = _auth.currentUser;
-      if (currentUser != null && currentUser.uid == uid) {
-        // ignore: deprecated_member_use
-        await currentUser.updateEmail(newEmail);
-        // ignore: avoid_print
-        print("Correo electrónico actualizado correctamente en FirebaseAuth");
+      auth.User? firebaseUser = await _auth.currentUser;
+      if (firebaseUser != null && firebaseUser.uid == user.uid) {
+        await firebaseUser.updateEmail(user.email);
       }
     } catch (e) {
-      // ignore: avoid_print
-      print("Error al actualizar el correo de FirebaseAuth: $e");
+      print("Error al actualizar el email en FirebaseAuth: $e");
     }
   }
 

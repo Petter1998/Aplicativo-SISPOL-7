@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sispol_7/firebase_options.dart';
-import 'package:sispol_7/models/administration/users/users_model.dart' as MyUserModel;
+import 'package:sispol_7/models/administration/users/users_model.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
@@ -50,20 +50,10 @@ class MyApp extends StatelessWidget {
         '/listuser': (context) => const UserView(),
         '/registusers': (context) => const RegistrationUsersScreen(),
         '/registwins': (context) => RegistrationWins(),
-        '/edituser': (context) =>  EditUserScreen(user: ModalRoute.of(context)!.settings.arguments as MyUserModel.User),
+        //'/edituser': (context) =>  EditUserScreen(user: User),
 
         //'/dashboard': (context) =>  DashboardScreen(),
 
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/edituser') {
-          final user = settings.arguments as MyUserModel.User;
-          return MaterialPageRoute(
-            builder: (context) => EditUserScreen(user: user),
-          );
-        }
-        assert(false, 'Need to implement ${settings.name}');
-        return null;
       },
     );
   }

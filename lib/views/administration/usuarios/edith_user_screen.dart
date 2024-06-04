@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/users/users_controller.dart';
-import 'package:sispol_7/models/administration/users/users_model.dart' as MyUserModel;
+import 'package:sispol_7/models/administration/users/users_model.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 
-
 class EditUserScreen extends StatefulWidget {
-  final MyUserModel.User user;
-  // ignore: use_super_parameters
-  const EditUserScreen({Key? key, required this.user}) : super(key: key);
-  
+  final User user;
+
+  const EditUserScreen({super.key, required this.user});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,62 +19,36 @@ class EditUserScreen extends StatefulWidget {
 class _EditUserScreenState extends State<EditUserScreen> {
   late TextEditingController _nameController;
   late TextEditingController _surnameController;
-  late TextEditingController _idController;
-  late TextEditingController _phoneController;
-  late TextEditingController _usernameController;
-  late TextEditingController _positionController;
   late TextEditingController _emailController;
+  late TextEditingController _cedulaController;
+  late TextEditingController _cargoController;
+  late TextEditingController _telefonoController;
+  late TextEditingController _userController;
 
-   @override
+  @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.user.name);
     _surnameController = TextEditingController(text: widget.user.surname);
-    _idController = TextEditingController(text: widget.user.cedula);
-    _phoneController = TextEditingController(text: widget.user.telefono);
-    _usernameController = TextEditingController(text: widget.user.user);
-    _positionController = TextEditingController(text: widget.user.cargo);
     _emailController = TextEditingController(text: widget.user.email);
+    _cedulaController = TextEditingController(text: widget.user.cedula);
+    _cargoController = TextEditingController(text: widget.user.cargo);
+    _telefonoController = TextEditingController(text: widget.user.telefono);
+    _userController = TextEditingController(text: widget.user.user);
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _surnameController.dispose();
-    _idController.dispose();
-    _phoneController.dispose();
-    _usernameController.dispose();
-    _positionController.dispose();
     _emailController.dispose();
+    _cedulaController.dispose();
+    _cargoController.dispose();
+    _telefonoController.dispose();
+    _userController.dispose();
     super.dispose();
   }
-
-  void _saveChanges() async {
-    UserController userController = UserController();
-    MyUserModel.User updatedUser = MyUserModel.User(
-      uid: widget.user.uid,
-      id: widget.user.id,
-      name: _nameController.text,
-      surname: _surnameController.text,
-      cedula: _idController.text,
-      telefono: _phoneController.text,
-      user: _usernameController.text,
-      cargo: _positionController.text,
-      fechacrea: widget.user.fechacrea,
-      email: _emailController.text,
-    );
-
-    await userController.updateUser(updatedUser);
-
-    // Update Firebase Authentication Email
-    if (_emailController.text != widget.user.email) {
-      await userController.updateUserEmail(widget.user.uid, _emailController.text);
-    }
-
-    // Redirige a la pantalla UserView después de guardar los cambios
-    // ignore: use_build_context_synchronously
-    //Navigator.pushReplacementNamed(context, '/listuser');
-  }
+  
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -149,22 +121,22 @@ class _EditUserScreenState extends State<EditUserScreen> {
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _idController, decoration: const InputDecoration(hintText: 'Identificación',
+                    TextField(controller: _cedulaController, decoration: const InputDecoration(hintText: 'Identificación',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _phoneController, decoration: const InputDecoration(hintText: 'Teléfono celular',
+                    TextField(controller: _telefonoController, decoration: const InputDecoration(hintText: 'Teléfono celular',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _usernameController, decoration: const InputDecoration(hintText: 'Usuario',
+                    TextField(controller: _userController, decoration: const InputDecoration(hintText: 'Usuario',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _positionController, decoration: const InputDecoration(hintText: 'Cargo',
+                    TextField(controller: _cargoController, decoration: const InputDecoration(hintText: 'Cargo',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
@@ -189,9 +161,22 @@ class _EditUserScreenState extends State<EditUserScreen> {
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
                     ),
-                    onPressed: () {
-                      _saveChanges;
-                      Navigator.pushReplacementNamed(context, '/listuser');
+                    onPressed: () async {
+                      final updatedUser = User(
+                        uid: widget.user.uid,
+                        id: widget.user.id,
+                        name: _nameController.text,
+                        surname: _surnameController.text,
+                        email: _emailController.text,
+                        cedula: _cedulaController.text,
+                        cargo: _cargoController.text,
+                        fechacrea: DateTime.now(),
+                        telefono: _telefonoController.text,
+                        user: _userController.text,
+                      );
+                      await UserController().updateUser(updatedUser);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
                     },
                     child: Text('Guardar cambios', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold,color: Colors.black)),
                   ),
