@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/users/users_controller.dart';
 import 'package:sispol_7/models/administration/users/users_model.dart';
+import 'package:sispol_7/views/administration/search_result_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
@@ -23,6 +24,59 @@ class _UserViewState extends State<UserView> {
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // ignore: unused_field
+  List<User> _users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
+  }
+
+  void _fetchUsers() async {
+    List<User> users = await _controller.fetchUsers();
+    setState(() {
+      _users = users;
+    });
+  }
+
+  void _showSearchDialog() {
+    String query = '';
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Buscar Usuarios',
+          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          content: TextField(
+            onChanged: (value) {
+              query = value;
+            },
+            decoration: const InputDecoration(hintText: "Ingrese el nombre"),
+            style: GoogleFonts.inter( color: Colors.black),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Buscar',
+              style: GoogleFonts.inter(color: Colors.black),
+              ),
+              onPressed: () async {
+                List<User> results = await _controller.searchUsers(query);
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchResultsView(searchResults: results),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   
   @override
@@ -142,12 +196,22 @@ class _UserViewState extends State<UserView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
+            onPressed: _showSearchDialog,
+            // ignore: sort_child_properties_last
+            child: Icon(Icons.search, size: iconSize,color:  Colors.black),
+            tooltip: 'Buscar',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+          ),
+          const SizedBox(width: 20),
+
+          FloatingActionButton(
             onPressed: () {
               // Implement generate report functionality
             },
             // ignore: sort_child_properties_last
-            child: const Icon(Icons.picture_as_pdf),
+            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
             tooltip: 'Generate Report',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
         ],
       ),

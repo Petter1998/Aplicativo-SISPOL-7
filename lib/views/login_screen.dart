@@ -33,8 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     // Determinar el tamaño de la fuente basado en el ancho de la pantalla
-    double titleFontSize = getFontSize(screenWidth, screenHeight, 16, 24, 34);
-    double bodyFontSize = getFontSize(screenWidth, screenHeight, 12, 16, 22);
+    double titleFontSize = getFontSize(screenWidth, screenHeight, 16, 24, 28);
+    double bodyFontSize = getFontSize(screenWidth, screenHeight, 12, 16, 20);
     // Determinar el espacio vertical basado en el ancho de la pantalla
     double verticalSpacing = getSpacing(screenWidth, screenHeight, 8, 25, 30);
 
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       horizontalPadding = screenWidth * 0.20; // 20% del ancho si es mayor o igual a 800 px
     }
-    double imageSize = screenWidth < 480 ? 100.0 :(screenWidth > 1000 ? 200 : 150);
+    double imageSize = screenWidth < 480 ? 100.0 :(screenWidth > 1000 ? 160 : 150);
 
     // Determinar el espacio vertical para botones basado en el ancho de la pantalla
     double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);

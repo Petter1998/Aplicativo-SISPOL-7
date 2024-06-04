@@ -37,11 +37,19 @@ class UserController {
   Future<void> updateUser(User user) async {
     await usersCollection.doc(user.uid).update(user.toMap());
     try {
-      auth.User? firebaseUser = await _auth.currentUser;
-      if (firebaseUser != null && firebaseUser.uid == user.uid) {
+      final firebaseUser = _auth.currentUser;
+      if (firebaseUser != null && firebaseUser.email != user.email) {
+        // Actualizar el correo electrónico del usuario actual
+        // ignore: deprecated_member_use
         await firebaseUser.updateEmail(user.email);
-      }
+        // Enviar un correo electrónico de verificación si es necesario
+        await firebaseUser.sendEmailVerification();
+
+        // ignore: avoid_print
+        print("Correo electrónico actualizado correctamente");
+        }
     } catch (e) {
+      // ignore: avoid_print
       print("Error al actualizar el email en FirebaseAuth: $e");
     }
   }
@@ -60,5 +68,13 @@ class UserController {
       // ignore: avoid_print
       print("Error al eliminar usuario de FirebaseAuth: $e");
     }
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    QuerySnapshot snapshot = await usersCollection.where('nombres', isEqualTo: query).get();
+    List<User> users = snapshot.docs.map((doc) => User.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+    // ignore: avoid_print
+    print("Resultados de la búsqueda: ${users.length}"); // Añado esta línea para verificar
+    return users;
   }
 }
