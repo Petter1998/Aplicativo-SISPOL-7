@@ -59,15 +59,11 @@ class UserController {
     await usersCollection.doc(uid).delete();
 
     // Eliminar de FirebaseAuth
-    try {
-      auth.User? user = _auth.currentUser;
-      if (user != null && user.uid == uid) {
-        await user.delete();
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print("Error al eliminar usuario de FirebaseAuth: $e");
+    final firebaseUser = _auth.currentUser;
+    if (firebaseUser != null) {
+      await firebaseUser.delete();
     }
+    
   }
 
   Future<List<User>> searchUsers(String query) async {

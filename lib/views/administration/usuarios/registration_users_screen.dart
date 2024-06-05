@@ -26,6 +26,9 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final UsersController _usersController = UsersController();
 
+  String? _selectedRole;
+  final List<String> roles = ['Administrador', 'Tecnico 1', 'Tecnico 2', 'Personal Policial'];
+
   bool _obscurePassword = true;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -114,11 +117,28 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _positionController, decoration: const InputDecoration(hintText: 'Cargo',
-                        fillColor: Colors.black, border: OutlineInputBorder(),),
-                        style: GoogleFonts.inter(fontSize: bodyFontSize),),
+                    DropdownButtonFormField<String>(
+                      value: _selectedRole,
+                      hint: Text('Rol', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      decoration: const InputDecoration(
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRole = newValue;
+                          _positionController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                        });
+                      },
+                      items: roles.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                        );
+                      }).toList(),
+                    ),
                     SizedBox(height: verticalSpacing),
-
+                    
                     TextField(controller: _emailController, decoration: const InputDecoration(hintText: 'Correo electrónico',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),

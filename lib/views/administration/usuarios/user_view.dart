@@ -133,7 +133,7 @@ class _UserViewState extends State<UserView> {
                   _buildColumn('Apellidos'),
                   _buildColumn('Email'),
                   _buildColumn('Cedula'),
-                  _buildColumn('Cargo'),
+                  _buildColumn('Rol'),
                   _buildColumn('Fecha de Creación'),
                   _buildColumn('Telefono'),
                   _buildColumn('Usuario'),
@@ -166,7 +166,9 @@ class _UserViewState extends State<UserView> {
                           icon: const Icon(Icons.delete),
                           onPressed: () {
                             _controller.deleteUser(user.uid);
-                            setState(() {});
+                            setState(() {
+                              _fetchUsers();
+                            });
                           },
                         ),
                       ],
