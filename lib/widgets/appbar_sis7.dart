@@ -7,6 +7,7 @@ class AppBarSis7 extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onDrawerPressed;
   @override
+  // ignore: overridden_fields
   final Key? key;
 
   //GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

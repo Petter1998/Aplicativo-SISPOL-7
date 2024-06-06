@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/user_controller.dart';
+import 'package:sispol_7/models/user_model.dart';
 import 'package:sispol_7/widgets/drawer/CDM.dart';
 
 class ComplexDrawer extends StatefulWidget {
@@ -15,6 +17,22 @@ class ComplexDrawer extends StatefulWidget {
 class _ComplexDrawerState extends State<ComplexDrawer> {
   int selectedIndex = -0; 
   bool isExpanded = false;
+  Usuario? _usuario;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  void _loadUser() async {
+    LoginController loginController = LoginController();
+    Usuario? usuario = await loginController.getCurrentUser();
+    setState(() {
+      _usuario = usuario;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +112,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                       onTap: () {
                         if (subMenu == "Usuarios") { //cdm.route.isNotEmpty
                           Navigator.pushNamed(context, '/listuser');
-                        } else if (subMenu == "Otra Opción") {
-                          Navigator.pushNamed(context, '/another-view');  // Ruta para otra vista
+                        } else if (subMenu == "Dependencias") {
+                          Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -116,7 +134,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
   Widget invisibleSubMenus() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
-      width: isExpanded ? 0 : 160,
+      width: isExpanded ? 0 : 165,
       color: Colors.transparent,
       child: Column(
         children: [
@@ -165,8 +183,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
             onTap: () {
               if (subMenu == "Usuarios") {
                 Navigator.pushNamed(context, '/listuser');  // Redirige a la vista de usuarios
+              } else if (subMenu == "Dependencias") {
+                Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
               }
-              // Agrega más condiciones aquí para otros submenús y sus rutas
             },
           );
         }
@@ -291,11 +310,11 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
       child: ListTile(
         leading: accountButton(usePadding: false),
         title: Text(
-          "Pedro Arevalo",
+           _usuario?.usuario ?? 'Cargando...',
           style: GoogleFonts.inter(color: Colors.white),
         ),
         subtitle: Text(
-           "TI",
+           _usuario?.rol ?? 'Cargando...',
           style: GoogleFonts.inter(color: Colors.white70),
         ),
       ),
@@ -318,7 +337,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.add, "Nueva Orden", [], route: '/new-order'),
     CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/new-request'),
-
+    CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
     CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
   ];
 

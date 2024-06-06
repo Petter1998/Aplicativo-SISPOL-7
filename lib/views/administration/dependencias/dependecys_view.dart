@@ -1,43 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/controllers/administration/users/users_controller.dart';
-import 'package:sispol_7/models/administration/users/users_model.dart';
-import 'package:sispol_7/views/administration/usuarios/search_result_screen.dart';
-import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
-import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
+import 'package:pdf/pdf.dart';
+import 'package:sispol_7/controllers/administration/dependencias/dependency_controller.dart';
+import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
+import 'package:sispol_7/views/administration/dependencias/edit_dependecy_screen.dart';
+import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
+import 'package:sispol_7/views/administration/dependencias/search_subcircuit_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
-class UserView extends StatefulWidget {
-  const UserView({super.key});
+
+class DependencysView extends StatefulWidget {
+  const DependencysView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _UserViewState createState() => _UserViewState();
+  _DependencysViewState createState() => _DependencysViewState();
 }
 
 
-class _UserViewState extends State<UserView> {
-  final UserController _controller = UserController();
+class _DependencysViewState extends State<DependencysView> {
+  final DependecyController _controller = DependecyController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // ignore: unused_field
-  List<User> _users = [];
+  List<Dependecy> _dependecys = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchUsers();
+    _fetchDependecys();
   }
 
-  void _fetchUsers() async {
-    List<User> users = await _controller.fetchUsers();
+  void _fetchDependecys() async {
+    List<Dependecy> dependecys = await _controller.fetchDependecys();
     setState(() {
-      _users = users;
+      _dependecys = dependecys;
     });
   }
 
@@ -47,14 +51,14 @@ class _UserViewState extends State<UserView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Buscar Usuarios',
+          title: Text('Buscar Subcircuito',
           style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
           ),
           content: TextField(
             onChanged: (value) {
               query = value;
             },
-            decoration: const InputDecoration(hintText: "Ingrese los nombres"),
+            decoration: const InputDecoration(hintText: "Ingrese el nombre del Subcircuito"),
             style: GoogleFonts.inter( color: Colors.black),
           ),
           actions: <Widget>[
@@ -63,19 +67,19 @@ class _UserViewState extends State<UserView> {
               style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<User> results = await _controller.searchUsers(query);
-                // ignore: use_build_context_synchronously
-                if (results.isEmpty) {
-                  _showNoResultsAlert();
-                } else {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SearchResultsView(searchResults: results),
-                    ),
-                  );
-                }
-              },
-            ),
+                List<Dependecy> results = await _controller.searchDependencies(query);
+                  if (results.isEmpty) {
+                    _showNoResultsAlert();
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchSubcircuitView(searchResults: results),
+                      ),
+                    );
+                  }
+                },
+              ),
           ],
         );
       },
@@ -89,7 +93,7 @@ class _UserViewState extends State<UserView> {
         return AlertDialog(
           title: Text('No se encontraron resultados',
           style: GoogleFonts.inter(color: Colors.black),),
-          content: Text('No se encontró ningún usuario con ese nombre.',
+          content: Text('No se encontró ninguna dependencia con ese nombre.',
           style: GoogleFonts.inter(color: Colors.black),),
           actions: <Widget>[
             TextButton(
@@ -105,6 +109,43 @@ class _UserViewState extends State<UserView> {
     );
   }
 
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          // ignore: deprecated_member_use
+          return pw.Table.fromTextArray(
+            headers: <String>[
+              'ID', 'Fecha de Creación', 'Provincia', 'No. Distritos', 'Parroquia', 
+              'Cod. Distrito', 'Nombre Distrito', 'No. Circuitos', 'Cod. Circuitos', 'Nombre Circuito', 
+              'No. Subcircuitos', 'Cod. Subcircuito', 'Nombre Subcircuito'],
+              data: _dependecys.map((dependecy) => [
+                dependecy.id.toString(),
+                dependecy.fechacrea != null ? _dateFormat.format(dependecy.fechacrea!) : 'N/A',
+                dependecy.provincia,
+                dependecy.nDistr.toString(),
+                dependecy.parroquia,
+                dependecy.codDistr,
+                dependecy.nameDistr,
+                dependecy.nCircuit.toString(),
+                dependecy.codCircuit,
+                dependecy.nameCircuit,
+                dependecy.nsCircuit.toString(),
+                dependecy.codsCircuit,
+                dependecy.namesCircuit,
+              ]).toList(),
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
   
   @override
   Widget build(BuildContext context) {
@@ -112,7 +153,7 @@ class _UserViewState extends State<UserView> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Determinar el tamaño de la fuente basado en el ancho de la pantalla
-    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 24);
+    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 22);
     double bodyFontSize = screenWidth < 600 ? 15 : (screenWidth < 1200 ? 18 : 20);
 
     // Determinando el tamaño de los iconos basado en el ancho de la pantalla
@@ -142,59 +183,65 @@ class _UserViewState extends State<UserView> {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      body: FutureBuilder<List<User>>(
-        future: _controller.fetchUsers(),
+      body: FutureBuilder<List<Dependecy>>(
+        future: _controller.fetchDependecys(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final users = snapshot.data!;
+            final dependecys = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
                   _buildColumn('ID'),
-                  _buildColumn('Nombres'),
-                  _buildColumn('Apellidos'),
-                  _buildColumn('Email'),
-                  _buildColumn('Cedula'),
-                  _buildColumn('Rol'),
                   _buildColumn('Fecha de Creación'),
-                  _buildColumn('Telefono'),
-                  _buildColumn('Usuario'),
+                  _buildColumn('Provincia'),
+                  _buildColumn('No. Distritos'),
+                  _buildColumn('Parroquia'),
+                  _buildColumn('Cod. Distrito'),
+                  _buildColumn('Nombre Distrito'),
+                  _buildColumn('No. Circuitos'),
+                  _buildColumn('Cod. Circuitos'),
+                  _buildColumn('Nombre Circuito'),
+                  _buildColumn('No. Subcircuitos'),
+                  _buildColumn('Cod. Subcircuito'),
+                  _buildColumn('Nombre Subcircuito'),
                   _buildColumn('Opciones'),
                 ],
-                rows: users.map((user) {
+                rows: dependecys.map((dependecy) {
                   return DataRow(cells:[
-                    _buildCell(user.id.toString()),
-                    _buildCell(user.name),
-                    _buildCell(user.surname),
-                    _buildCell(user.email),
-                    _buildCell(user.cedula),
-                    _buildCell(user.cargo),
-                    _buildCell(user.fechacrea != null 
-                      ? _dateFormat.format(user.fechacrea!) 
-                      : 'N/A'),
-                    _buildCell(user.telefono),
-                    _buildCell(user.user),
+                    _buildCell(dependecy.id.toString()),
+                    _buildCell(dependecy.fechacrea != null ? _dateFormat.format(dependecy.fechacrea!) : 'N/A'),
+                    _buildCell(dependecy.provincia),
+                    _buildCell(dependecy.nDistr.toString()),
+                    _buildCell(dependecy.parroquia),
+                    _buildCell(dependecy.codDistr),
+                    _buildCell(dependecy.nameDistr),
+                    _buildCell(dependecy.nCircuit.toString()),
+                    _buildCell(dependecy.codCircuit),
+                    _buildCell(dependecy.nameCircuit),
+                    _buildCell(dependecy.nsCircuit.toString()),
+                    _buildCell(dependecy.codsCircuit),
+                    _buildCell(dependecy.namesCircuit),
                     DataCell(Row(
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditUserScreen(user: user),
+                              builder: (context) => EditDependecyScreen(dependecy: dependecy,),
                             ));
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _controller.deleteUser(user.uid);
+                            _controller.deleteDependecy(dependecy.id);
                             setState(() {
-                              _fetchUsers();
+                              _fetchDependecys();
                             });
                           },
                         ),
@@ -214,12 +261,12 @@ class _UserViewState extends State<UserView> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RegistrationUsersScreen()),
+               MaterialPageRoute(builder: (context) => const RegistrationDependecyScreen()),
               );
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Register New User',
+            tooltip: 'Registrar una nueva Dependencia',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
@@ -234,12 +281,10 @@ class _UserViewState extends State<UserView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed: () {
-              // Implement generate report functionality
-            },
+            onPressed: _generatePDF,
             // ignore: sort_child_properties_last
             child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
-            tooltip: 'Generate Report',
+            tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
         ],
