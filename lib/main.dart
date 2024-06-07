@@ -6,6 +6,7 @@ import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart'
 import 'package:sispol_7/views/administration/dependencias/edit_dependecy_screen.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
+import 'package:sispol_7/views/administration/personal/personal_view.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
         '/registdependecys': (context) => const RegistrationDependecyScreen(),
         '/registdepwins': (context) => RegistrationDepWins(),
         //'/editdep': (context) =>  const EditDependecyScreen(dependecy: dependecy,),
+        '/listperson': (context) => const PersonalsView(),
+        //'/registperson': (context) => const RegistrationDependecyScreen(),
+        //'/registpersonwins': (context) => RegistrationDepWins(),
 
 
         //'/dashboard': (context) =>  DashboardScreen(),

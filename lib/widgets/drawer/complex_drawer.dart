@@ -114,6 +114,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listuser');
                         } else if (subMenu == "Dependencias") {
                           Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
+                        } else if (subMenu == "Personal") {
+                          Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -185,6 +187,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listuser');  // Redirige a la vista de usuarios
               } else if (subMenu == "Dependencias") {
                 Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
+              } else if (subMenu == "Personal") {
+                Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
               }
             },
           );

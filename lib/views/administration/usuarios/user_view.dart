@@ -9,6 +9,10 @@ import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+
 
 class UserView extends StatefulWidget {
   const UserView({super.key});
@@ -41,6 +45,10 @@ class _UserViewState extends State<UserView> {
     });
   }
 
+  void _refreshData() {
+    _fetchUsers();
+  }
+
   void _showSearchDialog() {
     String query = '';
     showDialog(
@@ -68,6 +76,7 @@ class _UserViewState extends State<UserView> {
                 if (results.isEmpty) {
                   _showNoResultsAlert();
                 } else {
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SearchResultsView(searchResults: results),
@@ -105,6 +114,38 @@ class _UserViewState extends State<UserView> {
     );
   }
 
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          // ignore: deprecated_member_use
+          return pw.Table.fromTextArray(
+            headers: <String>[
+              'ID', 'Nombre', 'Apellido', 'Correo', 'Cédula', 'Cargo', 'Fecha de Creación',
+              'Teléfono', 'Usuario',],
+              data: _users.map((user) => [
+                user.id.toString(),
+                user.name,
+                user.surname,
+                user.email,
+                user.cedula,
+                user.cargo,
+                user.fechacrea != null ? _dateFormat.format(user.fechacrea!) : 'N/A',
+                user.telefono,
+                user.user,
+              ]).toList(),
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
   
   @override
   Widget build(BuildContext context) {
@@ -112,11 +153,11 @@ class _UserViewState extends State<UserView> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Determinar el tamaño de la fuente basado en el ancho de la pantalla
-    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 24);
+    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 22);
     double bodyFontSize = screenWidth < 600 ? 15 : (screenWidth < 1200 ? 18 : 20);
 
     // Determinando el tamaño de los iconos basado en el ancho de la pantalla
-    double iconSize = screenWidth > 480 ? 34.0 : 20.0;
+    double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
     // ignore: no_leading_underscores_for_local_identifiers
     DataColumn _buildColumn(String label) {
@@ -219,7 +260,7 @@ class _UserViewState extends State<UserView> {
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Register New User',
+            tooltip: 'Registrar un Nuevo Usuario',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
@@ -235,12 +276,20 @@ class _UserViewState extends State<UserView> {
 
           FloatingActionButton(
             onPressed: () {
-              // Implement generate report functionality
+              // Acción para refrescar o actualizar
+              _refreshData();
             },
-            // ignore: sort_child_properties_last
-            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
-            tooltip: 'Generate Report',
+            tooltip: 'Refrescar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+            child: Icon(Icons.refresh, size: iconSize, color: Colors.black),
+          ),
+          const SizedBox(width: 20),
+
+          FloatingActionButton(
+            onPressed: _generatePDF,
+            tooltip: 'Generar PDF',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
           ),
         ],
       ),

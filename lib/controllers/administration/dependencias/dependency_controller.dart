@@ -2,6 +2,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
 
+class DependecysModel {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<int> _getNextDepId() async {
+    final DocumentReference counterRef = _firestore.collection('counters').doc('dependenciaId');
+    return _firestore.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(counterRef);
+      if (!snapshot.exists) {
+        transaction.set(counterRef, {'currentId': 1});
+        return 1;
+      }
+
+      int newId = snapshot['currentId'] + 1;
+      transaction.update(counterRef, {'currentId': newId});
+      return newId;
+    });
+  }
+
+  Future<void> registerDependecys(Map<String, dynamic> depData) async {
+    // Verifica que todos los campos requeridos no estén vacíos
+    for (String key in depData.keys) {
+      if (depData[key] == null || (depData[key] is String && depData[key].isEmpty)) {
+        throw Exception('El campo $key no puede estar vacío');
+      }
+    }
+
+    // Obtener el próximo ID de usuario
+    int depId = await _getNextDepId();
+
+    await _firestore.collection('dependencias').doc(depId.toString()).set({
+      'id': depId,
+      ...depData,
+      'fechaCreacion': FieldValue.serverTimestamp(),
+    });
+  }
+}
+
 class DependecysController {
   final DependecysModel dependecysModel = DependecysModel();
 

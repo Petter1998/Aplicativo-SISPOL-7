@@ -171,8 +171,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                             TextField(
                               controller: _codDistritoController,
                               decoration: const InputDecoration(
-                                labelText: 'Código Distrito',
-                                hintText: 'Código Distrito',
+                                labelText: 'Código del Distrito',
+                                hintText: 'Código del Distrito',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
                               ),
@@ -184,8 +184,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                              TextField(
                               controller: _nameDistritoController,
                               decoration: const InputDecoration(
-                                labelText: 'Nombre Distrito',
-                                hintText: 'Nombre Distrito',
+                                labelText: 'Nombre del Distrito',
+                                hintText: 'Nombre del Distrito',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
                               ),
@@ -216,8 +216,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                              TextField(
                                 controller: _codCircuitoController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Código Circuito',
-                                  hintText: 'Código Circuito',
+                                  labelText: 'Código del Circuito',
+                                  hintText: 'Código del Circuito',
                                   fillColor: Colors.black,
                                   border: OutlineInputBorder(),
                                 ),
@@ -229,8 +229,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                               TextField(
                                 controller: _nameCircuitoController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Nombre Circuito',
-                                  hintText: 'Nombre Circuito',
+                                  labelText: 'Nombre del Circuito',
+                                  hintText: 'Nombre del Circuito',
                                   fillColor: Colors.black,
                                   border: OutlineInputBorder(),
                                 ),
@@ -256,8 +256,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                               TextField(
                                 controller: _codSubcircuitoController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Código Subcircuito',
-                                  hintText: 'Código Subcircuito',
+                                  labelText: 'Código del Subcircuito',
+                                  hintText: 'Código del Subcircuito',
                                   fillColor: Colors.black,
                                   border: OutlineInputBorder(),
                                 ),
@@ -269,8 +269,8 @@ class _EditDependecyScreenState extends State<EditDependecyScreen> {
                               TextField(
                                 controller: _nameSubcircuitoController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Nombre Subcircuito',
-                                  hintText: 'Nombre Subcircuito',
+                                  labelText: 'Nombre del Subcircuito',
+                                  hintText: 'Nombre del Subcircuito',
                                   fillColor: Colors.black,
                                   border: OutlineInputBorder(),
                                 ),

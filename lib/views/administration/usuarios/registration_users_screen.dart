@@ -77,7 +77,6 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
                   width: 1, // Grosor del borde
                 ),
                 borderRadius: BorderRadius.circular(10.0), // Redondeo del borde
-                
               ), // Agrega padding dentro del contenedor
               child: Column(
                 children: [
@@ -92,27 +91,37 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
                   
                   SizedBox(height: verticalSpacing), // Espacio ajustado según el ancho de la pantalla
                     
-                    TextField(controller: _nameController, decoration: const InputDecoration(hintText: "Nombres",
+                    TextField(controller: _nameController, decoration: const InputDecoration(
+                        labelText: 'Nombres',
+                        hintText: 'Nombres',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _surnameController, decoration: const InputDecoration(hintText: 'Apellidos',
+                    TextField(controller: _surnameController, decoration: const InputDecoration(
+                        labelText: 'Apellidos',
+                        hintText: 'Apellidos',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _idController, decoration: const InputDecoration(hintText: 'Identificación',
+                    TextField(controller: _idController, decoration: const InputDecoration(
+                        labelText: 'Identificación',
+                        hintText: 'Identificación',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _phoneController, decoration: const InputDecoration(hintText: 'Teléfono celular',
+                    TextField(controller: _phoneController, decoration: const InputDecoration(
+                        labelText: 'Teléfono celular',
+                        hintText: 'Teléfono celular',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
-                    TextField(controller: _usernameController, decoration: const InputDecoration(hintText: 'Usuario',
+                    TextField(controller: _usernameController, decoration: const InputDecoration(
+                        labelText: 'Usuario',
+                        hintText: 'Usuario',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
@@ -121,6 +130,7 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
                       value: _selectedRole,
                       hint: Text('Rol', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                       decoration: const InputDecoration(
+                        labelText: 'Rol',
                         fillColor: Colors.black,
                         border: OutlineInputBorder(),
                       ),
@@ -139,13 +149,15 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
                     ),
                     SizedBox(height: verticalSpacing),
                     
-                    TextField(controller: _emailController, decoration: const InputDecoration(hintText: 'Correo electrónico',
+                    TextField(controller: _emailController, decoration: const InputDecoration(
+                        labelText: 'Correo electrónico',
+                        hintText: 'Correo electrónico',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
                     TextField(controller: _passwordController, obscureText: _obscurePassword, 
-                      decoration: InputDecoration(hintText: 'Contraseña',
+                      decoration: InputDecoration(labelText: 'Contraseña', hintText: 'Contraseña',
                         suffixIcon: IconButton(
                               icon: Icon(
                                 // Cambia el ícono basado en si el texto está oculto o no

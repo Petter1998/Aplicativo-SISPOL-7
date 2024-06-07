@@ -115,85 +115,46 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   
                   SizedBox(height: verticalSpacing), // Espacio ajustado según el ancho de la pantalla
                     
-                    Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Nombres',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _nameController, decoration: const InputDecoration(hintText: "Nombres", 
+                   TextField(controller: _nameController, decoration: const InputDecoration(
+                        labelText: 'Nombres',
+                        hintText: 'Nombres',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Apellidos',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _surnameController, decoration: const InputDecoration(hintText: 'Apellidos',
+                    TextField(controller: _surnameController, decoration: const InputDecoration(
+                        labelText: 'Apellidos',
+                        hintText: 'Apellidos',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Identificación',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _cedulaController, decoration: const InputDecoration(hintText: 'Identificación',
+                    TextField(controller: _cedulaController, decoration: const InputDecoration(
+                        labelText: 'Identificación',
+                        hintText: 'Identificación',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Teléfono celular',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _telefonoController, decoration: const InputDecoration(hintText: 'Teléfono celular',
+                    TextField(controller: _telefonoController, decoration: const InputDecoration(
+                        labelText: 'Teléfono celular',
+                        hintText: 'Teléfono celular',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Usuario',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _userController, decoration: const InputDecoration(hintText: 'Usuario',
+                    TextField(controller: _userController, decoration: const InputDecoration(
+                        labelText: 'Usuario',
+                        hintText: 'Usuario',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
-                  DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(
                       value: _selectedRole,
                       hint: Text('Rol', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                       decoration: const InputDecoration(
+                        labelText: 'Rol',
                         fillColor: Colors.black,
                         border: OutlineInputBorder(),
                       ),
@@ -211,21 +172,13 @@ class _EditUserScreenState extends State<EditUserScreen> {
                       }).toList(),
                     ),
                     SizedBox(height: verticalSpacing),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Correo electrónico',
-                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: verticalSpacing / 2),
-                      TextField(controller: _emailController, decoration: const InputDecoration(hintText: 'Correo electrónico',
+                    
+                    TextField(controller: _emailController, decoration: const InputDecoration(
+                        labelText: 'Correo electrónico',
+                        hintText: 'Correo electrónico',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpacing),
+                    SizedBox(height: verticalSpacing),
 
                     
                     SizedBox(height: verticalSpacing),

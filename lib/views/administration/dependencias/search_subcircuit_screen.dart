@@ -9,6 +9,9 @@ import 'package:sispol_7/views/administration/dependencias/registration_dependec
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:pdf/pdf.dart';
 
 // ignore: must_be_immutable
 class SearchSubcircuitView extends StatelessWidget {
@@ -20,17 +23,56 @@ class SearchSubcircuitView extends StatelessWidget {
 
   SearchSubcircuitView({super.key, required this.searchResults});
 
+
+ 
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          // ignore: deprecated_member_use
+          return pw.Table.fromTextArray(
+            headers: <String>[
+              'ID', 'Fecha de Creación', 'Provincia', 'No. Distritos', 'Parroquia', 
+              'Cod. Distrito', 'Nombre Distrito', 'No. Circuitos', 'Cod. Circuitos', 'Nombre Circuito', 
+              'No. Subcircuitos', 'Cod. Subcircuito', 'Nombre Subcircuito'],
+              data: searchResults.map((dependecy)  => [
+                dependecy.id.toString(),
+                dependecy.fechacrea != null ? dateFormat.format(dependecy.fechacrea!) : 'N/A',
+                dependecy.provincia,
+                dependecy.nDistr.toString(),
+                dependecy.parroquia,
+                dependecy.codDistr,
+                dependecy.nameDistr,
+                dependecy.nCircuit.toString(),
+                dependecy.codCircuit,
+                dependecy.nameCircuit,
+                dependecy.nsCircuit.toString(),
+                dependecy.codsCircuit,
+                dependecy.namesCircuit,
+              ]).toList(),
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Determinar el tamaño de la fuente basado en el ancho de la pantalla
-    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 24);
+    double titleFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 20 : 22);
     double bodyFontSize = screenWidth < 600 ? 15 : (screenWidth < 1200 ? 18 : 20);
 
     // Determinando el tamaño de los iconos basado en el ancho de la pantalla
-    double iconSize = screenWidth > 480 ? 34.0 : 20.0;
+    double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
     // ignore: no_leading_underscores_for_local_identifiers
     DataColumn _buildColumn(String label) {
@@ -104,6 +146,9 @@ class SearchSubcircuitView extends StatelessWidget {
                     icon: const Icon(Icons.delete),
                     onPressed: () {
                       _controller.deleteDependecy(dependecy.id);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const DependencysView(),
+                      ));
                     },
                   ),
                 ],
@@ -124,19 +169,16 @@ class SearchSubcircuitView extends StatelessWidget {
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Register New User',
+            tooltip: 'Registrar una nueva Dependencia',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed: () {
-              // Implement generate report functionality
-            },
-            // ignore: sort_child_properties_last
-            child: Icon(Icons.picture_as_pdf, size: iconSize, color:  Colors.black),
-            tooltip: 'Generate Report',
+            onPressed: _generatePDF,
+            tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
           ),
           const SizedBox(width: 20),
 

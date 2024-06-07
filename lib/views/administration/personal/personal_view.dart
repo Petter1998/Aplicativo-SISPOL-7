@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
-import 'package:sispol_7/controllers/administration/dependencias/dependency_controller.dart';
-import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
-import 'package:sispol_7/views/administration/dependencias/edit_dependecy_screen.dart';
-import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
-import 'package:sispol_7/views/administration/dependencias/search_subcircuit_screen.dart';
+import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
+import 'package:sispol_7/models/administration/personal/personal_model.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -13,40 +10,38 @@ import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-
-class DependencysView extends StatefulWidget {
-  const DependencysView({super.key});
+class PersonalsView extends StatefulWidget {
+  const PersonalsView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _DependencysViewState createState() => _DependencysViewState();
+  _PersonalsViewState createState() => _PersonalsViewState();
 }
 
-
-class _DependencysViewState extends State<DependencysView> {
-  final DependecyController _controller = DependecyController();
+class _PersonalsViewState extends State<PersonalsView> {
+  final PersonalController _controller = PersonalController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // ignore: unused_field
-  List<Dependecy> _dependecys = [];
+  List<Personal> _personals = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchDependecys();
+    _fetchPersonals();
   }
 
-  void _fetchDependecys() async {
-    List<Dependecy> dependecys = await _controller.fetchDependecys();
+  void _fetchPersonals() async {
+    List<Personal> personals = await _controller.fetchPersonals();
     setState(() {
-      _dependecys = dependecys;
+      _personals= personals;
     });
   }
 
   void _refreshData() {
-    _fetchDependecys();
+    _fetchPersonals();
   }
 
   void _showSearchDialog() {
@@ -55,14 +50,14 @@ class _DependencysViewState extends State<DependencysView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Buscar Subcircuito',
+          title: Text('Buscar Personal',
           style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
           ),
           content: TextField(
             onChanged: (value) {
               query = value;
             },
-            decoration: const InputDecoration(hintText: "Ingrese el nombre del Subcircuito"),
+            decoration: const InputDecoration(hintText: "Ingrese el nombre"),
             style: GoogleFonts.inter( color: Colors.black),
           ),
           actions: <Widget>[
@@ -71,16 +66,16 @@ class _DependencysViewState extends State<DependencysView> {
               style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<Dependecy> results = await _controller.searchDependencies(query);
+                List<Personal> results = await _controller.searchPersonal(query);
                   if (results.isEmpty) {
                     _showNoResultsAlert();
                   } else {
                     // ignore: use_build_context_synchronously
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => SearchSubcircuitView(searchResults: results),
-                      ),
-                    );
+                    //Navigator.of(context).push(
+                      //MaterialPageRoute(
+                        //builder: (context) => SearchSubcircuitView(searchResults: results),
+                      //),
+                    //);
                   }
                 },
               ),
@@ -97,7 +92,7 @@ class _DependencysViewState extends State<DependencysView> {
         return AlertDialog(
           title: Text('No se encontraron resultados',
           style: GoogleFonts.inter(color: Colors.black),),
-          content: Text('No se encontró ninguna dependencia con ese nombre.',
+          content: Text('No se encontró ningún Personal Policial con ese nombre.',
           style: GoogleFonts.inter(color: Colors.black),),
           actions: <Widget>[
             TextButton(
@@ -122,23 +117,20 @@ class _DependencysViewState extends State<DependencysView> {
           // ignore: deprecated_member_use
           return pw.Table.fromTextArray(
             headers: <String>[
-              'ID', 'Fecha de Creación', 'Provincia', 'No. Distritos', 'Parroquia', 
-              'Cod. Distrito', 'Nombre Distrito', 'No. Circuitos', 'Cod. Circuitos', 'Nombre Circuito', 
-              'No. Subcircuitos', 'Cod. Subcircuito', 'Nombre Subcircuito'],
-              data: _dependecys.map((dependecy) => [
-                dependecy.id.toString(),
-                dependecy.fechacrea != null ? _dateFormat.format(dependecy.fechacrea!) : 'N/A',
-                dependecy.provincia,
-                dependecy.nDistr.toString(),
-                dependecy.parroquia,
-                dependecy.codDistr,
-                dependecy.nameDistr,
-                dependecy.nCircuit.toString(),
-                dependecy.codCircuit,
-                dependecy.nameCircuit,
-                dependecy.nsCircuit.toString(),
-                dependecy.codsCircuit,
-                dependecy.namesCircuit,
+              'ID', 'Cédula', 'Nombres', 'Apellidos', 'Fecha de Nacimiento', 'Tipo de Sangre', 
+              'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'],
+               data: _personals.map((personal) => [
+                personal.id.toString(),
+                personal.cedula.toString(),
+                personal.name,
+                personal.surname,
+                personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
+                personal.tipoSangre,
+                personal.ciudadNaci,
+                personal.telefono.toString(),
+                personal.rango,
+                personal.dependencia,
+                personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
               ]).toList(),
           );
         },
@@ -187,65 +179,61 @@ class _DependencysViewState extends State<DependencysView> {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      body: FutureBuilder<List<Dependecy>>(
-        future: _controller.fetchDependecys(),
+      body: FutureBuilder<List<Personal>>(
+        future: _controller.fetchPersonals(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final dependecys = snapshot.data!;
+            final personals = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
                   _buildColumn('ID'),
+                  _buildColumn('Identificación'),
+                  _buildColumn('Nombres'),
+                  _buildColumn('Apellidos'),
+                  _buildColumn('Fecha de Nacimiento'),
+                  _buildColumn('Tipo de Sangre'),
+                  _buildColumn('Ciudad de Nacimiento'),
+                  _buildColumn('Teléfono'),
+                  _buildColumn('Rango'),
+                  _buildColumn('Dependencia'),
                   _buildColumn('Fecha de Creación'),
-                  _buildColumn('Provincia'),
-                  _buildColumn('No. Distritos'),
-                  _buildColumn('Parroquia'),
-                  _buildColumn('Cod. Distrito'),
-                  _buildColumn('Nombre Distrito'),
-                  _buildColumn('No. Circuitos'),
-                  _buildColumn('Cod. Circuitos'),
-                  _buildColumn('Nombre Circuito'),
-                  _buildColumn('No. Subcircuitos'),
-                  _buildColumn('Cod. Subcircuito'),
-                  _buildColumn('Nombre Subcircuito'),
                   _buildColumn('Opciones'),
                 ],
-                rows: dependecys.map((dependecy) {
+                rows: personals.map((personal) {
                   return DataRow(cells:[
-                    _buildCell(dependecy.id.toString()),
-                    _buildCell(dependecy.fechacrea != null ? _dateFormat.format(dependecy.fechacrea!) : 'N/A'),
-                    _buildCell(dependecy.provincia),
-                    _buildCell(dependecy.nDistr.toString()),
-                    _buildCell(dependecy.parroquia),
-                    _buildCell(dependecy.codDistr),
-                    _buildCell(dependecy.nameDistr),
-                    _buildCell(dependecy.nCircuit.toString()),
-                    _buildCell(dependecy.codCircuit),
-                    _buildCell(dependecy.nameCircuit),
-                    _buildCell(dependecy.nsCircuit.toString()),
-                    _buildCell(dependecy.codsCircuit),
-                    _buildCell(dependecy.namesCircuit),
+                    _buildCell(personal.id.toString()),
+                    _buildCell(personal.cedula.toString()),
+                    _buildCell(personal.name),
+                    _buildCell(personal.surname),
+                    _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
+                    _buildCell(personal.tipoSangre),
+                    _buildCell(personal.ciudadNaci),
+                    _buildCell(personal.telefono.toString()),
+                    _buildCell(personal.rango),
+                    _buildCell(personal.dependencia),
+                    _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
                     DataCell(Row(
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditDependecyScreen(dependecy: dependecy,),
-                            ));
+                            //Navigator.of(context).push(MaterialPageRoute(
+                             // builder: (context) => EditDependecyScreen(dependecy: dependecy,),
+                           // ));
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _controller.deleteDependecy(dependecy.id);
+                            _controller.deletePersonal(personal.id);
                             setState(() {
-                              _fetchDependecys();
+                              _fetchPersonals();
                             });
                           },
                         ),
@@ -263,10 +251,10 @@ class _DependencysViewState extends State<DependencysView> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              Navigator.push(
-                context,
-               MaterialPageRoute(builder: (context) => const RegistrationDependecyScreen()),
-              );
+             // Navigator.push(
+               // context,
+               //MaterialPageRoute(builder: (context) => const RegistrationDependecyScreen()),
+              //);
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),

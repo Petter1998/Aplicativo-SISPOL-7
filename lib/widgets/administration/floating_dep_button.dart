@@ -22,7 +22,7 @@ class MyUSER extends StatelessWidget {
             MaterialPageRoute(builder: (context) =>  const DependencysView()),
           );
         },
-        icon: Icon(Icons.supervised_user_circle_outlined, size: iconSize,color:  Colors.black),  // Aumenta el tamaño del icono
+        icon: Icon(Icons.share_location, size: iconSize,color:  Colors.black),  // Aumenta el tamaño del icono
         label: Text('Ver Dependencias', style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black, fontSize: titleFontSize)),
         backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
         shape: RoundedRectangleBorder(
