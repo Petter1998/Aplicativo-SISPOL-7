@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
+import 'package:sispol_7/controllers/administration/personal_subcircuito/personsub_controller.dart';
+import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
 import 'package:sispol_7/models/administration/personal/personal_model.dart';
-import 'package:sispol_7/views/administration/personal/edit_person_screen.dart';
-import 'package:sispol_7/views/administration/personal/registration_personal_screen.dart';
 import 'package:sispol_7/views/administration/personal/search_results_screen.dart';
+import 'package:sispol_7/views/administration/personal_subcircuito/personal_assig_subcircuit.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -13,22 +14,24 @@ import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class PersonalsView extends StatefulWidget {
-  const PersonalsView({super.key});
+class PersonalsSubcircuitView extends StatefulWidget {
+  const PersonalsSubcircuitView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _PersonalsViewState createState() => _PersonalsViewState();
+  _PersonalsSubcircuitViewState createState() => _PersonalsSubcircuitViewState();
 }
 
-class _PersonalsViewState extends State<PersonalsView> {
-  final PersonalController _controller = PersonalController();
+class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
+  final PersonalController _personalcontroller = PersonalController();
+  final PersonSubController _personsubcontroller = PersonSubController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // ignore: unused_field
   List<Personal> _personals = [];
+  
 
   @override
   void initState() {
@@ -37,7 +40,7 @@ class _PersonalsViewState extends State<PersonalsView> {
   }
 
   void _fetchPersonals() async {
-    List<Personal> personals = await _controller.fetchPersonals();
+    List<Personal> personals = await _personalcontroller.fetchPersonals();
     setState(() {
       _personals= personals;
     });
@@ -69,7 +72,7 @@ class _PersonalsViewState extends State<PersonalsView> {
               style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<Personal> results = await _controller.searchPersonal(query);
+                List<Personal> results = await _personalcontroller.searchPersonal(query);
                   if (results.isEmpty) {
                     _showNoResultsAlert();
                   } else {
@@ -104,6 +107,59 @@ class _PersonalsViewState extends State<PersonalsView> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAssignDialog() async {
+    List<Dependecy> dependencias = await _personsubcontroller.fetchDependencias();
+    String? selectedSubcircuito;
+
+    showDialog(
+      // ignore: use_build_context_synchronously
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title:  Text('Asignar a Subcircuito',
+          style: GoogleFonts.inter(color: Colors.black),),
+          content: DropdownButtonFormField<String>(
+            items: dependencias.map((dependencia) {
+              return DropdownMenuItem<String>(
+                value: dependencia.namesCircuit,
+                child: Text(dependencia.namesCircuit),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedSubcircuito = value;
+              });
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar',
+              style: GoogleFonts.inter(color: Colors.black),),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (selectedSubcircuito != null) {
+                  List<Personal> selectedPersonals = _personals.where((personal) => _personsubcontroller.selectedIds.contains(personal.id)).toList();
+                  await _personsubcontroller.assignToSubcircuito(selectedPersonals, selectedSubcircuito!);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SubcircuitoAssignedView(subcircuitoName: selectedSubcircuito!),
+                  ));
+                }
+              },
+              child: Text('Asignar',
+              style: GoogleFonts.inter(color: Colors.black),),
             ),
           ],
         );
@@ -159,7 +215,7 @@ class _PersonalsViewState extends State<PersonalsView> {
     double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
     // ignore: no_leading_underscores_for_local_identifiers
-    DataColumn _buildColumn(String label) {
+    DataColumn _buildColumn (String label) {
       return DataColumn(
         label: Text(
           label,
@@ -183,7 +239,7 @@ class _PersonalsViewState extends State<PersonalsView> {
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
       body: FutureBuilder<List<Personal>>(
-        future: _controller.fetchPersonals(),
+        future: _personalcontroller.fetchPersonals(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -195,6 +251,7 @@ class _PersonalsViewState extends State<PersonalsView> {
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
+                  _buildColumn('Select'),
                   _buildColumn('ID'),
                   _buildColumn('Identificación'),
                   _buildColumn('Nombres'),
@@ -206,43 +263,37 @@ class _PersonalsViewState extends State<PersonalsView> {
                   _buildColumn('Rango'),
                   _buildColumn('Dependencia'),
                   _buildColumn('Fecha de \nCreación'),
-                  _buildColumn('Opciones'),
                 ],
-                rows: personals.map((personal) {
-                  return DataRow(cells:[
-                    _buildCell(personal.id.toString()),
-                    _buildCell(personal.cedula.toString()),
-                    _buildCell(personal.name),
-                    _buildCell(personal.surname),
-                    _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
-                    _buildCell(personal.tipoSangre),
-                    _buildCell(personal.ciudadNaci),
-                    _buildCell(personal.telefono.toString()),
-                    _buildCell(personal.rango),
-                    _buildCell(personal.dependencia),
-                    _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
-                    DataCell(Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditPersonScreen(personal: personal,),
-                            ));
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _controller.deletePersonal(personal.id);
-                            setState(() {
-                              _fetchPersonals();
-                            });
-                          },
-                        ),
-                      ],
-                    )),
-                  ]);
+                 rows: personals.map((personal) {
+                  return DataRow(
+                    selected: _personsubcontroller.selectedIds.contains(personal.id),
+                    onSelectChanged: (selected) {
+                      setState(() {
+                        _personsubcontroller.toggleSelection(personal.id);
+                      });
+                    },
+                    cells: [
+                      DataCell(Checkbox(
+                        value: _personsubcontroller.selectedIds.contains(personal.id),
+                        onChanged: (selected) {
+                          setState(() {
+                            _personsubcontroller.toggleSelection(personal.id);
+                          });
+                        },
+                      )),
+                      _buildCell(personal.id.toString()),
+                      _buildCell(personal.cedula.toString()),
+                      _buildCell(personal.name),
+                      _buildCell(personal.surname),
+                      _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
+                      _buildCell(personal.tipoSangre),
+                      _buildCell(personal.ciudadNaci),
+                      _buildCell(personal.telefono.toString()),
+                      _buildCell(personal.rango),
+                      _buildCell(personal.dependencia),
+                      _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
+                    ],
+                  );
                 }).toList(),
               ),
             );
@@ -252,17 +303,18 @@ class _PersonalsViewState extends State<PersonalsView> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => const RegistrationPersonalScreen()),
-              );
-            },
-            // ignore: sort_child_properties_last
-            child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Registrar un nuevo Personal',
-            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(56, 171, 171, 1), // Color de fondo
+              
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0), // Bordes redondeados
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
+            ),
+            onPressed: _showAssignDialog,
+            child: Text('Asignar', style: GoogleFonts.inter(fontSize: titleFontSize, 
+              fontWeight: FontWeight.bold,color: Colors.black)),
           ),
           const SizedBox(width: 20),
 

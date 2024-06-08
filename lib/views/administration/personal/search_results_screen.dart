@@ -3,25 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
-import 'package:sispol_7/controllers/administration/users/users_controller.dart';
-import 'package:sispol_7/models/administration/users/users_model.dart';
 import 'package:intl/intl.dart';
-import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
-import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
-import 'package:sispol_7/views/administration/usuarios/user_view.dart';
+import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
+import 'package:sispol_7/models/administration/personal/personal_model.dart';
+import 'package:sispol_7/views/administration/personal/edit_person_screen.dart';
+import 'package:sispol_7/views/administration/personal/personal_view.dart';
+import 'package:sispol_7/views/administration/personal/registration_personal_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 
 // ignore: must_be_immutable
-class SearchResultsView extends StatelessWidget {
-  final List<User> searchResults;
-  final UserController _controller = UserController();
+class SearchResultView extends StatelessWidget {
+  final List<Personal> searchResults;
+  final PersonalController _controller = PersonalController();
   final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  SearchResultsView({super.key, required this.searchResults});
+  SearchResultView({super.key, required this.searchResults});
+  
 
   Future<void> _generatePDF() async {
     final pdf = pw.Document();
@@ -32,18 +33,20 @@ class SearchResultsView extends StatelessWidget {
           // ignore: deprecated_member_use
           return pw.Table.fromTextArray(
             headers: <String>[
-              'ID', 'Nombre', 'Apellido', 'Correo', 'Cédula', 'Cargo', 'Fecha de Creación',
-              'Teléfono', 'Usuario',],
-              data: searchResults.map((user) => [
-                user.id.toString(),
-                user.name,
-                user.surname,
-                user.email,
-                user.cedula,
-                user.cargo,
-                user.fechacrea != null ? dateFormat.format(user.fechacrea!) : 'N/A',
-                user.telefono,
-                user.user,
+              'ID', 'Cédula', 'Nombres', 'Apellidos', 'Fecha de Nacimiento', 'Tipo de Sangre', 
+              'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'],
+               data: searchResults.map((personal) => [
+                personal.id.toString(),
+                personal.cedula.toString(),
+                personal.name,
+                personal.surname,
+                personal.fechanaci != null ? dateFormat.format(personal.fechanaci!) : 'N/A',
+                personal.tipoSangre,
+                personal.ciudadNaci,
+                personal.telefono.toString(),
+                personal.rango,
+                personal.dependencia,
+                personal.fechacrea != null ? dateFormat.format(personal.fechacrea!) : 'N/A',
               ]).toList(),
           );
         },
@@ -96,44 +99,48 @@ class SearchResultsView extends StatelessWidget {
         child: DataTable(
           columns: [
             _buildColumn('ID'),
+            _buildColumn('Identificación'),
             _buildColumn('Nombres'),
             _buildColumn('Apellidos'),
-            _buildColumn('Email'),
-            _buildColumn('Cédula'),
-            _buildColumn('Cargo'),
-            _buildColumn('Fecha de \nCreación'),
+            _buildColumn('Fecha de \nNacimiento'),
+            _buildColumn('Tipo de \nSangre'),
+            _buildColumn('Ciudad de \nNacimiento'),
             _buildColumn('Teléfono'),
-            _buildColumn('Usuario'),
+            _buildColumn('Rango'),
+            _buildColumn('Dependencia'),
+            _buildColumn('Fecha de \nCreación'),
             _buildColumn('Opciones'),
           ],
-          rows: searchResults.map((user) {
-            return DataRow(cells: [
-              _buildCell(user.id.toString()),
-              _buildCell(user.name),
-              _buildCell(user.surname),
-              _buildCell(user.email),
-              _buildCell(user.cedula),
-              _buildCell(user.cargo),
-              _buildCell(user.fechacrea != null
-                  ? dateFormat.format(user.fechacrea!)
-                  : 'N/A'),
-              _buildCell(user.telefono),
-              _buildCell(user.user),
+          rows: searchResults.map((personal) {
+            return DataRow(cells:[
+              _buildCell(personal.id.toString()),
+              _buildCell(personal.cedula.toString()),
+              _buildCell(personal.name),
+              _buildCell(personal.surname),
+              _buildCell(personal.fechanaci != null ? dateFormat.format(personal.fechanaci!) : 'N/A'),
+              _buildCell(personal.tipoSangre),
+              _buildCell(personal.ciudadNaci),
+              _buildCell(personal.telefono.toString()),
+              _buildCell(personal.rango),
+              _buildCell(personal.dependencia),
+              _buildCell(personal.fechacrea != null ? dateFormat.format(personal.fechacrea!) : 'N/A'),
               DataCell(Row(
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditUserScreen(user: user)));
+                     Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditPersonScreen(personal: personal,),
+                      ));
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      _controller.deleteUser(user.uid);
+                      _controller.deletePersonal(personal.id);
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const UserView()));
+                        builder: (context) => const PersonalsView(),
+                      ));
                     },
                   ),
                 ],
@@ -149,12 +156,12 @@ class SearchResultsView extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RegistrationUsersScreen()),
+                MaterialPageRoute(builder: (context) => const RegistrationPersonalScreen()),
               );
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Registrar un Nuevo Usuario',
+            tooltip: 'Registrar una nueva Dependencia',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
@@ -171,7 +178,7 @@ class SearchResultsView extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const UserView()),
+                MaterialPageRoute(builder: (context) => const PersonalsView()),
               );
             },
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),

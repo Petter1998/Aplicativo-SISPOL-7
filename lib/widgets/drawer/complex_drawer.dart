@@ -116,6 +116,10 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
                         } else if (subMenu == "Personal") {
                           Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
+                        } else if (subMenu == "Flota Vehicular") {
+                          Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
+                        } else if (subMenu == "Personal-Subcircuito") {
+                          Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -189,6 +193,10 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
               } else if (subMenu == "Personal") {
                 Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
+              } else if (subMenu == "Flota Vehicular") {
+                Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
+              } else if (subMenu == "Personal-Subcircuito") {
+                Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
               }
             },
           );

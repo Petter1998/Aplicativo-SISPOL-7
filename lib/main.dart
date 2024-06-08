@@ -6,7 +6,13 @@ import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart'
 import 'package:sispol_7/views/administration/dependencias/edit_dependecy_screen.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_screen.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_wins.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/vehicle_view.dart';
 import 'package:sispol_7/views/administration/personal/personal_view.dart';
+import 'package:sispol_7/views/administration/personal/registration_person_wins.dart';
+import 'package:sispol_7/views/administration/personal/registration_personal_screen.dart';
+import 'package:sispol_7/views/administration/personal_subcircuito/personal_subcircuit_view.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
@@ -46,7 +52,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const DependencysView(),  //const HomePage
+        '/home': (context) =>  const PersonalsSubcircuitView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -62,8 +68,14 @@ class MyApp extends StatelessWidget {
         '/registdepwins': (context) => RegistrationDepWins(),
         //'/editdep': (context) =>  const EditDependecyScreen(dependecy: dependecy,),
         '/listperson': (context) => const PersonalsView(),
-        //'/registperson': (context) => const RegistrationDependecyScreen(),
-        //'/registpersonwins': (context) => RegistrationDepWins(),
+        '/registperson': (context) => const RegistrationPersonalScreen(),
+        '/registpersonwins': (context) => RegistrationPersonWins(),
+        '/listfleet': (context) => const VehiclesView(),
+        '/registvehicle': (context) => const RegistrationVehicleScreen(),
+        '/registvehiclewins': (context) => RegistrationVehicleWins(),
+        '/listpersub': (context) => const PersonalsSubcircuitView(),
+        //'/registvehicle': (context) => const RegistrationVehicleScreen(),
+        //'/registvehiclewins': (context) => RegistrationVehicleWins(),
 
 
         //'/dashboard': (context) =>  DashboardScreen(),
