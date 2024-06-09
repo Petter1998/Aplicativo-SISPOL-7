@@ -1,27 +1,26 @@
-import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
-import 'package:sispol_7/models/administration/personal/personal_model.dart';
+
 
 
 class AssignedPersonal {
-  final Personal personal;
-  final Dependecy dependecy;
+  //final Personal personal;
+  //final Dependecy dependecy;
 
-  AssignedPersonal({
-    required this.personal,
-    required this.dependecy,
-  });
+ // AssignedPersonal({
+   // required this.personal,
+    //required this.dependecy,
+ // });
 
-  factory AssignedPersonal.fromMap(Map<String, dynamic> data, String documentId) {
-    return AssignedPersonal(
-      personal: Personal.fromMap(data, documentId),
-      dependecy: Dependecy.fromMap(data['dependecy'] as Map<String, dynamic>, documentId),
-    );
-  }
+  //factory AssignedPersonal.fromMap(Map<String, dynamic> data, String documentId) {
+    //return AssignedPersonal(
+     // personal: Personal.fromMap(data, documentId),
+     // dependecy: Dependecy.fromMap(data['dependecy'] as Map<String, dynamic>, documentId),
+   // );
+ // }
 
-  Map<String, dynamic> toMap() {
-    return {
-      ...personal.toMap(),
-      'dependecy': dependecy.toMap(),
-    };
-  }
+  //Map<String, dynamic> toMap() {
+   // return {
+      //...personal.toMap(),
+      //'dependecy': dependecy.toMap(),
+   // };
+ // }
 }

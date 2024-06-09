@@ -66,7 +66,6 @@ class MyApp extends StatelessWidget {
         '/listdependecys': (context) => const DependencysView(),
         '/registdependecys': (context) => const RegistrationDependecyScreen(),
         '/registdepwins': (context) => RegistrationDepWins(),
-        //'/editdep': (context) =>  const EditDependecyScreen(dependecy: dependecy,),
         '/listperson': (context) => const PersonalsView(),
         '/registperson': (context) => const RegistrationPersonalScreen(),
         '/registpersonwins': (context) => RegistrationPersonWins(),

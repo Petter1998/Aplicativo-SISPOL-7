@@ -5,8 +5,8 @@ import 'package:sispol_7/controllers/administration/personal/personal_controller
 import 'package:sispol_7/controllers/administration/personal_subcircuito/personsub_controller.dart';
 import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
 import 'package:sispol_7/models/administration/personal/personal_model.dart';
-import 'package:sispol_7/views/administration/personal/search_results_screen.dart';
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_assig_subcircuit.dart';
+import 'package:sispol_7/views/administration/personal_subcircuito/personal_search_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -50,41 +50,58 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
     _fetchPersonals();
   }
 
-  void _showSearchDialog() {
-    String query = '';
+  void _showSearchDialog() async {
+    List<String> dependencias = await _personsubcontroller.getUniqueDependencias(); // Obtener dependencias únicas
+    String? selectedDependencia; 
+
     showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Buscar Personal',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          content: TextField(
+          title: Text('Buscar Personal por Dependencia', style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black)),
+          content: DropdownButtonFormField<String>(
+            value: selectedDependencia,
+            decoration: InputDecoration(hintText: "Seleccione la dependencia", 
+            hintStyle: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black)),
+            items: dependencias.map((dependencia) { // Usar dependencias únicas
+              return DropdownMenuItem<String>(
+                value: dependencia,
+                child: Text(dependencia),
+              );
+            }).toList(),
             onChanged: (value) {
-              query = value;
+              setState(() {
+                selectedDependencia = value;
+              });
             },
-            decoration: const InputDecoration(hintText: "Ingrese el nombre"),
-            style: GoogleFonts.inter( color: Colors.black),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Buscar',
-              style: GoogleFonts.inter(color: Colors.black),
-              ),
+              child: Text('Cancelar', style: GoogleFonts.inter(color: Colors.black)),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Buscar', style: GoogleFonts.inter(color: Colors.black)),
               onPressed: () async {
-                List<Personal> results = await _personalcontroller.searchPersonal(query);
+                if (selectedDependencia != null) {
+                  List<Personal> results = await _personsubcontroller.searchPersonal(selectedDependencia!);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+
                   if (results.isEmpty) {
                     _showNoResultsAlert();
                   } else {
-                     //ignore: use_build_context_synchronously
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => SearchResultView(searchResults: results),
+                        builder: (context) => PersonSearchResultView(searchResults: results),
                       ),
                     );
                   }
-                },
-              ),
+                }
+              },
+            ),
           ],
         );
       },
@@ -98,7 +115,7 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
         return AlertDialog(
           title: Text('No se encontraron resultados',
           style: GoogleFonts.inter(color: Colors.black),),
-          content: Text('No se encontró ningún Personal Policial con ese nombre.',
+          content: Text('No se encontró ningún Personal Policial en esa dependencia.',
           style: GoogleFonts.inter(color: Colors.black),),
           actions: <Widget>[
             TextButton(
@@ -150,16 +167,80 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
               onPressed: () async {
                 if (selectedSubcircuito != null) {
                   List<Personal> selectedPersonals = _personals.where((personal) => _personsubcontroller.selectedIds.contains(personal.id)).toList();
-                  await _personsubcontroller.assignToSubcircuito(selectedPersonals, selectedSubcircuito!);
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
+                  try {
+                    // Llamar a assignToSubcircuito con el contexto
+                    await _personsubcontroller.assignToSubcircuito(context, selectedPersonals, selectedSubcircuito!); 
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SubcircuitoAssignedView(subcircuitoName: selectedSubcircuito!),
+                    ));
+                  } catch (e) {
+                    // Mostrar diálogo de error si se lanza una excepción
+                    showDialog(
+                      // ignore: use_build_context_synchronously
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Error de Asignación', style: GoogleFonts.inter(color: Colors.black)),
+                        content: Text(e.toString()), // Mostrar el mensaje de la excepción
+                        actions: [
+                          TextButton(
+                            child: Text('OK', style: GoogleFonts.inter(color: Colors.black)),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text('Asignar', style: GoogleFonts.inter(color: Colors.black)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAssignmentsDialog() async {
+    List<Dependecy> dependencias = await _personsubcontroller.fetchDependencias();
+    String? selectedSubcircuito;
+
+    showDialog(
+      // ignore: use_build_context_synchronously
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Ver Asignaciones', style: GoogleFonts.inter(color: Colors.black)),
+          content: DropdownButtonFormField<String>(
+            items: dependencias.map((dependencia) {
+              return DropdownMenuItem<String>(
+                value: dependencia.namesCircuit,
+                child: Text(dependencia.namesCircuit),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedSubcircuito = value;
+              });
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancelar', style: GoogleFonts.inter(color: Colors.black)),
+            ),
+            TextButton(
+              onPressed: () {
+                if (selectedSubcircuito != null) {
+                  Navigator.of(context).pop(); // Cerrar el diálogo
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => SubcircuitoAssignedView(subcircuitoName: selectedSubcircuito!),
                   ));
                 }
               },
-              child: Text('Asignar',
-              style: GoogleFonts.inter(color: Colors.black),),
+              child: Text('Ver', style: GoogleFonts.inter(color: Colors.black)),
             ),
           ],
         );
@@ -303,18 +384,21 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromRGBO(56, 171, 171, 1), // Color de fondo
-              
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0), // Bordes redondeados
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
-            ),
+          FloatingActionButton(
             onPressed: _showAssignDialog,
-            child: Text('Asignar', style: GoogleFonts.inter(fontSize: titleFontSize, 
-              fontWeight: FontWeight.bold,color: Colors.black)),
+            // ignore: sort_child_properties_last
+            child: Icon(Icons.assignment_add, size: iconSize,color:  Colors.black),
+            tooltip: 'Asignar',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+          ),
+          const SizedBox(width: 20),
+
+          FloatingActionButton(
+            onPressed: _showAssignmentsDialog,
+            // ignore: sort_child_properties_last
+            child: Icon(Icons.assignment_ind_sharp, size: iconSize,color:  Colors.black),
+            tooltip: 'Asignaciones',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
 

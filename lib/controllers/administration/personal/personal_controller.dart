@@ -80,4 +80,7 @@ class PersonalController {
     List<Personal> personals = snapshot.docs.map((doc) => Personal.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
     return personals;
   }
+
+
+  
 }
