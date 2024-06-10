@@ -197,8 +197,9 @@ class _VehiclesViewState extends State<VehiclesView> {
           return pw.Table.fromTextArray(
             headers: <String>[
               'ID', 'Marca', 'Modelo', 'Motor', 'Placa', 'Chasis', 'Tipo', 'Cilindraje',
-              'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 
-              'Fecha de Creación'],
+              'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 'Dependencia',
+              'Responsable 1', 'Responsable 2', 'Responsable 3',
+              'Responsable 4','Fecha de Creación'],
                data: _vehicles.map((vehicle) => [
                 vehicle.id.toString(),
                 vehicle.marca,
@@ -211,6 +212,11 @@ class _VehiclesViewState extends State<VehiclesView> {
                 vehicle.capacidadPas.toString(),
                 vehicle.capacidadCar.toString(),
                 vehicle.kilometraje.toString(),
+                vehicle.dependencia,
+                vehicle.responsable1,
+                vehicle.responsable2,
+                vehicle.responsable3,
+                vehicle.responsable4,
                 vehicle.fechacrea != null
                     ? _dateFormat.format(vehicle.fechacrea!)
                     : 'N/A',
@@ -286,6 +292,11 @@ class _VehiclesViewState extends State<VehiclesView> {
                   _buildColumn('Capacidad de \n  Pasajeros'),
                   _buildColumn('Capacidad de \n  Carga(Ton)'),
                   _buildColumn('Kilometraje'),
+                  _buildColumn('Dependencia'),
+                  _buildColumn('Responsable \n1'),
+                  _buildColumn('Responsable \n2'),
+                  _buildColumn('Responsable \n3'),
+                  _buildColumn('Responsable \n4'),
                   _buildColumn('Fecha de \nCreación'),
                   _buildColumn('Opciones'),
                 ],
@@ -302,6 +313,11 @@ class _VehiclesViewState extends State<VehiclesView> {
                     _buildCell(vehicle.capacidadPas.toString()),
                     _buildCell(vehicle.capacidadCar.toString()),
                     _buildCell(vehicle.kilometraje.toString()),
+                    _buildCell(vehicle.dependencia),
+                    _buildCell(vehicle.responsable1),
+                    _buildCell(vehicle.responsable2),
+                    _buildCell(vehicle.responsable3),
+                    _buildCell(vehicle.responsable4),
                     _buildCell(vehicle.fechacrea != null
                         ? _dateFormat.format(vehicle.fechacrea!)
                         : 'N/A'),

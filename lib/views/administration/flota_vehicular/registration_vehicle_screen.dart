@@ -28,17 +28,114 @@ class _RegistrationVehicleScreenState extends State<RegistrationVehicleScreen> {
   final TextEditingController _capacidadPasController = TextEditingController();
   final TextEditingController _capacidadCarController = TextEditingController();
   final TextEditingController _kilometrajeController = TextEditingController();
+  final TextEditingController _dependenciaController = TextEditingController();
+  final TextEditingController _responsable1Controller = TextEditingController();
+  final TextEditingController _responsable2Controller = TextEditingController();
+  final TextEditingController _responsable3Controller = TextEditingController();
+  final TextEditingController _responsable4Controller = TextEditingController();
 
   String? _selectedTipo;
   final List<String> tipos = ['Auto', 'Motocicleta', 'Camioneta'];
 
-  
-
-
   final VehicleController _vehicleController = VehicleController();
   final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchDependencias();
+  }
 
+  String? _selectedDependencia;
+  List<String> dependencias = [];
+
+  
+  // ignore: unused_element
+  Future<void> _fetchDependencias() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('dependencias').get();
+    List<String> fetchedDependencias = snapshot.docs.map((doc) => doc['nombreDistrito'] as String).toList();
+    setState(() {
+      dependencias = fetchedDependencias.toSet().toList(); // Eliminar duplicados
+    });
+  }
+
+  String? _selectedResponsable1;
+  String? _selectedResponsable2;
+  String? _selectedResponsable3;
+  String? _selectedResponsable4;
+  List<String> personalDisponible = [];
+  List<String> personalFiltered1 = [];
+  List<String> personalFiltered2 = [];
+  List<String> personalFiltered3 = [];
+  List<String> personalFiltered4 = [];
+  
+  Future<void> _fetchPersonal(String dependencia) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('personal')
+        .where('dependencia', isEqualTo: dependencia)
+        .get();
+    List<String> fetchedPersonal = snapshot.docs.map((doc) 
+    // ignore: unnecessary_cast
+    => '${doc['nombres']} ${doc['apellidos']}' as String).toList();
+    setState(() {
+      personalDisponible = fetchedPersonal.toSet().toList(); // Eliminar duplicados
+      personalFiltered1 = List.from(personalDisponible);
+      personalFiltered2 = List.from(personalDisponible);
+      personalFiltered3 = List.from(personalDisponible);
+      personalFiltered4 = List.from(personalDisponible);
+    });
+  }
+
+  void _onDependenciaChanged(String? newValue) {
+    setState(() {
+      _selectedDependencia = newValue;
+      _dependenciaController.text = newValue!;
+      _selectedResponsable1 = null;
+      _selectedResponsable2 = null;
+      _selectedResponsable3 = null;
+      _selectedResponsable4 = null;
+    });
+    if (newValue != null) {
+      _fetchPersonal(newValue);
+    }
+  }
+
+  void _onResponsable1Changed(String? newValue) {
+    setState(() {
+      _selectedResponsable1 = newValue;
+      _responsable1Controller.text = newValue!; 
+      personalFiltered2 = personalDisponible.where((item) => item != newValue).toList();
+      _selectedResponsable2 = null;
+      _selectedResponsable3 = null;
+      _selectedResponsable4 = null;
+      personalFiltered3 = List.from(personalDisponible);
+    });
+  }
+
+  void _onResponsable2Changed(String? newValue) {
+    setState(() {
+      _selectedResponsable2 = newValue;
+      _responsable2Controller.text = newValue!; 
+      personalFiltered3 = personalDisponible.where((item) => item != _selectedResponsable1 && item != newValue).toList();
+      _selectedResponsable3 = null;
+      _selectedResponsable4 = null;
+    });
+  }
+
+  void _onResponsable3Changed(String? newValue) {
+    setState(() {
+      _selectedResponsable3 = newValue;
+      _responsable3Controller.text = newValue!; 
+      personalFiltered4 = personalDisponible.where((item) => item != _selectedResponsable1 && item != _selectedResponsable2 && item != newValue).toList();
+      _selectedResponsable4 = null;
+    });
+  }
+
+  void _onResponsable4Changed(String? newValue) {
+    setState(() {
+      _selectedResponsable4 = newValue;
+      _responsable4Controller.text = newValue!; 
+    });
+  }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -237,6 +334,96 @@ class _RegistrationVehicleScreenState extends State<RegistrationVehicleScreen> {
                   ),
                   SizedBox(height: verticalSpacing),
 
+                   DropdownButtonFormField<String>(
+                    value: _selectedDependencia,
+                    hint: Text('Dependencia', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Dependencia',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onDependenciaChanged,
+                    items: dependencias.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
+                  DropdownButtonFormField<String>(
+                    value: _selectedResponsable1,
+                    hint: Text('Responsable N.1', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Responsable N.1',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onResponsable1Changed,
+                    items: personalFiltered1.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
+                  DropdownButtonFormField<String>(
+                    value: _selectedResponsable2,
+                    hint: Text('Responsable N.2', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Responsable N.2',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onResponsable2Changed,
+                    items: personalFiltered2.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
+                  DropdownButtonFormField<String>(
+                    value: _selectedResponsable3,
+                    hint: Text('Responsable N.3', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Responsable N.3',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onResponsable3Changed,
+                    items: personalFiltered3.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
+                  DropdownButtonFormField<String>(
+                    value: _selectedResponsable4,
+                    hint: Text('Responsable N.4', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Responsable N.4',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onResponsable4Changed,
+                    items: personalFiltered4.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
                   SizedBox(height: vertiSpacing),
                  
                 Center(
@@ -285,7 +472,22 @@ class _RegistrationVehicleScreenState extends State<RegistrationVehicleScreen> {
       'capacidadPasajeros': int.tryParse(_capacidadPasController.text),
       'capacidadCarga': int.tryParse(_capacidadCarController.text),
       'kilometraje': int.tryParse(_kilometrajeController.text),
+      'dependencia': _dependenciaController.text,
     };
+
+    // Añadir responsables si no están vacíos
+    if (_responsable1Controller.text.isNotEmpty) {
+      vehData['responsable1'] = _responsable1Controller.text;
+    }
+    if (_responsable2Controller.text.isNotEmpty) {
+      vehData['responsable2'] = _responsable2Controller.text;
+    }
+    if (_responsable3Controller.text.isNotEmpty) {
+      vehData['responsable3'] = _responsable3Controller.text;
+    }
+    if (_responsable4Controller.text.isNotEmpty) {
+      vehData['responsable4'] = _responsable4Controller.text;
+    }
 
     // Usa el controlador para registrar el vehículo
     _vehicleController.registerVehicle(context,{
