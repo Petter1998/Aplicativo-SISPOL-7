@@ -14,6 +14,10 @@ class PersonSubController {
     }
   }
 
+  void clearSelection() {
+    _selectedIds.clear();
+  }
+
   List<int> get selectedIds => _selectedIds;
 
   Future<List<Dependecy>> fetchDependencias() async {
@@ -44,7 +48,12 @@ class PersonSubController {
       'distrito': subcircuitoDoc['nombreDistrito'],
       'parroquia': subcircuitoDoc['parroquia'],
       'provincia': subcircuitoDoc['provincia'],
+      'nombreSubcircuito': subcircuitoDoc['nombreSubcircuito'],
     };
+
+    // Obtener la fecha y hora actual
+    DateTime now = DateTime.now();
+    Timestamp fechaAsignacion = Timestamp.fromDate(now); 
 
     // Guardando el personal con los datos del subcircuito en la colección 'personal_subcircuito'
     final subcircuitoCollection = FirebaseFirestore.instance.collection('personal_subcircuito');
@@ -52,9 +61,31 @@ class PersonSubController {
       await subcircuitoCollection.doc(subcircuitoName).collection(subcircuitoName).add({
         ...personal.toMap(),
         'subcircuito': subcircuitoData,
+        'fechaAsignacion': fechaAsignacion, // Agregar el campo fechaAsignacion
       });
     }
   }
+
+  Future<bool> isAnyPersonalAlreadyAssigned(List<Personal> personals, String selectedSubcircuito) async {
+    final subcircuitoCollection = FirebaseFirestore.instance.collection('personal_subcircuito');
+
+    for (var personal in personals) {
+      QuerySnapshot snapshot = await subcircuitoCollection
+          .where('id', isEqualTo: personal.id)
+          .limit(personals.length) 
+          .get();
+
+      for (var doc in snapshot.docs) {
+        // Verificar si el personal está asignado a un subcircuito diferente al actual
+        if (doc.reference.parent.parent!.id != selectedSubcircuito) {
+          return true; // El personal ya está asignado a otro subcircuito
+        }
+      }
+    }
+
+    return false; // Ninguno de los personales está asignado
+  }
+
 
   Future<List<Map<String, dynamic>>> getAssignedPersonalWithDependency(String subcircuitoName) async {
     QuerySnapshot personalSnapshot = await FirebaseFirestore.instance
@@ -71,6 +102,11 @@ class PersonSubController {
 
       // Obtener los datos del subcircuito directamente del documento del personal
       Map<String, dynamic> subcircuitoData = data['subcircuito'] ?? {}; // Si no existe 'subcircuito', usar un mapa vacío
+
+      // Asegurarse de incluir 'fechaAsignacion' si existe en data
+      if (data.containsKey('fechaAsignacion')) {
+        subcircuitoData['fechaAsignacion'] = data['fechaAsignacion'];
+      }
 
       // Buscar la dependencia correspondiente al personal (como antes)
       var dependecy = (await fetchDependencias()).firstWhere(
@@ -126,5 +162,121 @@ class PersonSubController {
     return snapshot.docs.map((doc) => Personal.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
   }
 
-  
+  Future<void> reassignSelected(
+    BuildContext context,
+    List<Map<String, dynamic>> personalData,
+    String newSubcircuitoName,
+    String currentSubcircuitoName
+  ) async {
+    // Obteniendo los datos del nuevo subcircuito seleccionado
+    DocumentSnapshot newSubcircuitoDoc = await FirebaseFirestore.instance
+        .collection('dependencias')
+        .where('nombreSubcircuito', isEqualTo: newSubcircuitoName)
+        .get()
+        .then((snapshot) => snapshot.docs.first);
+
+    String newSubcircuitoDistrito = newSubcircuitoDoc['nombreDistrito'];
+
+    // Filtrar el personalData para obtener solo los seleccionados
+    List<Map<String, dynamic>> selectedPersonalData = personalData.where((item) => _selectedIds.contains(item['personal'].id)).toList();
+
+    if (selectedPersonalData.isEmpty) {
+      throw Exception('No se ha seleccionado ningún personal para reasignar.');
+    }
+
+    // Verificar si todos los seleccionados pertenecen al mismo distrito
+    for (var item in selectedPersonalData) {
+      final personal = item['personal'] as Personal;
+      if (personal.dependencia != newSubcircuitoDistrito) {
+        throw Exception('Uno o más registros no pueden ser reasignados porque pertenecen a un distrito diferente.');
+      }
+    }
+
+    // Actualizar los datos en Firestore dentro de una transacción
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      for (var item in selectedPersonalData) {
+        final personal = item['personal'] as Personal;
+
+        // Buscar el documento del personal en la colección del subcircuito actual
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('personal_subcircuito')
+            .doc(currentSubcircuitoName)
+            .collection(currentSubcircuitoName)
+            .where('id', isEqualTo: personal.id) // Filtrar por el ID del personal
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          // Eliminar el documento del subcircuito actual
+          transaction.delete(querySnapshot.docs.first.reference);
+
+          // Crear los datos del nuevo subcircuito
+          Map<String, dynamic> newSubcircuitoData = {
+            'nombreCircuito': newSubcircuitoDoc['nombreCircuito'],
+            'distrito': newSubcircuitoDoc['nombreDistrito'],
+            'parroquia': newSubcircuitoDoc['parroquia'],
+            'provincia': newSubcircuitoDoc['provincia'],
+            'nombreSubcircuito': newSubcircuitoDoc['nombreSubcircuito'],
+          };
+
+          // Agregar el registro al nuevo subcircuito
+          transaction.set(FirebaseFirestore.instance
+              .collection('personal_subcircuito')
+              .doc(newSubcircuitoName)
+              .collection(newSubcircuitoName)
+              .doc(),
+            {
+              ...personal.toMap(),
+              'subcircuito': newSubcircuitoData,
+            });
+        } else {
+          throw Exception('No se encontró el registro del personal con ID ${personal.id}');
+        }
+      }
+    });
+  }
+
+  Future<void> deleteSelected(String currentSubcircuitoName) async {
+    if (_selectedIds.isEmpty) {
+      throw Exception('No se ha seleccionado ningún personal para eliminar.');
+    }
+
+    try {
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        for (int id in _selectedIds) {
+          // ignore: avoid_print
+          print('Intentando eliminar ID: $id'); 
+
+          // Buscar el documento del personal en la subcolección
+          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+              .collection('personal_subcircuito')
+              .doc(currentSubcircuitoName)
+              .collection(currentSubcircuitoName)
+              .where('id', isEqualTo: id)
+              .get();
+
+          if (querySnapshot.docs.isNotEmpty) {
+            DocumentSnapshot personalDoc = querySnapshot.docs.first;
+            // ignore: avoid_print
+            print('Eliminando documento con ID: ${personalDoc.id}'); // Imprime el ID del documento a eliminar
+            transaction.delete(personalDoc.reference);
+          } else {
+            // ignore: avoid_print
+            print('No se encontró el documento con ID: $id'); // Imprime un mensaje si no se encuentra el documento
+          }
+        }
+      }).then((_) {
+        // ignore: avoid_print
+        print('Transacción completada con éxito');
+      }).catchError((error) {
+        // ignore: avoid_print
+        print('Error en la transacción: $error');
+      });
+
+      _selectedIds.clear();
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error general al eliminar: $e'); // Captura cualquier otro error
+      throw Exception('Error al eliminar registros.'); 
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
@@ -131,9 +132,10 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
     );
   }
 
-  void _showAssignDialog() async {
+ void _showAssignDialog() async{
     List<Dependecy> dependencias = await _personsubcontroller.fetchDependencias();
     String? selectedSubcircuito;
+    
 
     showDialog(
       // ignore: use_build_context_synchronously
@@ -163,13 +165,48 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
               child: Text('Cancelar',
               style: GoogleFonts.inter(color: Colors.black),),
             ),
-            TextButton(
-              onPressed: () async {
-                if (selectedSubcircuito != null) {
-                  List<Personal> selectedPersonals = _personals.where((personal) => _personsubcontroller.selectedIds.contains(personal.id)).toList();
+             TextButton(
+            onPressed: () async {
+              if (selectedSubcircuito != null) {
+                List<Personal> selectedPersonals = _personals
+                    .where((personal) => _personsubcontroller.selectedIds.contains(personal.id))
+                    .toList();
+
                   try {
-                    // Llamar a assignToSubcircuito con el contexto
-                    await _personsubcontroller.assignToSubcircuito(context, selectedPersonals, selectedSubcircuito!); 
+                    // 1. Verificar si hay personal seleccionado
+                    if (selectedPersonals.isEmpty) {
+                      throw Exception('Seleccione al menos un registro.');
+                    }
+
+                    // 2. Verificar si alguno ya está asignado a otro subcircuito
+                    if (await _personsubcontroller.isAnyPersonalAlreadyAssigned(selectedPersonals, selectedSubcircuito!)) {
+                      throw Exception('Uno o más registros ya están asignados a otro subcircuito.');
+                    }
+
+                    // 3. Verificar si ya pertenecen al subcircuito seleccionado
+                    bool alreadyAssignedToSelectedSubcircuit = false;
+                    for (var personal in selectedPersonals) {
+                      final subcircuitoDoc = await FirebaseFirestore.instance
+                          .collection('personal_subcircuito')
+                          .doc(selectedSubcircuito) // Verificar en el subcircuito seleccionado
+                          .collection(selectedSubcircuito!)
+                          .where('id', isEqualTo: personal.id)
+                          .limit(1)
+                          .get();
+
+                      if (subcircuitoDoc.docs.isNotEmpty) {
+                        alreadyAssignedToSelectedSubcircuit = true;
+                        break; // Salir del bucle si encontramos uno ya asignado
+                      }
+                    }
+
+                    if (alreadyAssignedToSelectedSubcircuit) {
+                      throw Exception('Uno o todos los registros seleccionados ya pertenecen al subcircuito seleccionado.');
+                    }
+
+                    // Si todas las verificaciones pasan, proceder con la asignación
+                    // ignore: use_build_context_synchronously
+                    await _personsubcontroller.assignToSubcircuito(context, selectedPersonals, selectedSubcircuito!);
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
                     // ignore: use_build_context_synchronously
@@ -182,11 +219,13 @@ class _PersonalsSubcircuitViewState extends State<PersonalsSubcircuitView> {
                       // ignore: use_build_context_synchronously
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Error de Asignación', style: GoogleFonts.inter(color: Colors.black)),
-                        content: Text(e.toString()), // Mostrar el mensaje de la excepción
+                        title: Text('Error de Asignación',
+                        style: GoogleFonts.inter(color: Colors.black),),
+                        content: Text(e.toString()),
                         actions: [
                           TextButton(
-                            child: Text('OK', style: GoogleFonts.inter(color: Colors.black)),
+                            child: Text('OK',
+                              style: GoogleFonts.inter(color: Colors.black),),
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                         ],

@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/personal_subcircuito/personsub_controller.dart';
+import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
 import 'package:sispol_7/models/administration/personal/personal_model.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:pdf/pdf.dart';
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_subcircuit_view.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
@@ -11,8 +16,7 @@ import 'package:sispol_7/widgets/footer.dart';
 class SubcircuitoAssignedView extends StatefulWidget {
   final String subcircuitoName;
   
-  // ... (mismo código que antes) ...
-  SubcircuitoAssignedView({super.key, required this.subcircuitoName});
+  const SubcircuitoAssignedView({super.key, required this.subcircuitoName});
   @override
   // ignore: library_private_types_in_public_api
   _SubcircuitoAssignedViewState createState() => _SubcircuitoAssignedViewState();
@@ -23,11 +27,165 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
   final PersonSubController _personsubcontroller = PersonSubController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Map<String, dynamic>> personalData = []; // Declaramos personalData aquí
+
+
+  Future<void> _loadData() async {
+    final data = await _personsubcontroller.getAssignedPersonalWithDependency(widget.subcircuitoName);
+    setState(() {
+      personalData = data;
+    });
+  }
+
+  void _refreshData() {
+    _loadData();
+  }
 
   @override
   void initState() {
     super.initState();
+    _loadData(); // Carga los datos al iniciar el widget
   }
+
+  void _showReassignDialog(BuildContext context, List<Map<String, dynamic>> data) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        String? selectedSubcircuito;
+        return AlertDialog(
+          title: Text('Reasignar a Subcircuito',
+            style: GoogleFonts.inter(color: Colors.black),),
+          content: FutureBuilder<List<Dependecy>>(
+            future: _personsubcontroller.fetchDependencias(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error al cargar dependencias: ${snapshot.error}');
+              } else {
+                return DropdownButtonFormField<String>(
+                  value: selectedSubcircuito,
+                  items: snapshot.data!.map((dependencia) {
+                    return DropdownMenuItem<String>(
+                      value: dependencia.namesCircuit,
+                      child: Text(dependencia.namesCircuit),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSubcircuito = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Nuevo Subcircuito',
+                    hintStyle: GoogleFonts.inter(color: Colors.black),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, seleccione un subcircuito';
+                    }
+                    return null;
+                  },
+                );
+                  }
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancelar',
+            style: GoogleFonts.inter(color: Colors.black),),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (selectedSubcircuito != null) {
+                  try {
+                    await _personsubcontroller.reassignSelected(context, personalData, selectedSubcircuito!, widget.subcircuitoName); // Usar selectedSubcircuito aquí
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context); // Cerrar el diálogo después de reasignar
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Reasignación exitosa',
+                      style: GoogleFonts.inter(color: Colors.black),),)
+                    );
+                    setState(() {
+                      _personsubcontroller.clearSelection();
+                    });
+                    _loadData();
+                  } catch (e) {
+                    showDialog(
+                      // ignore: use_build_context_synchronously
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Error de Reasignación',
+                        style: GoogleFonts.inter(color: Colors.black),),
+                        content: Text(e.toString()),
+                        actions: [
+                          TextButton(
+                            child: Text('OK',
+                            style: GoogleFonts.inter(color: Colors.black),),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text('Reasignar',
+                style: GoogleFonts.inter(color: Colors.black),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _generatePDF() async {
+  final pdf = pw.Document();
+  
+  pdf.addPage(
+    pw.Page(
+      build: (pw.Context context) {
+        // ignore: deprecated_member_use
+        return pw.Table.fromTextArray(
+          headers: <String>[
+            'ID', 'Cédula', 'Nombres', 'Apellidos', 'Provincia', 'Parroquia', 
+            'Nombre Circuito', 'Fecha de Nacimiento', 'Tipo de Sangre', 
+            'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'
+            'Fecha Asignacion'
+          ],
+          data: personalData.map((item) {
+            final personal = item['personal'] as Personal;
+            final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?;
+            final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
+            return [
+              personal.id.toString(),
+              personal.cedula.toString(),
+              personal.name,
+              personal.surname,
+              subcircuitoData?['provincia'] ?? 'N/A',
+              subcircuitoData?['parroquia'] ?? 'N/A',
+              subcircuitoData?['nombreCircuito'] ?? 'N/A',
+              personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
+              personal.tipoSangre,
+              personal.ciudadNaci,
+              personal.telefono.toString(),
+              personal.rango,
+              personal.dependencia,
+              personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
+              fechaAsignacion != null ? _dateFormat.format(fechaAsignacion) : 'N/A', // Formatea y agrega la fecha de asignación
+            ];
+          }).toList(),
+        );
+      },
+    ),
+  );
+
+  await Printing.layoutPdf(
+    onLayout: (PdfPageFormat format) async => pdf.save(),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +217,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
         ),
       );
     }
+    
 
     return Scaffold(
     key: scaffoldKey,
@@ -94,12 +253,12 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
                   _buildColumn('Rango'),
                   _buildColumn('Dependencia'),
                   _buildColumn('Fecha de \nCreación'),
-
+                  _buildColumn('Fecha de \nAsignación'),
                 ],
                 rows: data.map((item) {
                   final personal = item['personal'] as Personal;
                   final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?; 
-
+                  final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
                   return DataRow(
                     selected: _personsubcontroller.selectedIds.contains(personal.id),
                     onSelectChanged: (selected) {
@@ -130,6 +289,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
                       _buildCell(personal.rango),
                       _buildCell(personal.dependencia),
                       _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
+                      _buildCell(fechaAsignacion != null ? _dateFormat.format((fechaAsignacion as Timestamp).toDate()) : 'N/A'),
                     ],
                   );
                 }).toList(),
@@ -143,6 +303,11 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
         children: [
           FloatingActionButton(
             onPressed: () {
+              if (_personsubcontroller.selectedIds.isNotEmpty) {
+                _showReassignDialog(context, personalData); // Pasa personalData aquí
+              } else {
+                // ... (mostrar mensaje de error)
+              }
             },
             tooltip: 'Modificar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
@@ -150,8 +315,39 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
           ),
           const SizedBox(width: 20),
         
-         FloatingActionButton(
-            onPressed: () {
+          FloatingActionButton(
+            onPressed: () async {
+              if (_personsubcontroller.selectedIds.isNotEmpty) {
+                try {
+                  await _personsubcontroller.deleteSelected(widget.subcircuitoName);
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Registros eliminados exitosamente'))
+                  );
+                  _loadData(); // Recargar los datos después de eliminar
+                } catch (e) {
+                  // ignore: avoid_print
+                  print('Error al eliminar: $e');
+                  showDialog(
+                    // ignore: use_build_context_synchronously
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Error al Eliminar'),
+                      content: Text(e.toString()),
+                      actions: [
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Seleccione al menos un registro.'))
+                );
+              }
             },
             tooltip: 'Eliminar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
@@ -161,6 +357,8 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
 
           FloatingActionButton(
             onPressed: () {
+              // Acción para refrescar o actualizar
+              _refreshData();
             },
             tooltip: 'Refrescar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
@@ -169,7 +367,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed: (){},
+            onPressed: _generatePDF,
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
