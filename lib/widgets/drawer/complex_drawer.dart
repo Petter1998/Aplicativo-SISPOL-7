@@ -36,12 +36,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    //double width = MediaQuery.of(context).size.width;
-    // Determinando el tamaño de los iconos basado en el ancho de la pantalla
-    //double iconSize = screenWidth > 480 ? 34.0 : 20.0;
-
-    //double width = screenWidth * 0.7;
-
+    
     return Container(
       width: 270,
       height: MediaQuery.of(context).size.height,
@@ -60,7 +55,6 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
   }
 
   Widget blackIconTiles() {
-    //double width = MediaQuery.of(context).size.width;
     return Container(
       width: 250,
       height: MediaQuery.of(context).size.height,
@@ -75,13 +69,13 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 CDM cdm = cdms[index];
                 bool selected = selectedIndex == index;
 
-                // Si el ítem tiene submenús, usa ExpansionTile; si no, usa ListTile
+                // Si el ítem tiene submenús, usamos ExpansionTile; si no, usamos ListTile
                 if (cdm.submenus.isEmpty) {
                   return ListTile(
                     leading: Icon(cdm.icon, color: Colors.white),
                     title: Text(
                       cdm.title,
-                      style: GoogleFonts.inter(color: Colors.white),
+                      style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
                     ),
                     onTap: () {
                       if (cdm.route.isNotEmpty) {
@@ -98,7 +92,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                   },
                   leading: Icon(cdm.icon, color: Colors.white),
                   title: Text(
-                      cdm.title, style: GoogleFonts.inter(color: Colors.white),
+                      cdm.title, style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
                   ),
                   trailing: cdm.submenus.isEmpty
                       ? null
@@ -120,6 +114,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
                         } else if (subMenu == "Personal-Subcircuito") {
                           Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
+                        } else if (subMenu == "Vehiculo-Subcircuito") {
+                          Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -167,7 +163,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
   Widget subMenuWidget(List<String> submenus, bool isValidSubMenu, String route) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: isValidSubMenu ? submenus.length.toDouble() * 43 : 50,
+      height: isValidSubMenu ? submenus.length.toDouble() * 53 : 2,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
         color: isValidSubMenu ? Colors.black : Colors.transparent,
@@ -197,6 +193,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
               } else if (subMenu == "Personal-Subcircuito") {
                 Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
+              } else if (subMenu == "Vehiculo-Subcircuito") {
+                Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
               }
             },
           );

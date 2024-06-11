@@ -1,39 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/controllers/administration/personal_subcircuito/personsub_controller.dart';
+import 'package:sispol_7/controllers/administration/vehiculo_subcircuito/vehisub_controller.dart';
 import 'package:sispol_7/models/administration/dependencias/dependecy_model.dart';
-import 'package:sispol_7/models/administration/personal/personal_model.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
-import 'package:sispol_7/views/administration/personal_subcircuito/personal_subcircuit_view.dart';
+import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dart';
+import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 
-class SubcircuitoAssignedView extends StatefulWidget {
+class VehicleSubcircuitoAssignedView extends StatefulWidget {
   final String subcircuitoName;
   
-  const SubcircuitoAssignedView({super.key, required this.subcircuitoName});
+  const VehicleSubcircuitoAssignedView({super.key, required this.subcircuitoName});
   @override
   // ignore: library_private_types_in_public_api
-  _SubcircuitoAssignedViewState createState() => _SubcircuitoAssignedViewState();
+  _VehicleSubcircuitoAssignedViewState createState() => _VehicleSubcircuitoAssignedViewState();
 
 }
 
-class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
-  final PersonSubController _personsubcontroller = PersonSubController();
+class _VehicleSubcircuitoAssignedViewState extends State<VehicleSubcircuitoAssignedView> {
+  final VehiSubController _vehisubcontroller = VehiSubController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Map<String, dynamic>> personalData = []; // Declaramos personalData aquí
+  List<Map<String, dynamic>> vehicleData = []; // Declaramos vehicleData aquí
 
 
   Future<void> _loadData() async {
-    final data = await _personsubcontroller.getAssignedPersonalWithDependency(widget.subcircuitoName);
+    final data = await _vehisubcontroller.getAssignedVehicleWithDependency(widget.subcircuitoName);
     setState(() {
-      personalData = data;
+      vehicleData = data;
     });
   }
 
@@ -56,7 +56,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
           title: Text('Reasignar a Subcircuito',
             style: GoogleFonts.inter(color: Colors.black),),
           content: FutureBuilder<List<Dependecy>>(
-            future: _personsubcontroller.fetchDependencias(),
+            future: _vehisubcontroller.fetchDependencias(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -100,7 +100,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
               onPressed: () async {
                 if (selectedSubcircuito != null) {
                   try {
-                    await _personsubcontroller.reassignSelected(context, personalData, selectedSubcircuito!, widget.subcircuitoName); // Usar selectedSubcircuito aquí
+                    await _vehisubcontroller.reassignSelected(context, vehicleData, selectedSubcircuito!, widget.subcircuitoName); // Usar selectedSubcircuito aquí
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context); // Cerrar el diálogo después de reasignar
                     // ignore: use_build_context_synchronously
@@ -109,7 +109,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
                       style: GoogleFonts.inter(color: Colors.black),),)
                     );
                     setState(() {
-                      _personsubcontroller.clearSelection();
+                      _vehisubcontroller.clearSelection();
                     });
                     _loadData();
                   } catch (e) {
@@ -150,30 +150,38 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
         // ignore: deprecated_member_use
         return pw.Table.fromTextArray(
           headers: <String>[
-            'ID', 'Cédula', 'Nombres', 'Apellidos', 'Provincia', 'Parroquia', 
-            'Nombre Circuito', 'Fecha de Nacimiento', 'Tipo de Sangre', 
-            'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'
-            'Fecha Asignacion'
+            'ID', 'Marca', 'Modelo', 'Motor', 'Placa', 'Chasis', 'Tipo', 'Cilindraje',
+              'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 'Dependencia',
+              'Responsable 1', 'Responsable 2', 'Responsable 3',
+              'Responsable 4','Fecha de Creación', 'Fecha Asignacion'
           ],
-          data: personalData.map((item) {
-            final personal = item['personal'] as Personal;
+          data: vehicleData.map((item) {
+            final vehicle = item['vehiculos'] as Vehicle;
             final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?;
             final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
             return [
-              personal.id.toString(),
-              personal.cedula.toString(),
-              personal.name,
-              personal.surname,
+              vehicle.id.toString(),
+              vehicle.marca,
+              vehicle.modelo,
+              vehicle.motor,
+              vehicle.placa,
+              vehicle.chasis,
               subcircuitoData?['provincia'] ?? 'N/A',
               subcircuitoData?['parroquia'] ?? 'N/A',
               subcircuitoData?['nombreCircuito'] ?? 'N/A',
-              personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
-              personal.tipoSangre,
-              personal.ciudadNaci,
-              personal.telefono.toString(),
-              personal.rango,
-              personal.dependencia,
-              personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
+              vehicle.tipo,
+              vehicle.cilindraje.toString(),
+              vehicle.capacidadPas.toString(),
+              vehicle.capacidadCar.toString(),
+              vehicle.kilometraje.toString(),
+              vehicle.dependencia,
+              vehicle.responsable1,
+              vehicle.responsable2,
+              vehicle.responsable3,
+              vehicle.responsable4,
+              vehicle.fechacrea != null
+                  ? _dateFormat.format(vehicle.fechacrea!)
+                  : 'N/A',
               fechaAsignacion != null ? _dateFormat.format(fechaAsignacion) : 'N/A', // Formatea y agrega la fecha de asignación
             ];
           }).toList(),
@@ -224,7 +232,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _personsubcontroller.getAssignedPersonalWithDependency(widget.subcircuitoName),
+        future: _vehisubcontroller.getAssignedVehicleWithDependency(widget.subcircuitoName),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -240,55 +248,69 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
                 columns:  [
                   _buildColumn('Select'),
                   _buildColumn('ID'),
-                  _buildColumn('Identificación'),
-                  _buildColumn('Nombres'),
-                  _buildColumn('Apellidos'),
+                  _buildColumn('Marca'),
+                  _buildColumn('Modelo'),
+                  _buildColumn('Motor'),
+                  _buildColumn('Placa'),
+                  _buildColumn('Chasis'),
                   _buildColumn('Provincia'),
                   _buildColumn('Parroquia'),
                   _buildColumn('Nombre \nCircuito'),
-                  _buildColumn('Fecha de \nNacimiento'),
-                  _buildColumn('Tipo de \nSangre'),
-                  _buildColumn('Ciudad de \nNacimiento'),
-                  _buildColumn('Teléfono'),
-                  _buildColumn('Rango'),
+                  _buildColumn('Tipo'),
+                  _buildColumn('Cilindraje\n (cc)'),
+                  _buildColumn('Capacidad de \n  Pasajeros'),
+                  _buildColumn('Capacidad de \n  Carga(Ton)'),
+                  _buildColumn('Kilometraje'),
                   _buildColumn('Dependencia'),
+                  _buildColumn('Responsable \n1'),
+                  _buildColumn('Responsable \n2'),
+                  _buildColumn('Responsable \n3'),
+                  _buildColumn('Responsable \n4'),
                   _buildColumn('Fecha de \nCreación'),
                   _buildColumn('Fecha de \nAsignación'),
                 ],
                 rows: data.map((item) {
-                  final personal = item['personal'] as Personal;
+                  final vehicle = item['vehiculos'] as Vehicle;
                   final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?; 
                   final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
                   return DataRow(
-                    selected: _personsubcontroller.selectedIds.contains(personal.id),
+                    selected: _vehisubcontroller.selectedIds.contains(vehicle.id),
                     onSelectChanged: (selected) {
                       setState(() {
-                        _personsubcontroller.toggleSelection(personal.id);
+                        _vehisubcontroller.toggleSelection(vehicle.id);
                       });
                     },
                     cells: [
                       DataCell(Checkbox(
-                        value: _personsubcontroller.selectedIds.contains(personal.id),
+                        value: _vehisubcontroller.selectedIds.contains(vehicle.id),
                         onChanged: (selected) {
                           setState(() {
-                            _personsubcontroller.toggleSelection(personal.id);
+                            _vehisubcontroller.toggleSelection(vehicle.id);
                           });
                         },
                       )),
-                      _buildCell(personal.id.toString()),
-                      _buildCell(personal.cedula.toString()),
-                      _buildCell(personal.name),
-                      _buildCell(personal.surname),
+                      _buildCell(vehicle.id.toString()),
+                      _buildCell(vehicle.marca),
+                      _buildCell(vehicle.modelo),
+                      _buildCell(vehicle.motor),
+                      _buildCell(vehicle.placa),
+                      _buildCell(vehicle.chasis),
                       _buildCell(subcircuitoData?['parroquia'] ?? 'N/A'),      
                       _buildCell(subcircuitoData?['provincia'] ?? 'N/A'), 
                       _buildCell(subcircuitoData?['nombreCircuito'] ?? 'N/A'),
-                      _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
-                      _buildCell(personal.tipoSangre),
-                      _buildCell(personal.ciudadNaci),
-                      _buildCell(personal.telefono.toString()),
-                      _buildCell(personal.rango),
-                      _buildCell(personal.dependencia),
-                      _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
+                      _buildCell(vehicle.tipo),
+                      _buildCell(vehicle.cilindraje.toString()),
+                      _buildCell(vehicle.capacidadPas.toString()),
+                      _buildCell(vehicle.capacidadCar.toString()),
+                      _buildCell(vehicle.kilometraje.toString()),
+                      _buildCell(vehicle.dependencia),
+                      _buildCell(vehicle.responsable1),
+                      _buildCell(vehicle.responsable2),
+                      _buildCell(vehicle.responsable3),
+                      _buildCell(vehicle.responsable4),
+                      _buildCell(vehicle.fechacrea != null
+                          ? _dateFormat.format(vehicle.fechacrea!)
+                          : 'N/A'),
                       _buildCell(fechaAsignacion != null ? _dateFormat.format((fechaAsignacion as Timestamp).toDate()) : 'N/A'),
                     ],
                   );
@@ -303,8 +325,8 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              if (_personsubcontroller.selectedIds.isNotEmpty) {
-                _showReassignDialog(context, personalData); // Pasa personalData aquí
+              if (_vehisubcontroller.selectedIds.isNotEmpty) {
+                _showReassignDialog(context, vehicleData); // Pasa vehicleData aquí
               } else {
                 throw Exception('No se ha podido reasignar');
               }
@@ -317,9 +339,9 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
         
           FloatingActionButton(
             onPressed: () async {
-              if (_personsubcontroller.selectedIds.isNotEmpty) {
+              if (_vehisubcontroller.selectedIds.isNotEmpty) {
                 try {
-                  await _personsubcontroller.deleteSelected(widget.subcircuitoName);
+                  await _vehisubcontroller.deleteSelected(widget.subcircuitoName);
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Registros eliminados exitosamente'))
@@ -378,7 +400,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PersonalsSubcircuitView()),
+                MaterialPageRoute(builder: (context) => const VehiclesSubcircuitView()),
               );
             },
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),

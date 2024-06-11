@@ -12,11 +12,16 @@ import 'package:sispol_7/views/administration/flota_vehicular/vehicle_view.dart'
 import 'package:sispol_7/views/administration/personal/personal_view.dart';
 import 'package:sispol_7/views/administration/personal/registration_person_wins.dart';
 import 'package:sispol_7/views/administration/personal/registration_personal_screen.dart';
+import 'package:sispol_7/views/administration/personal_subcircuito/personal_assig_subcircuit.dart';
+import 'package:sispol_7/views/administration/personal_subcircuito/personal_search_screen.dart';
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_subcircuit_view.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
 import 'package:sispol_7/views/administration/usuarios/user_view.dart';
+import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_assig_subcircuit.dart';
+import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_search_screen.dart';
+import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
 import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/login_screen.dart';
 import 'package:sispol_7/views/recuperation/changue_password_screen.dart';
@@ -52,7 +57,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const VehiclesView(),  //const HomePage
+        '/home': (context) =>  const VehiclesSubcircuitView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -73,11 +78,11 @@ class MyApp extends StatelessWidget {
         '/registvehicle': (context) => const RegistrationVehicleScreen(),
         '/registvehiclewins': (context) => RegistrationVehicleWins(),
         '/listpersub': (context) => const PersonalsSubcircuitView(),
-        //'/registvehicle': (context) => const RegistrationVehicleScreen(),
-        //'/registvehiclewins': (context) => RegistrationVehicleWins(),
-
-
-        //'/dashboard': (context) =>  DashboardScreen(),
+        '/assigpersub': (context) => const SubcircuitoAssignedView(subcircuitoName: '',),
+        '/searchperssub': (context) => const PersonSearchResultView(searchResults: [],),
+        '/listvehisub': (context) => const VehiclesSubcircuitView(),
+        '/assigvehisub': (context) => const VehicleSubcircuitoAssignedView(subcircuitoName: '',),
+        '/searchvehisub': (context) => const VehiculoSearchResultView(searchResults: [],),
 
       },
     );
