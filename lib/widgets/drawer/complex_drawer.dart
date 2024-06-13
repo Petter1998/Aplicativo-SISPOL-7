@@ -116,6 +116,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
                         } else if (subMenu == "Vehiculo-Subcircuito") {
                           Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
+                        } else if (subMenu == "Nueva Solicitud") {
+                          Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -195,6 +197,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
               } else if (subMenu == "Vehiculo-Subcircuito") {
                 Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
+              } else if (subMenu == "Nueva Solicitud") {
+                Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
               }
             },
           );

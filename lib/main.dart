@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sispol_7/firebase_options.dart';
-import 'package:sispol_7/models/administration/users/users_model.dart';
 import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart';
-import 'package:sispol_7/views/administration/dependencias/edit_dependecy_screen.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_screen.dart';
@@ -15,7 +12,6 @@ import 'package:sispol_7/views/administration/personal/registration_personal_scr
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_assig_subcircuit.dart';
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_search_screen.dart';
 import 'package:sispol_7/views/administration/personal_subcircuito/personal_subcircuit_view.dart';
-import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_wins.dart';
 import 'package:sispol_7/views/administration/usuarios/user_view.dart';
@@ -24,6 +20,7 @@ import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_sear
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
 import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/login_screen.dart';
+import 'package:sispol_7/views/maintenance/solicitud/validation_screen.dart';
 import 'package:sispol_7/views/recuperation/changue_password_screen.dart';
 import 'package:sispol_7/views/recuperation/success_page.dart';
 import 'package:sispol_7/views/registration_screen.dart';
@@ -57,7 +54,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const VehiclesSubcircuitView(),  //const HomePage
+        '/home': (context) =>  ValidationScreen(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -83,7 +80,7 @@ class MyApp extends StatelessWidget {
         '/listvehisub': (context) => const VehiclesSubcircuitView(),
         '/assigvehisub': (context) => const VehicleSubcircuitoAssignedView(subcircuitoName: '',),
         '/searchvehisub': (context) => const VehiculoSearchResultView(searchResults: [],),
-
+        '/validationscreen': (context) => ValidationScreen(),
       },
     );
   }
