@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/maintenance/validation_controller.dart';
 import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
+import 'package:sispol_7/views/maintenance/solicitud/success_validation_screen.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -36,7 +37,7 @@ class ValidationScreen extends StatelessWidget {
               'Ingrese su cédula de identidad o sus dos nombres:',
               style: GoogleFonts.inter(fontSize: titleFontSize, color: Colors.black),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             TextField(
               controller: controller.identiController,
               keyboardType: TextInputType.text,
@@ -46,7 +47,7 @@ class ValidationScreen extends StatelessWidget {
                 icon: Icon(FontAwesomeIcons.addressCard, size: iconSize, color: Colors.black),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -59,15 +60,30 @@ class ValidationScreen extends StatelessWidget {
               ),
               child:Text('Validar', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold,color: Colors.black)), 
               onPressed: () async {
-                String? nombreCompleto = await controller.validatePerson(context);
-                if (nombreCompleto != null) {
-                  Navigator.push(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FailedValidationScreen(nombreCompleto: nombreCompleto),
-                    ),
-                  );
+                Map<String, dynamic>? result = await controller.validatePerson(context);
+                if (result != null) {
+                  String nombreCompleto = result['nombreCompleto'];
+                  var vehicleDoc = result['vehicleDoc'];
+                  if (vehicleDoc != null) {
+                    Navigator.push(
+                      // ignore: use_build_context_synchronously
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VehicleInfoScreen(
+                          vehicleDoc: vehicleDoc,
+                          nombreCompleto: nombreCompleto,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      // ignore: use_build_context_synchronously
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FailedValidationScreen(nombreCompleto: nombreCompleto),
+                      ),
+                    );
+                  }
                 }
               },
             ),

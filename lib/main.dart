@@ -19,7 +19,11 @@ import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_assi
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_search_screen.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
 import 'package:sispol_7/views/dashboard_screen.dart';
+import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/login_screen.dart';
+import 'package:sispol_7/views/maintenance/registro/register_sol_view.dart';
+import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
+import 'package:sispol_7/views/maintenance/solicitud/success_validation_screen.dart';
 import 'package:sispol_7/views/maintenance/solicitud/validation_screen.dart';
 import 'package:sispol_7/views/recuperation/changue_password_screen.dart';
 import 'package:sispol_7/views/recuperation/success_page.dart';
@@ -81,6 +85,9 @@ class MyApp extends StatelessWidget {
         '/assigvehisub': (context) => const VehicleSubcircuitoAssignedView(subcircuitoName: '',),
         '/searchvehisub': (context) => const VehiculoSearchResultView(searchResults: [],),
         '/validationscreen': (context) => ValidationScreen(),
+        '/failedvalidationscreen': (context) => FailedValidationScreen(nombreCompleto: '',),
+        '/lisreggitsscreen': (context) => const RegisterSolView (),
+        '/listordenscreen': (context) => const DocumentosView (),
       },
     );
   }

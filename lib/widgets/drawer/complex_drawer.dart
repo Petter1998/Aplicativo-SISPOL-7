@@ -7,11 +7,9 @@ import 'package:sispol_7/widgets/drawer/CDM.dart';
 class ComplexDrawer extends StatefulWidget {
   const ComplexDrawer({super.key});
   
-
   @override
   // ignore: library_private_types_in_public_api
   _ComplexDrawerState createState() => _ComplexDrawerState();
-
 }
 
 class _ComplexDrawerState extends State<ComplexDrawer> {
@@ -118,6 +116,10 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
                         } else if (subMenu == "Nueva Solicitud") {
                           Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
+                        } else if (subMenu == "Registro de Mantenimiento") {
+                          Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
+                        } else if (subMenu == "Registro de Ordenes") {
+                          Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -138,7 +140,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
   Widget invisibleSubMenus() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
-      width: isExpanded ? 0 : 165,
+      width: isExpanded ? 0 : 175,
       color: Colors.transparent,
       child: Column(
         children: [
@@ -199,6 +201,10 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
               } else if (subMenu == "Nueva Solicitud") {
                 Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
+              } else if (subMenu == "Registro de Mantenimiento") {
+                Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
+              } else if (subMenu == "Registro de Ordenes") {
+                Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
               }
             },
           );
@@ -350,7 +356,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.restore_page_outlined, "Reportes", ["Nuevo Reporte", "Registro de Reportes"]),
     CDM(Icons.add, "Nueva Orden", [], route: '/new-order'),
     CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
-    CDM(Icons.add, "Nueva Solicitud", [], route: '/new-request'),
+    CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
     CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
     CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
   ];
