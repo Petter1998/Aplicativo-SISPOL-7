@@ -20,6 +20,8 @@ import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_sear
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
 import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
+import 'package:sispol_7/views/documents/order_wins.dart';
+import 'package:sispol_7/views/documents/work_order.dart';
 import 'package:sispol_7/views/login_screen.dart';
 import 'package:sispol_7/views/maintenance/registro/register_sol_view.dart';
 import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  ValidationScreen(),  //const HomePage
+        '/home': (context) =>  DocumentosView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -88,6 +90,8 @@ class MyApp extends StatelessWidget {
         '/failedvalidationscreen': (context) => FailedValidationScreen(nombreCompleto: '',),
         '/lisreggitsscreen': (context) => const RegisterSolView (),
         '/listordenscreen': (context) => const DocumentosView (),
+        '/registdocwins': (context) => OrderWins(),
+        '/registdoc': (context) => const WorkOrderScreen(),
       },
     );
   }

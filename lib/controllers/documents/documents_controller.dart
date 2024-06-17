@@ -41,7 +41,7 @@ class DocumentosController1 {
 
 class DocumentosController2 {
   final DocumentosController1 documentosController1 = DocumentosController1();
-  final CollectionReference ordenCollection = FirebaseFirestore.instance.collection('ordenes_trabajo');
+  final CollectionReference ordenCollection = FirebaseFirestore.instance.collection('documentos');
 
   Future<void> registerDoc(BuildContext context, Map<String, dynamic> docuData) async {
     try {

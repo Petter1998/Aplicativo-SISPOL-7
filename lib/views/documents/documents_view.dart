@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pdf/pdf.dart';
+//import 'package:pdf/pdf.dart';
 import 'package:sispol_7/controllers/documents/documents_controller.dart';
 import 'package:sispol_7/models/documents/documents_model.dart';
+import 'package:sispol_7/views/documents/work_order.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+//import 'package:pdf/widgets.dart' as pw;
+//import 'package:printing/printing.dart';
 
 class DocumentosView extends StatefulWidget {
   const DocumentosView({super.key});
@@ -118,50 +119,6 @@ class _DocumentosViewState extends State<DocumentosView> {
       },
     );
   }
-
-  void _showDeleteDialog(BuildContext context, Documentos documentos) {
-    final TextEditingController deleteController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Eliminar Orden de Trabajo'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('¿Está seguro de que desea eliminar esta Orden de Trabajo?'),
-              TextField(
-                controller: deleteController,
-                decoration: const InputDecoration(
-                  labelText: 'Observación',
-                  hintText: 'Ingrese la observación',
-                ),
-                maxLines: 3,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancelar'
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Eliminar'),
-              onPressed: () async {
-               // String observation = observationController.text;
-                
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   
   @override
   Widget build(BuildContext context) {
@@ -212,7 +169,7 @@ class _DocumentosViewState extends State<DocumentosView> {
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
-                 _buildColumn('ID'),
+                  _buildColumn('ID'),
                   _buildColumn('Fecha'),
                   _buildColumn('Hora'),
                   _buildColumn('Kilometraje Actual'),
@@ -227,13 +184,14 @@ class _DocumentosViewState extends State<DocumentosView> {
                   _buildColumn('Detalle'),
                   _buildColumn('Tipo de Mantenimiento'),
                   _buildColumn('Mantenimiento Complementario'),
+                  _buildColumn('Total'),
                   _buildColumn('Fecha de Creación'),
                   _buildColumn('Opciones'),
                 ],
                 rows: documentos.map((documentos) {
                   return DataRow(cells: [
                     _buildCell(documentos.id.toString()),
-                    _buildCell(_dateFormat.format(documentos.fecha)),
+                    _buildCell(documentos.fecha.toString()),
                     _buildCell(documentos.hora),
                     _buildCell(documentos.kilometrajeActual.toString()),
                     _buildCell(documentos.estado),
@@ -243,31 +201,32 @@ class _DocumentosViewState extends State<DocumentosView> {
                     _buildCell(documentos.modelo),
                     _buildCell(documentos.cedula),
                     _buildCell(documentos.responsable),
-                    _buildCell(documentos.asunto.toString()),
+                    _buildCell(documentos.asunto),
                     _buildCell(documentos.detalle),
                     _buildCell(documentos.tipoMant),
                     _buildCell(documentos.mantComple),
+                    _buildCell(documentos.total.toString()),
                     _buildCell(documentos.fechacrea != null
                         ? _dateFormat.format(documentos.fechacrea!)
                         : 'N/A'),
-                    DataCell(Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            //Navigator.of(context).push(MaterialPageRoute(
-                             // builder: (context) => EditVehicleScreen(vehicle: vehicle,),
-                           // ));
-                          },
+                    DataCell(
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                _controller.deleteDoc(documentos.id);
+                                setState(() {
+                                  _fetchDocumentos();
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                          // _showDeleteDialog(context, vehicle);
-                          },
-                        ),
-                      ],
-                    )),
+                      ),
+                    )
                   ]);
                 }).toList(),
               ),
@@ -280,14 +239,14 @@ class _DocumentosViewState extends State<DocumentosView> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              //Navigator.push(
-               //context,
-              // MaterialPageRoute(builder: (context) => const RegistrationVehicleScreen()),
-              //);
+              Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const WorkOrderScreen()),
+              );
             },
             // ignore: sort_child_properties_last
             child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Registrar un nuevo Vehiculo',
+            tooltip: 'Nueva Orden de Trabajo',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
@@ -317,6 +276,14 @@ class _DocumentosViewState extends State<DocumentosView> {
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
+          ),
+          const SizedBox(width: 20),
+
+          FloatingActionButton(
+            onPressed: (){},
+            tooltip: 'Finalizar',
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+            child: Icon(Icons.task_rounded, size: iconSize,color:  Colors.black),
           ),
         ],
       ),

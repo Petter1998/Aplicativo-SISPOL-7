@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Documentos {
   final int id;
-  final DateTime fecha;
+  final String fecha;
   final String hora;
   final int kilometrajeActual;
   final String estado;
@@ -16,6 +16,7 @@ class Documentos {
   final String detalle;
   final String tipoMant;
   final String mantComple;
+  final double total;
   final DateTime? fechacrea;
 
   Documentos({
@@ -24,13 +25,13 @@ class Documentos {
     required this.marca, required this.modelo, required this.cedula,
     required this.responsable, required this.asunto,
     required this.detalle, required this.tipoMant,
-    required this.mantComple, this.fechacrea,
+    required this.mantComple, required this.total, this.fechacrea,
   });
 
   factory Documentos.fromMap(Map<String, dynamic> data, String documentId) {
     return Documentos(
       id: data['id'] ?? 0,
-      fecha: (data['fecha'] as Timestamp).toDate(),
+      fecha: data['fecha'] ?? '',
       hora: data['hora'] ?? '',
       kilometrajeActual: data['kilometrajeActual'] ?? 0,
       estado: data['estado'] ?? 'N/A',
@@ -40,10 +41,11 @@ class Documentos {
       modelo: data['modelo'] ?? '',
       cedula: data['cedula'] ?? '',
       responsable: data['responsable'] ?? '',
-      asunto: data['asunto'] ?? 0.0,
+      asunto: data['asunto'] ?? '',
       detalle: data['detalle'] ?? '',
       tipoMant: data['tipoMantenimiento'] ?? '',
       mantComple: data['mantenimientoComplementario'] ?? '',
+      total: data['total'] ?? 0.0,
       fechacrea: data['fechaCreacion'] != null 
         ? (data['fechaCreacion'] as Timestamp).toDate() 
         : null,
@@ -53,7 +55,7 @@ class Documentos {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'fecha': Timestamp.fromDate(fecha),
+      'fecha': fecha,
       'hora': hora,
       'kilometrajeActual': kilometrajeActual,
       'estado': estado,
@@ -67,6 +69,7 @@ class Documentos {
       'detalle': detalle,
       'tipoMantenimiento': tipoMant,
       'mantenimientoComplementario': mantComple,
+      'total': total,
       'fechaCreacion': fechacrea != null ? Timestamp.fromDate(fechacrea!) : null,
     };
   }

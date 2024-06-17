@@ -119,7 +119,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                         } else if (subMenu == "Registro de Mantenimiento") {
                           Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
                         } else if (subMenu == "Registro de Ordenes") {
-                          Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
+                          Navigator.pushNamed(context, '/listordenscreen'); 
+                        } else if (subMenu == "Nueva Orden") {
+                          Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -205,6 +207,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
               } else if (subMenu == "Registro de Ordenes") {
                 Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
+              } else if (subMenu == "Nueva Orden") {
+                Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
               }
             },
           );
@@ -354,7 +358,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
     CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
     CDM(Icons.restore_page_outlined, "Reportes", ["Nuevo Reporte", "Registro de Reportes"]),
-    CDM(Icons.add, "Nueva Orden", [], route: '/new-order'),
+    CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
     CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
     CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
