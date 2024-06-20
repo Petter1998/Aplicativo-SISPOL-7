@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +8,9 @@ import 'package:sispol_7/controllers/documents/documents_controller.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:file_picker/file_picker.dart';
 
 
 class WorkOrderScreen extends StatefulWidget {
@@ -33,6 +38,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
   final TextEditingController _detalleController = TextEditingController();
   final TextEditingController _tipoMantController = TextEditingController();
   final TextEditingController _mantComplController = TextEditingController();
+  final TextEditingController _tipocontController = TextEditingController();
   final DocumentosController2 _documentosController2 = DocumentosController2();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
@@ -45,9 +51,6 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
 
   String? _selectedEstado;
   final List<String> estados = ['En Progreso', 'Finalizada'];
-
-  String? _selectedContrato;
-  final List<String> contratos = ['Nombramiento', 'Comisión de Servicios', 'Contrato Ocasional', 'Contarto de servicios profesionales'];
 
   bool isMoto = true; // Variable para indicar si es motocicleta o carro
 
@@ -63,6 +66,43 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
   bool isRevisionSuspension = false;
   bool isRevisionEscape = false;
 
+  bool showSubTotalAndIva = false; // Variable para controlar la visibilidad
+
+  File? _image;
+  final picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        // ignore: avoid_print
+        print('No hay imagen seleccionada.');
+      }
+    });
+  }
+
+  Future<String?> _uploadImage(File image) async {
+    try {
+      final storageReference = FirebaseStorage.instance
+          .ref()
+          .child('work_order_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final uploadTask = await storageReference.putFile(image); // Espera la tarea de subida
+      final downloadURL = await uploadTask.ref.getDownloadURL();
+      // ignore: avoid_print
+      print('URL de la imagen subida: $downloadURL'); // Mensaje de depuración
+      return downloadURL;
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error al subir la imagen: $e');
+      return null;
+    }
+  }
+
+
+  
   void _updateCosts() {
   subTotal = 0.0;
 
@@ -215,6 +255,28 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
     }
   }
 
+  String? _selectedTipoContrato;
+  List<String> tipoContratos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTipoContratos();
+  }
+
+  Future<void> _fetchTipoContratos() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance.collection('contratos').get();
+      final tipos = snapshot.docs.map((doc) => doc['tipoContrato'].toString()).toSet().toList();
+      setState(() {
+        tipoContratos = tipos;
+      });
+    } catch (e) {
+      // Manejo de error
+      print('Error fetching tipoContrato: $e');
+    }
+  }
+
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -231,6 +293,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
     double iconSize = screenWidth > 480 ? 34.0 : 27.0;
     // Establecemos el padding basado en el ancho de la pantalla
     double horizontalPadding;
+
     if (screenWidth < 800) {
       horizontalPadding = screenWidth * 0.05; // 5% del ancho si es menor a 800 px
     } else {
@@ -483,6 +546,29 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                   ),
                   SizedBox(height: verticalSpacing),
 
+                  DropdownButtonFormField<String>(
+                    value: _selectedTipoContrato,
+                    hint: Text('Tipo de Contrato', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    decoration: const InputDecoration(
+                      labelText: 'Tipo de Contrato',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedTipoContrato = newValue;
+                        _tipocontController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                      });
+                    },
+                    items: tipoContratos.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
                   Text(
                     'Seleccione el tipo de mantenimiento:',
                     style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
@@ -546,51 +632,88 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                   ),
                   SizedBox(height: verticalSpacing),
 
+                  if (_selectedTipoContrato == 'Mantenimiento' || _selectedTipoContrato == 'Suministro') ...[
+                    TextField(
+                      controller: _subTotalController,
+                      decoration: const InputDecoration(
+                        labelText: 'Sub Total',
+                        hintText: 'Sub Total',
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(),
+                      ),
+                      style: GoogleFonts.inter(fontSize: bodyFontSize),
+                      readOnly: true,
+                    ),
+                    SizedBox(height: verticalSpacing),
+                    TextField(
+                      controller: _ivaController,
+                      decoration: const InputDecoration(
+                        labelText: 'IVA al 12%',
+                        hintText: 'IVA al 12%',
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(),
+                      ),
+                      style: GoogleFonts.inter(fontSize: bodyFontSize),
+                      readOnly: true,
+                    ),
+                    SizedBox(height: verticalSpacing),
+                  ],
+                  TextField(
+                    controller: _totalController,
+                    decoration: const InputDecoration(
+                      labelText: 'Total',
+                      hintText: 'Total',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    style: GoogleFonts.inter(fontSize: bodyFontSize),
+                    readOnly: true,
+                  ),
+                  SizedBox(height: verticalSpacing),
+                  if (_image != null)
+                    kIsWeb
+                    ? Image.network(
+                        _image!.path,
+                        height: 200,
+                      )
+                    : Image.file(
+                        _image!,
+                        height: 200,
+                      ),
+                  SizedBox(height: verticalSpacing),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _subTotalController,
-                          decoration: const InputDecoration(
-                            labelText: 'Sub Total',
-                            hintText: 'Sub Total',
-                            fillColor: Colors.black,
-                            border: OutlineInputBorder(),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.camera_alt, color:  Colors.black),
+                        label: Text('Tomar Foto',
+                        style: GoogleFonts.inter(fontSize: bodyFontSize,color: Colors.black),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(56, 171, 171, 1), // Color de fondo
+                          
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0), // Bordes redondeados
                           ),
-                          style: GoogleFonts.inter(fontSize: bodyFontSize),
-                          readOnly: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
                         ),
+                        onPressed: () => _pickImage(ImageSource.camera),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          controller: _ivaController,
-                          decoration: const InputDecoration(
-                            labelText: 'IVA al 12%',
-                            hintText: 'IVA al 12%',
-                            fillColor: Colors.black,
-                            border: OutlineInputBorder(),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.photo_library, color:  Colors.black),
+                        label: Text('Seleccionar de Galería',
+                        style: GoogleFonts.inter(fontSize: bodyFontSize,color: Colors.black),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(56, 171, 171, 1), // Color de fondo
+                          
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0), // Bordes redondeados
                           ),
-                          style: GoogleFonts.inter(fontSize: bodyFontSize),
-                          readOnly: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          controller: _totalController,
-                          decoration: const InputDecoration(
-                            labelText: 'Total',
-                            hintText: 'Total',
-                            fillColor: Colors.black,
-                            border: OutlineInputBorder(),
-                          ),
-                          style: GoogleFonts.inter(fontSize: bodyFontSize),
-                          readOnly: true,
-                        ),
+                        onPressed: () => _pickImage(ImageSource.gallery),
                       ),
                     ],
-                  ), 
+                  ),
                   SizedBox(height: verticalSpacing),
                   SizedBox(height: vertiSpacing),
                  
@@ -627,28 +750,51 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
     );
   }
 
-  void _registerDoc() {
-    final Map<String, dynamic> docuData = {
-      'fecha': _fechaController.text,
-      'hora': _horaController.text,
-      'kilometrajeActual': int.tryParse(_kilometrajeController.text),
-      'estado': _estadoController.text,
-      'tipo': _tipoController.text,
-      'placa': _placaController.text,
-      'marca': _marcaController.text,
-      'modelo': _modeloController.text,
-      'cedula': _cedulaController.text,
-      'responsable': _responsableController.text,
-      'asunto': _asuntoController.text,
-      'detalle': _detalleController.text,
-      'tipoMantenimiento': _tipoMantController.text,
-      'mantenimientoComplementario': _mantComplController.text,
-      'total': double.tryParse(_totalController.text),
-    };
+  void _registerDoc() async {
+    try {
+      String? imageUrl;
+      if (_image != null) {
+        imageUrl = await _uploadImage(_image!);
+        if (imageUrl == null) {
+          throw Exception('Error al subir la imagen'); // Manejo de error
+        }
+      }
 
-    _documentosController2.registerDoc(context,{
-      ...docuData,
-      'fechaCreacion': FieldValue.serverTimestamp(), // Agrega la fecha de creación
-    });
+      final Map<String, dynamic> docuData = {
+        'fecha': _fechaController.text,
+        'hora': _horaController.text,
+        'kilometrajeActual': int.tryParse(_kilometrajeController.text),
+        'estado': _estadoController.text,
+        'tipo': _tipoController.text,
+        'placa': _placaController.text,
+        'marca': _marcaController.text,
+        'modelo': _modeloController.text,
+        'cedula': _cedulaController.text,
+        'responsable': _responsableController.text,
+        'asunto': _asuntoController.text,
+        'detalle': _detalleController.text,
+        'tipoMantenimiento': _tipoMantController.text,
+        'mantenimientoComplementario': _mantComplController.text,
+        'total': double.tryParse(_totalController.text),
+        // ignore: unnecessary_null_comparison
+        if (imageUrl != null) 'imagenUrl': imageUrl, // Solo agrega la URL si no es null
+      };
+
+      await _documentosController2.registerDoc(context, {
+        ...docuData,
+        'fechaCreacion': FieldValue.serverTimestamp(),
+      });
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Documento registrado exitosamente')),
+    );
+
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al registrar: $e')),
+      );
+    }
   }
 }

@@ -64,10 +64,6 @@ class DependecyController {
     return dependecys;
   }
 
- // Future<void> addDependecy(Dependecy dependecy) async {
-   // await dependecysCollection.doc(dependecy.id.toString()).set(dependecy.toMap());
-  //}
-
   Future<void> updateDependecy(Dependecy dependecy) async {
     try {
       await dependecysCollection.doc(dependecy.id.toString()).update(dependecy.toMap());

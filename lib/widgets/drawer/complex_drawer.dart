@@ -122,6 +122,16 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listordenscreen'); 
                         } else if (subMenu == "Nueva Orden") {
                           Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
+                        } else if (subMenu == "Ítems") {
+                          Navigator.pushNamed(context, '/listitems');   // Ruta para otra vista
+                        } else if (subMenu == "Repuestos") {
+                          Navigator.pushNamed(context, '/listrepuestos');   // Ruta para otra vista
+                        } else if (subMenu == "Contratos") {
+                          Navigator.pushNamed(context, '/listcontratos');   // Ruta para otra vista
+                        } else if (subMenu == "Catálogos") {
+                          Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
+                        } else if (subMenu == "Registro de Reportes") {
+                          Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -209,6 +219,16 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
               } else if (subMenu == "Nueva Orden") {
                 Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
+              } else if (subMenu == "Ítems") {
+                Navigator.pushNamed(context, '/listitems');   // Ruta para otra vista
+              } else if (subMenu == "Repuestos") {
+                Navigator.pushNamed(context, '/listrepuestos');   // Ruta para otra vista
+              } else if (subMenu == "Contratos") {
+                Navigator.pushNamed(context, '/listcontratos');   // Ruta para otra vista
+              } else if (subMenu == "Catálogos") {
+                Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
+              } else if (subMenu == "Registro de Reportes") {
+                Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
               }
             },
           );

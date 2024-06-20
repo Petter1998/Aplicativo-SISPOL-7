@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/reports/reports_controller.dart';
+import 'package:sispol_7/models/reports/reports_model.dart';
 //import 'package:pdf/pdf.dart';
-import 'package:sispol_7/controllers/documents/documents_controller.dart';
-import 'package:sispol_7/models/documents/documents_model.dart';
-import 'package:sispol_7/views/documents/work_order.dart';
-import 'package:sispol_7/views/reports/complete_report_view.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -12,39 +10,39 @@ import 'package:intl/intl.dart';
 //import 'package:pdf/widgets.dart' as pw;
 //import 'package:printing/printing.dart';
 
-class DocumentosView extends StatefulWidget {
-  const DocumentosView({super.key});
+class ReportesView extends StatefulWidget {
+  const ReportesView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _DocumentosViewState createState() => _DocumentosViewState();
+  _ReportesViewState createState() => _ReportesViewState();
 }
 
-class _DocumentosViewState extends State<DocumentosView> {
-  final DocumentosController2 _controller = DocumentosController2();
+class _ReportesViewState extends State<ReportesView> {
+  final ReportesController _controller = ReportesController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // ignore: unused_field
-  List<Documentos> _documentos = [];
-  List<int> _selectedDocuments = [];
+  List<Reportes> _reportes = [];
+  List<int> _selectedReports = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchDocumentos();
+    _fetchReporte();
   }
 
-  void _fetchDocumentos() async {
-    List<Documentos> documentos = await _controller.fetchDocumentos();
+  void _fetchReporte() async {
+    List<Reportes> reportes = await _controller.fetchReporte();
     setState(() {
-      _documentos= documentos;
+      _reportes = reportes;
     });
   }
 
   void _refreshData() {
-    _fetchDocumentos();
+    _fetchReporte();
   }
 
   void _showSearchDialog() {
@@ -55,7 +53,7 @@ class _DocumentosViewState extends State<DocumentosView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Buscar Orden de Trabajo',
+            'Buscar Reporte',
             style: GoogleFonts.inter(
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -68,7 +66,7 @@ class _DocumentosViewState extends State<DocumentosView> {
                 onChanged: (value) {
                   query = value;
                 },
-                decoration: const InputDecoration(hintText: "Ingrese la placa"),
+                decoration: const InputDecoration(hintText: "Ingrese el nombre del Responsable que entregó el Vehículo"),
                 style: GoogleFonts.inter(color: Colors.black),
               ),
             ],
@@ -80,7 +78,7 @@ class _DocumentosViewState extends State<DocumentosView> {
                 style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<Documentos> results = await _controller.searchDoc(query);
+                List<Reportes> results = await _controller.searchReporte(query);
                 if (results.isEmpty) {
                   _showNoResultsAlert();
                 } else {
@@ -99,6 +97,9 @@ class _DocumentosViewState extends State<DocumentosView> {
     );
   }
 
+
+
+
   void _showNoResultsAlert() {
     showDialog(
       context: context,
@@ -106,7 +107,7 @@ class _DocumentosViewState extends State<DocumentosView> {
         return AlertDialog(
           title: Text('No se encontraron resultados',
           style: GoogleFonts.inter(color: Colors.black),),
-          content: Text('No se encontró ninguna Orden de Trabajo con esos valores.',
+          content: Text('No se encontró ningún reporte con esos valores.',
           style: GoogleFonts.inter(color: Colors.black),),
           actions: <Widget>[
             TextButton(
@@ -122,28 +123,8 @@ class _DocumentosViewState extends State<DocumentosView> {
     );
   }
 
-  void _finalizeDocuments() async {
-    for (int id in _selectedDocuments) {
-      await _controller.ordenCollection.doc(id.toString()).update({'estado': 'Finalizada'});
-      // Buscar el documento correspondiente al id
-      Documentos documento = _documentos.firstWhere((doc) => doc.id == id);
-      
-      // Navegar a CompletReportView con el documento seleccionado
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => CompletReportView(documento: documento),
-        ),
-      );
-    }
-    setState(() {
-      _selectedDocuments.clear();
-    });
-    _refreshData();
-  }
-  
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Determinar el tamaño de la fuente basado en el ancho de la pantalla
@@ -158,7 +139,7 @@ class _DocumentosViewState extends State<DocumentosView> {
       return DataColumn(
         label: Text(
           label,
-          style: GoogleFonts.inter(fontSize: titleFontSize,fontWeight: FontWeight.bold, color: Colors.black),
+          style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       );
     }
@@ -177,113 +158,102 @@ class _DocumentosViewState extends State<DocumentosView> {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      body: FutureBuilder<List<Documentos>>(
-        future: _controller.fetchDocumentos(),
+      body: FutureBuilder<List<Reportes>>(
+        future: _controller.fetchReporte(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final documentos = snapshot.data!;
+            final reportes = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
                   DataColumn(label: Checkbox(
-                    value: _selectedDocuments.length == documentos.length && documentos.isNotEmpty,
+                    value: _selectedReports.length == reportes.length && reportes.isNotEmpty,
                     onChanged: (bool? value) {
                       setState(() {
                         if (value == true) {
-                          _selectedDocuments = documentos.map((doc) => doc.id).toList();
+                          _selectedReports = reportes.map((rep) => rep.id).toList();
                         } else {
-                          _selectedDocuments.clear();
+                          _selectedReports.clear();
                         }
                       });
                     },
                   )),
                   _buildColumn('ID'),
-                  _buildColumn('Fecha'),
-                  _buildColumn('Hora'),
+                  _buildColumn('Fecha de \nSolicitud'),
+                  _buildColumn('Fecha de \nRegistro'),
+                  _buildColumn('Fecha de \nEntrega'),
+                  _buildColumn('Responsable que \nEntrega'),
+                  _buildColumn('Responsable que \nRetira'),
                   _buildColumn('Kilometraje \nActual'),
-                  _buildColumn('Estado'),
-                  _buildColumn('Tipo'),
-                  _buildColumn('Placa'),
-                  _buildColumn('Marca'),
-                  _buildColumn('Modelo'),
-                  _buildColumn('Cédula'),
-                  _buildColumn('Responsable'),
-                  _buildColumn('Asunto'),
-                  _buildColumn('Detalle'),
-                  _buildColumn('Tipo de Mantenimiento'),
-                  _buildColumn('Mantenimiento Complementario'),
-                  _buildColumn('Total'),
+                  _buildColumn('Kilometraje \nPróximo \nMantenimiento'),
+                  _buildColumn('Tipo de \nMantenimiento'),
+                  _buildColumn('Mantenimiento \nComplementario'),
+                  _buildColumn('Observaciones'),
                   _buildColumn('Fecha de \nCreación'),
                   _buildColumn('Opciones'),
                 ],
-                rows: documentos.map((documentos) {
+                rows: reportes.map((reportes) {
                   return DataRow(
-                    selected: _selectedDocuments.contains(documentos.id),
+                    selected: _selectedReports.contains(reportes.id),
                     onSelectChanged: (bool? selected) {
                       setState(() {
                         if (selected == true) {
-                          _selectedDocuments.add(documentos.id);
+                          _selectedReports.add(reportes.id);
                         } else {
-                          _selectedDocuments.remove(documentos.id);
+                          _selectedReports.remove(reportes.id);
                         }
                       });
                     },
                     cells: [
                       DataCell(Checkbox(
-                        value: _selectedDocuments.contains(documentos.id),
+                        value: _selectedReports.contains(reportes.id),
                         onChanged: (bool? value) {
                           setState(() {
                             if (value == true) {
-                              _selectedDocuments.add(documentos.id);
+                              _selectedReports.add(reportes.id);
                             } else {
-                              _selectedDocuments.remove(documentos.id);
+                              _selectedReports.remove(reportes.id);
                             }
                           });
                         },
                       )),
-                    _buildCell(documentos.id.toString()),
-                    _buildCell(documentos.fecha.toString()),
-                    _buildCell(documentos.hora),
-                    _buildCell(documentos.kilometrajeActual.toString()),
-                    _buildCell(documentos.estado),
-                    _buildCell(documentos.tipo),
-                    _buildCell(documentos.placa),
-                    _buildCell(documentos.marca),
-                    _buildCell(documentos.modelo),
-                    _buildCell(documentos.cedula),
-                    _buildCell(documentos.responsable),
-                    _buildCell(documentos.asunto),
-                    _buildCell(documentos.detalle),
-                    _buildCell(documentos.tipoMant),
-                    _buildCell(documentos.mantComple),
-                    _buildCell(documentos.total.toString()),
-                    _buildCell(documentos.fechacrea != null
-                        ? _dateFormat.format(documentos.fechacrea!)
-                        : 'N/A'),
-                    DataCell(
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _controller.deleteDoc(documentos.id);
-                                setState(() {
-                                  _fetchDocumentos();
-                                });
-                              },
-                            ),
-                          ],
+                      _buildCell(reportes.id.toString()),
+                      _buildCell(reportes.fechasol),
+                      _buildCell(reportes.fechareg),
+                      _buildCell(reportes.fechaentreg),
+                      _buildCell(reportes.responsableentreg),
+                      _buildCell(reportes.responsablereti),
+                      _buildCell(reportes.kilometrajeActual.toString()),
+                      _buildCell(reportes.kilometrajeProx.toString()),
+                      _buildCell(reportes.tipoMant),
+                      _buildCell(reportes.mantComple),
+                      _buildCell(reportes.observaciones),
+                      _buildCell(reportes.fechacrea != null ? _dateFormat.format(reportes.fechacrea!) : 'N/A'),
+                      DataCell(
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  _controller.deleteReporte(reportes.id);
+                                  setState(() {
+                                    _fetchReporte();
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ]);
+                      )
+                    ],
+                  );
                 }).toList(),
               ),
             );
@@ -295,14 +265,14 @@ class _DocumentosViewState extends State<DocumentosView> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => const WorkOrderScreen()),
-              );
+              //Navigator.push(
+                //context,
+                //MaterialPageRoute(builder: (context) => const WorkOrderScreen()),
+              //);
             },
             // ignore: sort_child_properties_last
-            child: Icon(Icons.add, size: iconSize,color:  Colors.black),
-            tooltip: 'Nueva Orden de Trabajo',
+            child: Icon(Icons.add, size: iconSize, color: Colors.black),
+            tooltip: 'Nuevo Reporte',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
@@ -310,15 +280,13 @@ class _DocumentosViewState extends State<DocumentosView> {
           FloatingActionButton(
             onPressed: _showSearchDialog,
             // ignore: sort_child_properties_last
-            child: Icon(Icons.search, size: iconSize,color:  Colors.black),
+            child: Icon(Icons.search, size: iconSize, color: Colors.black),
             tooltip: 'Buscar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
-
           FloatingActionButton(
-            onPressed: () { 
-              // Acción para refrescar o actualizar
+            onPressed: () {
               _refreshData();
             },
             tooltip: 'Refrescar',
@@ -326,28 +294,18 @@ class _DocumentosViewState extends State<DocumentosView> {
             child: Icon(Icons.refresh, size: iconSize, color: Colors.black),
           ),
           const SizedBox(width: 20),
-
           FloatingActionButton(
-            onPressed: (){},
+            onPressed: () {},
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
+            child: Icon(Icons.picture_as_pdf, size: iconSize, color: Colors.black),
           ),
           const SizedBox(width: 20),
-
           FloatingActionButton(
-            onPressed: (){},
+            onPressed: () {},
             tooltip: 'Imprimir',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.print, size: iconSize,color:  Colors.black),
-          ),
-          const SizedBox(width: 20),
-
-          FloatingActionButton(
-            onPressed: _finalizeDocuments,
-            tooltip: 'Finalizar',
-            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.task_rounded, size: iconSize,color:  Colors.black),
+            child: Icon(Icons.print, size: iconSize, color: Colors.black),
           ),
         ],
       ),

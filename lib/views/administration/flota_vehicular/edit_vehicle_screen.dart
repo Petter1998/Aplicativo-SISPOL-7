@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:sispol_7/controllers/administration/flota_vehicular/vehicle_controller.dart';
 import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';

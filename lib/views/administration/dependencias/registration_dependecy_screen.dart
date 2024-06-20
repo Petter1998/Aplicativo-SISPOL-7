@@ -252,7 +252,6 @@ class _RegistrationDependecyScreenState extends State<RegistrationDependecyScree
                       ),
                     ],
                   ),
-
                   SizedBox(height: verticalSpacing),
 
                   SizedBox(height: vertiSpacing),
