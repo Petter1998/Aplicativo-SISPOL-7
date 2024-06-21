@@ -85,19 +85,34 @@ class VehicleController {
     // Eliminar de Firestore
     await vehiclesCollection.doc(vehicle.id.toString()).delete();
   }
-  Future<List<Vehicle>> searchVehicle(String query, {String? placa, String? chasis}) async {
-    Query query = vehiclesCollection;
-    if (placa != null && placa.isNotEmpty) {
-      query = query.where('placa', isEqualTo: placa);
-    }
-    
-    if (chasis != null && chasis.isNotEmpty) {
-      query = query.where('chasis', isEqualTo: chasis);
+
+  Future<List<Vehicle>> searchVehicle(String query) async {
+    Query queryRef = vehiclesCollection;
+
+    if (query.isNotEmpty) {
+      queryRef = queryRef.where(
+        'placa',
+        isEqualTo: query,
+      );
+
+      QuerySnapshot snapshotPlaca = await queryRef.get();
+      List<Vehicle> vehiclesPlaca = snapshotPlaca.docs.map((doc) => Vehicle.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+
+      if (vehiclesPlaca.isNotEmpty) {
+        return vehiclesPlaca;
+      }
+
+      queryRef = vehiclesCollection.where(
+        'chasis',
+        isEqualTo: query,
+      );
+
+      QuerySnapshot snapshotChasis = await queryRef.get();
+      List<Vehicle> vehiclesChasis = snapshotChasis.docs.map((doc) => Vehicle.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+
+      return vehiclesChasis;
     }
 
-    QuerySnapshot snapshot = await query.get();
-    List<Vehicle> vehicles = snapshot.docs.map((doc) => Vehicle.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
-    return vehicles;
+    return [];
   }
-
 }

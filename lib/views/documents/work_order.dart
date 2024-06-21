@@ -574,21 +574,26 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                     style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
                   ),
                   CheckboxListTile(
-                    title: Text('Mantenimiento 1', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    title: Text(
+                      'Mantenimiento 1 (Revisión y cambio de aceite, pastillas, líquidos de\nfrenos y filtro de Combustible)',
+                      style: GoogleFonts.inter(fontSize: bodyFontSize)),
                     value: isMantenimiento1,
                     onChanged: (value) {
                       _onMantenimientoChanged(1);
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('Mantenimiento 2', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    title: Text(
+                      'Mantenimiento 2 (Mantenimiento 1 más cambio de filtro de aire, \ncambio de refrigerante y cambio de luces delanteras y posteriores)', 
+                      style: GoogleFonts.inter(fontSize: bodyFontSize)),
                     value: isMantenimiento2,
                     onChanged: (value) {
                       _onMantenimientoChanged(2);
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('Mantenimiento 3', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                    title: Text('Mantenimiento 3 (Cambio de batería y ajustes en el sistema\neléctrico)', 
+                    style: GoogleFonts.inter(fontSize: bodyFontSize)),
                     value: isMantenimiento3,
                     onChanged: (value) {
                       _onMantenimientoChanged(3);

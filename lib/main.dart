@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sispol_7/controllers/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
+import 'package:sispol_7/views/access/modulos/modulos_view.dart';
+import 'package:sispol_7/views/access/modulos/register_modulo.dart';
+import 'package:sispol_7/views/access/moduroles/modulos_roles_view.dart';
+import 'package:sispol_7/views/access/roles/regist_rol_view.dart';
+import 'package:sispol_7/views/access/roles/roles_view.dart';
 import 'package:sispol_7/views/administration/catalogos/catalogos_view.dart';
 import 'package:sispol_7/views/administration/catalogos/regist_catalogo_wins.dart';
 import 'package:sispol_7/views/administration/contratos/contratos_view.dart';
@@ -51,6 +57,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Iniciar la actualización de roles
+  RoleUpdater();
   
   runApp(const MyApp());
 }
@@ -69,7 +78,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  ReportesView(),  //const HomePage
+        '/home': (context) =>  const RolesModulosView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -80,6 +89,10 @@ class MyApp extends StatelessWidget {
         '/registusers': (context) => const RegistrationUsersScreen(),
         '/registwins': (context) => RegistrationWins(),
         '/edituser': (context) =>  const UserEditScreen(),
+        '/listmodule': (context) => const ModulosView(),
+        '/registmodule': (context) => const RegistModuleScreen(),
+        '/listroles': (context) => const RolesView(),
+        '/registrole': (context) => const RolesModulosView(),
         '/listdependecys': (context) => const DependencysView(),
         '/registdependecys': (context) => const RegistrationDependecyScreen(),
         '/registdepwins': (context) => RegistrationDepWins(),

@@ -132,6 +132,12 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                           Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
                         } else if (subMenu == "Registro de Reportes") {
                           Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
+                        } else if (subMenu == "Módulos") {
+                          Navigator.pushNamed(context, '/listmodule');   // Ruta para otra vista
+                        } else if (subMenu == "Roles") {
+                          Navigator.pushNamed(context, '/listroles');   // Ruta para otra vista
+                        } else if (subMenu == "Módulos por Roles") {
+                          Navigator.pushNamed(context, '/registrole');   // Ruta para otra vista
                         }
                       },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
@@ -229,6 +235,12 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
               } else if (subMenu == "Registro de Reportes") {
                 Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
+              } else if (subMenu == "Módulos") {
+                Navigator.pushNamed(context, '/listmodule');   // Ruta para otra vista
+              } else if (subMenu == "Roles") {
+                Navigator.pushNamed(context, '/listroles');   // Ruta para otra vista
+              } else if (subMenu == "Módulos por Roles") {
+                Navigator.pushNamed(context, '/registrole');   // Ruta para otra vista
               }
             },
           );
@@ -377,9 +389,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.key, "Control de Acceso", ["Módulos", "Módulos por Roles", "Roles", "Usuarios"]),
     CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
     CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
-    CDM(Icons.restore_page_outlined, "Reportes", ["Nuevo Reporte", "Registro de Reportes"]),
+    CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
     CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
-    CDM(Icons.add, "Nuevo Reporte", [], route: '/new-report'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
     CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
     CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión

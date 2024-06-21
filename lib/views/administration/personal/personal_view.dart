@@ -193,57 +193,60 @@ class _PersonalsViewState extends State<PersonalsView> {
             final personals = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: [
-                  _buildColumn('ID'),
-                  _buildColumn('Identificación'),
-                  _buildColumn('Nombres'),
-                  _buildColumn('Apellidos'),
-                  _buildColumn('Fecha de \nNacimiento'),
-                  _buildColumn('Tipo de \nSangre'),
-                  _buildColumn('Ciudad de \nNacimiento'),
-                  _buildColumn('Teléfono'),
-                  _buildColumn('Rango'),
-                  _buildColumn('Dependencia'),
-                  _buildColumn('Fecha de \nCreación'),
-                  _buildColumn('Opciones'),
-                ],
-                rows: personals.map((personal) {
-                  return DataRow(cells:[
-                    _buildCell(personal.id.toString()),
-                    _buildCell(personal.cedula.toString()),
-                    _buildCell(personal.name),
-                    _buildCell(personal.surname),
-                    _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
-                    _buildCell(personal.tipoSangre),
-                    _buildCell(personal.ciudadNaci),
-                    _buildCell(personal.telefono.toString()),
-                    _buildCell(personal.rango),
-                    _buildCell(personal.dependencia),
-                    _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
-                    DataCell(Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditPersonScreen(personal: personal,),
-                            ));
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _controller.deletePersonal(personal.id);
-                            setState(() {
-                              _fetchPersonals();
-                            });
-                          },
-                        ),
-                      ],
-                    )),
-                  ]);
-                }).toList(),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                  columns: [
+                    _buildColumn('ID'),
+                    _buildColumn('Identificación'),
+                    _buildColumn('Nombres'),
+                    _buildColumn('Apellidos'),
+                    _buildColumn('Fecha de \nNacimiento'),
+                    _buildColumn('Tipo de \nSangre'),
+                    _buildColumn('Ciudad de \nNacimiento'),
+                    _buildColumn('Teléfono'),
+                    _buildColumn('Rango'),
+                    _buildColumn('Dependencia'),
+                    _buildColumn('Fecha de \nCreación'),
+                    _buildColumn('Opciones'),
+                  ],
+                  rows: personals.map((personal) {
+                    return DataRow(cells:[
+                      _buildCell(personal.id.toString()),
+                      _buildCell(personal.cedula.toString()),
+                      _buildCell(personal.name),
+                      _buildCell(personal.surname),
+                      _buildCell(personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A'),
+                      _buildCell(personal.tipoSangre),
+                      _buildCell(personal.ciudadNaci),
+                      _buildCell(personal.telefono.toString()),
+                      _buildCell(personal.rango),
+                      _buildCell(personal.dependencia),
+                      _buildCell(personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A'),
+                      DataCell(Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditPersonScreen(personal: personal,),
+                              ));
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _controller.deletePersonal(personal.id);
+                              setState(() {
+                                _fetchPersonals();
+                              });
+                            },
+                          ),
+                        ],
+                      )),
+                    ]);
+                  }).toList(),
+                ),
               ),
             );
           }

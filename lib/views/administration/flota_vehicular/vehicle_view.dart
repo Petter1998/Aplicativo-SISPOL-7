@@ -48,8 +48,7 @@ class _VehiclesViewState extends State<VehiclesView> {
   }
 
   void _showSearchDialog() {
-    String queryPlaca = '';
-    String queryChasis = '';
+    String query = '';
 
     showDialog(
       context: context,
@@ -67,16 +66,9 @@ class _VehiclesViewState extends State<VehiclesView> {
             children: [
               TextField(
                 onChanged: (value) {
-                  queryPlaca = value;
+                  query = value;
                 },
-                decoration: const InputDecoration(hintText: "Ingrese la placa"),
-                style: GoogleFonts.inter(color: Colors.black),
-              ),
-              TextField(
-                onChanged: (value) {
-                  queryChasis = value;
-                },
-                decoration: const InputDecoration(hintText: "Ingrese el chasis"),
+                decoration: const InputDecoration(hintText: "Ingrese la placa o chasis"),
                 style: GoogleFonts.inter(color: Colors.black),
               ),
             ],
@@ -88,7 +80,7 @@ class _VehiclesViewState extends State<VehiclesView> {
                 style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<Vehicle> results = await _controller.searchVehicle('', placa: queryPlaca, chasis: queryChasis);
+                List<Vehicle> results = await _controller.searchVehicle(query);
                 if (results.isEmpty) {
                   _showNoResultsAlert();
                 } else {

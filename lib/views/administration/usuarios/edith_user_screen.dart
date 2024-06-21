@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/access/rol_controller.dart';
 import 'package:sispol_7/controllers/administration/users/users_controller.dart';
 import 'package:sispol_7/models/administration/users/users_model.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
@@ -36,6 +37,8 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _cargoController = TextEditingController(text: widget.user.cargo);
     _telefonoController = TextEditingController(text: widget.user.telefono);
     _userController = TextEditingController(text: widget.user.user);
+
+    _fetchRol();
   }
 
   @override
@@ -51,7 +54,14 @@ class _EditUserScreenState extends State<EditUserScreen> {
   }
 
   String? _selectedRole;
-  final List<String> roles = ['Administrador', 'Tecnico 1', 'Tecnico 2', 'Personal Policial'];
+  List<String> _roles = [];
+
+  Future<void> _fetchRol() async {
+    List<String> rolesList = await RolesController().fetchRol();
+    setState(() {
+      _roles = rolesList;
+    });
+  }
   
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -164,7 +174,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                           _cargoController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
                         });
                       },
-                      items: roles.map<DropdownMenuItem<String>>((String value) {
+                      items: _roles.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
