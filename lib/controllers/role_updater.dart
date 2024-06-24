@@ -13,13 +13,18 @@ class RoleUpdater {
       // Map to keep track of role counts
       Map<String, int> roleCounts = {};
 
-      // Count the number of users for each role
+       // Count the number of users for each role
       for (var doc in snapshot.docs) {
-        String role = doc['cargo'];
-        if (roleCounts.containsKey(role)) {
-          roleCounts[role] = roleCounts[role]! + 1;
-        } else {
-          roleCounts[role] = 1;
+        try {
+          String role = doc['cargo'] ?? 'Desconocido'; // Verifica si el campo 'cargo' existe y no es nulo
+          if (roleCounts.containsKey(role)) {
+            roleCounts[role] = roleCounts[role]! + 1;
+          } else {
+            roleCounts[role] = 1;
+          }
+        } catch (e) {
+          // ignore: avoid_print
+          print('Error obteniendo el campo cargo: $e');
         }
       }
 

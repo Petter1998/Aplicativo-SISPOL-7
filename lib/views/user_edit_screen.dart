@@ -67,9 +67,6 @@ class _UserEditScreenState extends State<UserEditScreen> {
     }
   }
 
-  String? _selectedRole;
-  final List<String> roles = ['Administrador', 'Tecnico 1', 'Tecnico 2', 'Personal Policial'];
-
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -200,27 +197,21 @@ class _UserEditScreenState extends State<UserEditScreen> {
                   ),
                   SizedBox(height: verticalSpacing),
 
-                  DropdownButtonFormField<String>(
-                      value: _selectedRole,
-                      hint: Text('Rol', style: GoogleFonts.inter(fontSize: bodyFontSize)),
-                      decoration: const InputDecoration(
-                        fillColor: Colors.black,
-                        border: OutlineInputBorder(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Rol',
+                        style: GoogleFonts.inter(fontSize: bodyFontSize, fontWeight: FontWeight.bold),
                       ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedRole = newValue;
-                          _cargoController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
-                        });
-                      },
-                      items: roles.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: verticalSpacing),
+                      SizedBox(height: verticalSpacing / 2),
+                      TextField(controller: _cargoController, enabled: false, // Esto hace que el TextField no sea modificable
+                        decoration: const InputDecoration(hintText: 'Rol',
+                        fillColor: Colors.black, border: OutlineInputBorder(),),
+                        style: GoogleFonts.inter(fontSize: bodyFontSize),),
+                    ],
+                  ),
+                  SizedBox(height: verticalSpacing),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

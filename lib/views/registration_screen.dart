@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/access/rol_controller.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
 import 'package:sispol_7/widgets/custom_appbar.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -26,7 +27,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final UserController _userController = UserController();
 
   String? _selectedRole;
-  final List<String> roles = ['Administrador', 'Tecnico 1', 'Tecnico 2', 'Personal Policial'];
+  List<String> _roles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRol();
+  }
+
+  Future<void> _fetchRol() async {
+    List<String> rolesList = await RolesController().fetchRol();
+    setState(() {
+      _roles = rolesList;
+    });
+  }
 
   bool _obscurePassword = true;
 
@@ -132,7 +146,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           _positionController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
                         });
                       },
-                      items: roles.map<DropdownMenuItem<String>>((String value) {
+                      items: _roles.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),

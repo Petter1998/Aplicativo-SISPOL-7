@@ -49,7 +49,10 @@ class RolesController {
 
   Future<List<Roles>> fetchRoles() async {
     QuerySnapshot snapshot = await rolesCollection.get();
-    List<Roles> roles = snapshot.docs.map((doc) => Roles.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+    List<Roles> roles = snapshot.docs
+    .map((doc) => Roles.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+    .where((role) => role.id != 0) // Filtrar roles con id diferente de 0
+    .toList();
     roles.sort((a, b) => b.id.compareTo(a.id)); // Ordenar en orden descendente por id
     return roles;
   }

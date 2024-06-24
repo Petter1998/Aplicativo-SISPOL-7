@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sispol_7/controllers/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
+import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dart';
 import 'package:sispol_7/views/access/modulos/modulos_view.dart';
 import 'package:sispol_7/views/access/modulos/register_modulo.dart';
 import 'package:sispol_7/views/access/moduroles/modulos_roles_view.dart';
-import 'package:sispol_7/views/access/roles/regist_rol_view.dart';
 import 'package:sispol_7/views/access/roles/roles_view.dart';
 import 'package:sispol_7/views/administration/catalogos/catalogos_view.dart';
 import 'package:sispol_7/views/administration/catalogos/regist_catalogo_wins.dart';
@@ -13,6 +13,7 @@ import 'package:sispol_7/views/administration/contratos/regist_contrato_wins.dar
 import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/edit_vehicle_screen.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_screen.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_wins.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/vehicle_view.dart';
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const RolesModulosView(),  //const HomePage
+        '/home': (context) =>  DashboardScreen(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
         '/listfleet': (context) => const VehiclesView(),
         '/registvehicle': (context) => const RegistrationVehicleScreen(),
         '/registvehiclewins': (context) => RegistrationVehicleWins(),
+        //'/editvehicle': (context) =>  EditVehicleScreen(vehicle: vehicle,),
         '/listpersub': (context) => const PersonalsSubcircuitView(),
         '/assigpersub': (context) => const SubcircuitoAssignedView(subcircuitoName: '',),
         '/searchperssub': (context) => const PersonSearchResultView(searchResults: [],),
@@ -124,7 +126,8 @@ class MyApp extends StatelessWidget {
         '/registdocwins': (context) => OrderWins(),
         '/registdoc': (context) => const WorkOrderScreen(),
         '/listreportscreen': (context) => const ReportesView (),
-        //'/registdocwins': (context) => OrderWins(),
+        // ignore: equal_keys_in_map
+        '/registdocwins': (context) => OrderWins(),
       },
     );
   }

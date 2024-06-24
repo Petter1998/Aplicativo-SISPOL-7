@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
@@ -31,6 +32,31 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     });
   }
 
+  Future<bool> hasPermission(String role, String module, String subModule) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('roles').doc(role).get();
+    if (snapshot.exists) {
+      List<dynamic> permissions = snapshot['permissions'];
+      for (var permission in permissions) {
+        if (permission['module'] == module) {
+          return permission['subModules'].contains(subModule);
+        }
+      }
+    }
+    return false;
+  }
+
+  void checkPermissionAndNavigate(BuildContext context, String role, String module, String subModule, String route) async {
+    bool permitted = await hasPermission(role, module, subModule);
+    if (permitted) {
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, route);
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No tiene permiso para acceder a este submódulo')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,44 +128,14 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                     return ListTile(
                       title: Text(subMenu, style: GoogleFonts.inter(color: Colors.white)),
                       onTap: () {
-                        if (subMenu == "Usuarios") { //cdm.route.isNotEmpty
-                          Navigator.pushNamed(context, '/listuser');
-                        } else if (subMenu == "Dependencias") {
-                          Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
-                        } else if (subMenu == "Personal") {
-                          Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
-                        } else if (subMenu == "Flota Vehicular") {
-                          Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
-                        } else if (subMenu == "Personal-Subcircuito") {
-                          Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
-                        } else if (subMenu == "Vehiculo-Subcircuito") {
-                          Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
-                        } else if (subMenu == "Nueva Solicitud") {
-                          Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
-                        } else if (subMenu == "Registro de Mantenimiento") {
-                          Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
-                        } else if (subMenu == "Registro de Ordenes") {
-                          Navigator.pushNamed(context, '/listordenscreen'); 
-                        } else if (subMenu == "Nueva Orden") {
-                          Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
-                        } else if (subMenu == "Ítems") {
-                          Navigator.pushNamed(context, '/listitems');   // Ruta para otra vista
-                        } else if (subMenu == "Repuestos") {
-                          Navigator.pushNamed(context, '/listrepuestos');   // Ruta para otra vista
-                        } else if (subMenu == "Contratos") {
-                          Navigator.pushNamed(context, '/listcontratos');   // Ruta para otra vista
-                        } else if (subMenu == "Catálogos") {
-                          Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
-                        } else if (subMenu == "Registro de Reportes") {
-                          Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
-                        } else if (subMenu == "Módulos") {
-                          Navigator.pushNamed(context, '/listmodule');   // Ruta para otra vista
-                        } else if (subMenu == "Roles") {
-                          Navigator.pushNamed(context, '/listroles');   // Ruta para otra vista
-                        } else if (subMenu == "Módulos por Roles") {
-                          Navigator.pushNamed(context, '/registrole');   // Ruta para otra vista
-                        }
-                      },
+                        if (_usuario != null) {
+                            checkPermissionAndNavigate(context, _usuario!.rol, cdm.title, subMenu, getRoute(subMenu));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Cargando usuario, por favor espera...')),
+                            );
+                          }
+                        },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Alinea a la izquierda
                     );
                   }).toList(),
@@ -154,6 +150,48 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     );
   }
 
+  String getRoute(String subMenu) {
+    switch (subMenu) {
+      case "Usuarios":
+        return '/listuser';
+      case "Dependencias":
+        return '/listdependecys';
+      case "Personal":
+        return '/listperson';
+      case "Flota Vehicular":
+        return '/listfleet';
+      case "Personal-Subcircuito":
+        return '/listpersub';
+      case "Vehiculo-Subcircuito":
+        return '/listvehisub';
+      case "Nueva Solicitud":
+        return '/validationscreen';
+      case "Registro de Mantenimiento":
+        return '/lisreggitsscreen';
+      case "Registro de Ordenes":
+        return '/listordenscreen';
+      case "Nueva Orden":
+        return '/registdoc';
+      case "Ítems":
+        return '/listitems';
+      case "Repuestos":
+        return '/listrepuestos';
+      case "Contratos":
+        return '/listcontratos';
+      case "Catálogos":
+        return '/listcatalogos';
+      case "Registro de Reportes":
+        return '/listreportscreen';
+      case "Módulos":
+        return '/listmodule';
+      case "Roles":
+        return '/listroles';
+      case "Módulos por Roles":
+        return '/registrole';
+      default:
+        return '';
+    }
+  }
 
   Widget invisibleSubMenus() {
     return AnimatedContainer(
@@ -205,42 +243,12 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
               style: const TextStyle(color: Colors.white),
             ),
             onTap: () {
-              if (subMenu == "Usuarios") {
-                Navigator.pushNamed(context, '/listuser');  // Redirige a la vista de usuarios
-              } else if (subMenu == "Dependencias") {
-                Navigator.pushNamed(context, '/listdependecys');  // Ruta para otra vista
-              } else if (subMenu == "Personal") {
-                Navigator.pushNamed(context, '/listperson');  // Ruta para otra vista
-              } else if (subMenu == "Flota Vehicular") {
-                Navigator.pushNamed(context, '/listfleet');  // Ruta para otra vista
-              } else if (subMenu == "Personal-Subcircuito") {
-                Navigator.pushNamed(context, '/listpersub');  // Ruta para otra vista
-              } else if (subMenu == "Vehiculo-Subcircuito") {
-                Navigator.pushNamed(context, '/listvehisub');  // Ruta para otra vista
-              } else if (subMenu == "Nueva Solicitud") {
-                Navigator.pushNamed(context, '/validationscreen');  // Ruta para otra vista
-              } else if (subMenu == "Registro de Mantenimiento") {
-                Navigator.pushNamed(context, '/lisreggitsscreen');  // Ruta para otra vista
-              } else if (subMenu == "Registro de Ordenes") {
-                Navigator.pushNamed(context, '/listordenscreen');  // Ruta para otra vista
-              } else if (subMenu == "Nueva Orden") {
-                Navigator.pushNamed(context, '/registdoc');   // Ruta para otra vista
-              } else if (subMenu == "Ítems") {
-                Navigator.pushNamed(context, '/listitems');   // Ruta para otra vista
-              } else if (subMenu == "Repuestos") {
-                Navigator.pushNamed(context, '/listrepuestos');   // Ruta para otra vista
-              } else if (subMenu == "Contratos") {
-                Navigator.pushNamed(context, '/listcontratos');   // Ruta para otra vista
-              } else if (subMenu == "Catálogos") {
-                Navigator.pushNamed(context, '/listcatalogos');   // Ruta para otra vista
-              } else if (subMenu == "Registro de Reportes") {
-                Navigator.pushNamed(context, '/listreportscreen');   // Ruta para otra vista
-              } else if (subMenu == "Módulos") {
-                Navigator.pushNamed(context, '/listmodule');   // Ruta para otra vista
-              } else if (subMenu == "Roles") {
-                Navigator.pushNamed(context, '/listroles');   // Ruta para otra vista
-              } else if (subMenu == "Módulos por Roles") {
-                Navigator.pushNamed(context, '/registrole');   // Ruta para otra vista
+               if (_usuario != null) {
+                checkPermissionAndNavigate(context, _usuario!.rol, submenus[0], subMenu, getRoute(subMenu));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cargando usuario, por favor espera...')),
+                );
               }
             },
           );
@@ -390,8 +398,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
     CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
     CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
-    CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
+   //CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
     CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
+    CDM(Icons.add, "Mi Vehículo", [], route: ''),
     CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
     CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
   ];
