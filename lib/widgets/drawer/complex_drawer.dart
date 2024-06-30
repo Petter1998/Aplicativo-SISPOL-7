@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/controllers/administration/flota_vehicular/vehicle_controller.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
 import 'package:sispol_7/models/user_model.dart';
 import 'package:sispol_7/widgets/drawer/CDM.dart';
@@ -60,25 +61,26 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final List<CDM> menuItems = _buildMenuItems(context);
     
     return Container(
       width: 270,
       height: MediaQuery.of(context).size.height,
       
       // ignore: sort_child_properties_last
-      child: row(),
+      child: row(menuItems),
       color: Colors.transparent,
     );
   }
 
-  Widget row() {
+  Widget row(List<CDM> menuItems) {
     return Row(children: [
-      isExpanded ? blackIconTiles() : blackIconMenu(),
-      invisibleSubMenus(),
+      isExpanded ? blackIconTiles(menuItems) : blackIconMenu(menuItems),
+      invisibleSubMenus(menuItems),
     ]);
   }
 
-  Widget blackIconTiles() {
+  Widget blackIconTiles(List<CDM> menuItems) {
     return Container(
       width: 250,
       height: MediaQuery.of(context).size.height,
@@ -88,9 +90,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
           controlTile(),
           Expanded(
             child: ListView.builder(
-              itemCount: cdms.length,
+              itemCount: menuItems.length,
               itemBuilder: (BuildContext context, int index) {
-                CDM cdm = cdms[index];
+                CDM cdm = menuItems[index];
                 bool selected = selectedIndex == index;
 
                 // Si el ítem tiene submenús, usamos ExpansionTile; si no, usamos ListTile
@@ -101,7 +103,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                       cdm.title,
                       style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
                     ),
-                    onTap: () {
+                    onTap: cdm.onTap ??() {
                       if (cdm.route.isNotEmpty) {
                         Navigator.pushNamed(context, cdm.route);
                       }
@@ -193,7 +195,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     }
   }
 
-  Widget invisibleSubMenus() {
+  Widget invisibleSubMenus(List<CDM> menuItems) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       width: isExpanded ? 0 : 175,
@@ -203,9 +205,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
           Container(height: 95),
           Expanded(
             child: ListView.builder(
-              itemCount: cdms.length,
+              itemCount: menuItems.length,
               itemBuilder: (context, index) {
-                CDM cmd = cdms[index];
+                CDM cmd = menuItems[index];
                   if(index==0) return Container(height:95);
                 bool selected = selectedIndex == index;
                 bool isValidSubMenu = selected && cmd.submenus.isNotEmpty;
@@ -257,7 +259,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
     );
   }
 
-  Widget blackIconMenu() {
+  Widget blackIconMenu(List<CDM> menuItems) {
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
       width: 90,
@@ -267,7 +269,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
           controlButton(),
           Expanded(
             child: ListView.builder(
-                itemCount: cdms.length,
+                itemCount: menuItems.length,
                 itemBuilder: (contex, index) {
                   return Column(
                     children: [
@@ -277,14 +279,16 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                             selectedIndex = index;
                           });
 
-                          if (cdms[index].submenus.isEmpty && cdms[index].route.isNotEmpty) {
-                            Navigator.pushNamed(context, cdms[index].route);  // Redirige a la ruta si no hay submenú
+                          if (menuItems[index].submenus.isEmpty && menuItems[index].route.isNotEmpty) {
+                            Navigator.pushNamed(context, menuItems[index].route);  // Redirige a la ruta si no hay submenú
+                          } else if (menuItems[index].onTap != null) {
+                            menuItems[index].onTap!(); // Ejecuta el callback si está definido
                           }
                         },
                         child: Container(
                           height: 45,
                           alignment: Alignment.center,
-                          child: Icon(cdms[index].icon, size: 35, color: Colors.white),
+                          child: Icon(menuItems[index].icon, size: 35, color: Colors.white),
                         ),
                       ),
                       const SizedBox(height: 15),  // Aumenta la distancia entre íconos
@@ -387,29 +391,31 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
 
 
 
-  static List<CDM> cdms = [
-    //CDM(Icons.grid_view, "Control", []),
+  List<CDM> _buildMenuItems(BuildContext context) {
+    return [
 
-    CDM(Icons.grid_view, "Dashboard", [], route: '/dashboard'),
+      CDM(Icons.grid_view, "Dashboard", [], route: '/dashboard'),
 
-    CDM(Icons.settings, "Administración", ["Catálogos", "Contratos", "Dependencias", "Flota Vehicular", "Ítems", 
-    "Personal", "Personal-Subcircuito", "Repuestos", "Usuarios", "Vehiculo-Subcircuito"]),
-    CDM(Icons.key, "Control de Acceso", ["Módulos", "Módulos por Roles", "Roles", "Usuarios"]),
-    CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
-    CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
-    CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
-   //CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
-    CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
-    CDM(Icons.add, "Mi Vehículo", [], route: ''),
-    CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
-    CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
-  ];
+      CDM(Icons.settings, "Administración", ["Catálogos", "Contratos", "Dependencias", "Flota Vehicular", "Ítems", 
+      "Personal", "Personal-Subcircuito", "Repuestos", "Usuarios", "Vehiculo-Subcircuito"]),
+      CDM(Icons.key, "Control de Acceso", ["Módulos", "Módulos por Roles", "Roles", "Usuarios"]),
+      CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
+      CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
+      CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
+    //CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
+      CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
+      CDM(Icons.car_rental_outlined, "Mi Vehículo", [], onTap: () async {
+          await VehicleController().findVehicleForCurrentUser(context);
+        }),
+      CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
+      CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
+    ];
+  }
 
   void expandOrShrinkDrawer() {
     setState(() {
       isExpanded = !isExpanded;
     });
   }
-
 }
 

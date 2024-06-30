@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/models/administration/users/users_model.dart';
 
-class UsersModel {
+class UsersController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
@@ -23,47 +23,93 @@ class UsersModel {
     });
   }
 
-  Future<void> registerUsers(Map<String, dynamic> userData) async {
-    // Verifica que todos los campos requeridos no estén vacíos
-    for (String key in userData.keys) {
-      if (userData[key] == null || (userData[key] is String && userData[key].isEmpty)) {
-        throw Exception('El campo $key no puede estar vacío');
-      }
-    }
-
-    // Elimina la contraseña del mapa antes de enviarlo a Firestore
-    auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: userData['email'],
-      password: userData['password'],
-    );
-
-    // Elimina la contraseña del mapa antes de enviarlo a Firestore
-    userData.remove('password');
-
-    // Obtener el próximo ID de usuario
-    int userId = await _getNextUserId();
-
-    await _firestore.collection('usuarios').doc(userCredential.user!.uid).set({
-      'id': userId,
-      ...userData,
-      'fechaCreacion': FieldValue.serverTimestamp(),
-      'uid': userCredential.user!.uid,
-    });
-  }
-}
-
-class UsersController {
-  final UsersModel usersModel = UsersModel();
-
   Future<void> registerUsers(BuildContext context, Map<String, dynamic> userData) async {
     try {
-      await usersModel.registerUsers(userData);
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/registwins'); 
+      // Verifica que todos los campos requeridos no estén vacíos
+      for (String key in userData.keys) {
+        if (userData[key] == null || (userData[key] is String && userData[key].isEmpty)) {
+          throw Exception('El campo $key no puede estar vacío');
+        }
+      }
+
+      // Guarda las credenciales del usuario actual
+      auth.User? currentUser = _auth.currentUser;
+      final auth.AuthCredential? credential = currentUser != null
+          ? auth.EmailAuthProvider.credential(
+              email: currentUser.email!,
+              password: await getCurrentUserPassword(context), // Método para obtener la contraseña actual del usuario
+            )
+          : null;
+
+      // Crea el nuevo usuario
+      final String email = userData['email'];
+      final String password = userData['password'];
+      auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Elimina la contraseña del mapa antes de enviarlo a Firestore
+      userData.remove('password');
+
+      // Obtener el próximo ID de usuario
+      int userId = await _getNextUserId();
+
+      await _firestore.collection('usuarios').doc(userCredential.user!.uid).set({
+        'id': userId,
+        ...userData,
+        'fechaCreacion': FieldValue.serverTimestamp(),
+        'uid': userCredential.user!.uid,
+      });
+
+      // Reautenticar al usuario actual
+      if (credential != null) {
+        await _auth.signInWithCredential(credential);
+      }
+
+      // Navegar a la pantalla de confirmación
+      Navigator.pushNamed(context, '/registwins');
     } catch (e) {
-      // ignore: use_build_context_synchronously
+      // Mostrar mensaje de error
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
     }
+  }
+
+  Future<String> getCurrentUserPassword(BuildContext context) async {
+    final TextEditingController passwordController = TextEditingController();
+    String? password;
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Ingrese su contraseña de Administrador',
+            style: GoogleFonts.inter(color: Colors.black),),
+          content: TextField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(labelText: 'Contraseña',
+            hintStyle: GoogleFonts.inter(color: Colors.black),),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                password = passwordController.text;
+                Navigator.of(context).pop();
+              },
+              child: Text('Aceptar',
+              style: GoogleFonts.inter(color: Colors.black),),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (password == null || password!.isEmpty) {
+      throw Exception('La contraseña es requerida para ejecutar la acción');
+    }
+
+    return password!;
   }
 }
 
@@ -108,7 +154,7 @@ class UserController {
     if (firebaseUser != null) {
       await firebaseUser.delete();
     }
-    
+
   }
 
   Future<List<User>> searchUsers(String query) async {

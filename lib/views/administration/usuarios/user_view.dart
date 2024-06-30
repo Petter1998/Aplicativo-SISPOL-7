@@ -194,55 +194,58 @@ class _UserViewState extends State<UserView> {
             final users = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: [
-                  _buildColumn('ID'),
-                  _buildColumn('Nombres'),
-                  _buildColumn('Apellidos'),
-                  _buildColumn('Email'),
-                  _buildColumn('Cedula'),
-                  _buildColumn('Rol'),
-                  _buildColumn('Fecha de \nCreación'),
-                  _buildColumn('Teléfono'),
-                  _buildColumn('Usuario'),
-                  _buildColumn('Opciones'),
-                ],
-                rows: users.map((user) {
-                  return DataRow(cells:[
-                    _buildCell(user.id.toString()),
-                    _buildCell(user.name),
-                    _buildCell(user.surname),
-                    _buildCell(user.email),
-                    _buildCell(user.cedula),
-                    _buildCell(user.cargo),
-                    _buildCell(user.fechacrea != null 
-                      ? _dateFormat.format(user.fechacrea!) 
-                      : 'N/A'),
-                    _buildCell(user.telefono),
-                    _buildCell(user.user),
-                    DataCell(Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditUserScreen(user: user),
-                            ));
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _controller.deleteUser(user.uid);
-                            setState(() {
-                              _fetchUsers();
-                            });
-                          },
-                        ),
-                      ],
-                    )),
-                  ]);
-                }).toList(),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                  columns: [
+                    _buildColumn('ID'),
+                    _buildColumn('Nombres'),
+                    _buildColumn('Apellidos'),
+                    _buildColumn('Email'),
+                    _buildColumn('Cedula'),
+                    _buildColumn('Rol'),
+                    _buildColumn('Fecha de \nCreación'),
+                    _buildColumn('Teléfono'),
+                    _buildColumn('Usuario'),
+                    _buildColumn('Opciones'),
+                  ],
+                  rows: users.map((user) {
+                    return DataRow(cells:[
+                      _buildCell(user.id.toString()),
+                      _buildCell(user.name),
+                      _buildCell(user.surname),
+                      _buildCell(user.email),
+                      _buildCell(user.cedula),
+                      _buildCell(user.cargo),
+                      _buildCell(user.fechacrea != null 
+                        ? _dateFormat.format(user.fechacrea!) 
+                        : 'N/A'),
+                      _buildCell(user.telefono),
+                      _buildCell(user.user),
+                      DataCell(Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditUserScreen(user: user),
+                              ));
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _controller.deleteUser(user.uid);
+                              setState(() {
+                                _fetchUsers();
+                              });
+                            },
+                          ),
+                        ],
+                      )),
+                    ]);
+                  }).toList(),
+                ),
               ),
             );
           }

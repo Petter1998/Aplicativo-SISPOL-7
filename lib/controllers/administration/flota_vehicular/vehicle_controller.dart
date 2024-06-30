@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/edit_my_vehicle.dart';
 
 class VehicleModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -112,7 +115,98 @@ class VehicleController {
 
       return vehiclesChasis;
     }
-
     return [];
+  }
+
+  Future<void> updateMyVehicle(BuildContext context, Vehicle vehicle) async {
+    try {
+      await vehiclesCollection.doc(vehicle.id.toString()).update(vehicle.toMap());
+      // Redirigir a la ruta /editmyvehicle después de la actualización
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, '/editmyvehiclewins');
+    } catch (e) {
+      // Mostrar un mensaje de error
+      throw Exception('Error al actualizar el vehículo: $e');
+    }
+  }
+
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('usuarios');
+  Future<void> findVehicleForCurrentUser(BuildContext context) async {
+    try {
+      // Obtener el usuario actual
+      auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('No se encontró al usuario actual.');
+      }
+
+      // Obtener los nombres y apellidos del usuario actual
+      DocumentSnapshot userDoc = await usersCollection.doc(currentUser.uid).get();
+      String nombres = userDoc.get('nombres');
+      String apellidos = userDoc.get('apellidos');
+      String nombreCompleto = '$nombres $apellidos';
+
+      // Buscar un vehículo donde el nombre completo coincida con uno de los responsables
+      QuerySnapshot vehicleSnapshot = await vehiclesCollection
+        .where('responsable1', isEqualTo: nombreCompleto)
+        .get();
+
+      if (vehicleSnapshot.docs.isEmpty) {
+        vehicleSnapshot = await vehiclesCollection
+          .where('responsable2', isEqualTo: nombreCompleto)
+          .get();
+      }
+
+      if (vehicleSnapshot.docs.isEmpty) {
+        vehicleSnapshot = await vehiclesCollection
+          .where('responsable3', isEqualTo: nombreCompleto)
+          .get();
+      }
+
+      if (vehicleSnapshot.docs.isEmpty) {
+        vehicleSnapshot = await vehiclesCollection
+          .where('responsable4', isEqualTo: nombreCompleto)
+          .get();
+      }
+
+      if (vehicleSnapshot.docs.isEmpty) {
+        // Si no se encontró un vehículo, mostrar un mensaje
+        // ignore: use_build_context_synchronously
+        showDialog(
+          // ignore: use_build_context_synchronously
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('No tiene un vehículo a su cargo',
+            style: GoogleFonts.inter(color: Colors.black),),
+              content: Text('No se encontró ningún vehículo asignado a su nombre.',
+            style: GoogleFonts.inter(color: Colors.black),),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Aceptar',
+            style: GoogleFonts.inter(color: Colors.black),),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Si se encontró un vehículo, redirigir a la pantalla de edición del vehículo
+        Vehicle vehicle = Vehicle.fromMap(vehicleSnapshot.docs.first.data() as Map<String, dynamic>, vehicleSnapshot.docs.first.id);
+        Navigator.push(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditMyVehicleScreen(vehicle: vehicle),
+          ),
+        );
+      }
+    } catch (e) {
+      // Mostrar mensaje de error
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al buscar vehículo: $e')));
+    }
   }
 }

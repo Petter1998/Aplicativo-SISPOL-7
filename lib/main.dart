@@ -13,7 +13,8 @@ import 'package:sispol_7/views/administration/contratos/regist_contrato_wins.dar
 import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
-import 'package:sispol_7/views/administration/flota_vehicular/edit_vehicle_screen.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/edit_my_vehicle.dart';
+import 'package:sispol_7/views/administration/flota_vehicular/edit_wins_my.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_screen.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_wins.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/vehicle_view.dart';
@@ -103,7 +104,8 @@ class MyApp extends StatelessWidget {
         '/listfleet': (context) => const VehiclesView(),
         '/registvehicle': (context) => const RegistrationVehicleScreen(),
         '/registvehiclewins': (context) => RegistrationVehicleWins(),
-        //'/editvehicle': (context) =>  EditVehicleScreen(vehicle: vehicle,),
+        //'/editmyvehicle': (context) =>  EditMyVehicleScreen(vehicle:ModalRoute.of(context)!.settings.arguments as Vehicle,),
+        '/editmyvehiclewins': (context) => RegistrationMyVehicleWins(),
         '/listpersub': (context) => const PersonalsSubcircuitView(),
         '/assigpersub': (context) => const SubcircuitoAssignedView(subcircuitoName: '',),
         '/searchperssub': (context) => const PersonSearchResultView(searchResults: [],),

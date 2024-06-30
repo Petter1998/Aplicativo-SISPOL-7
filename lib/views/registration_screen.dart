@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/access/rol_controller.dart';
+import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
 import 'package:sispol_7/widgets/custom_appbar.dart';
 import 'package:sispol_7/widgets/footer.dart';
@@ -24,15 +27,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _fechanaciController = TextEditingController();
+  final TextEditingController _tipoSangreController = TextEditingController();
+  final TextEditingController _ciudadNaciController = TextEditingController();
+  final TextEditingController _rangoController = TextEditingController();
+  final TextEditingController _dependenciaController = TextEditingController();
   final UserController _userController = UserController();
 
   String? _selectedRole;
   List<String> _roles = [];
 
+  String? _selectedRango;
+  final List<String> rangos = ['Capitán', 'Teniente', 'Subteniente', 'Sargento Primero',
+  'Sargento Segundo', 'Cabo Primero', 'Cabo Segundo'];
+
+  String? _selectedDependencia;
+  List<String> dependencias = [];
+
   @override
   void initState() {
     super.initState();
     _fetchRol();
+    _fetchDependencias();
   }
 
   Future<void> _fetchRol() async {
@@ -42,6 +58,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
   }
 
+  Future<void> _fetchDependencias() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('dependencias').get();
+    List<String> fetchedDependencias = snapshot.docs.map((doc) => doc['nombreDistrito'] as String).toList();
+    setState(() {
+      dependencias = fetchedDependencias.toSet().toList(); // Eliminar duplicados
+    });
+  }
+  
+  final PersonalController _personalController = PersonalController();
+  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   bool _obscurePassword = true;
 
 
@@ -114,6 +140,59 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
                     SizedBox(height: verticalSpacing),
 
+                  TextField(
+                    controller: _fechanaciController,
+                    decoration: InputDecoration(
+                      labelText: 'Fecha de Nacimiento',
+                      hintText: 'Fecha de Nacimiento',
+                      fillColor: Colors.black,
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100),
+                          );
+                          if (pickedDate != null) {
+                            setState(() {
+                              _fechanaciController.text = _dateFormat.format(pickedDate);
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    style: GoogleFonts.inter(fontSize: bodyFontSize),
+                  ),
+
+                  SizedBox(height: verticalSpacing),
+
+                  TextField(
+                    controller: _tipoSangreController,
+                    decoration: const InputDecoration(
+                      labelText: 'Tipo de Sangre',
+                      hintText: 'Tipo de Sangre',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    style: GoogleFonts.inter(fontSize: bodyFontSize),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
+                  TextField(
+                    controller: _ciudadNaciController,
+                    decoration: const InputDecoration(
+                      labelText: 'Ciudad de Nacimiento',
+                      hintText: 'Ciudad de Nacimiento',
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                    ),
+                    style: GoogleFonts.inter(fontSize: bodyFontSize),
+                  ),
+                  SizedBox(height: verticalSpacing),
+
                     TextField(controller: _idController, decoration: const InputDecoration(labelText: 'Identificación',
                         hintText: 'Identificación',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
@@ -124,6 +203,52 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         hintText: 'Teléfono celular',
                         fillColor: Colors.black, border: OutlineInputBorder(),),
                         style: GoogleFonts.inter(fontSize: bodyFontSize),),
+                    SizedBox(height: verticalSpacing),
+
+                    DropdownButtonFormField<String>(
+                      value: _selectedRango,
+                      hint: Text('Rango o Grado', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      decoration: const InputDecoration(
+                        labelText: 'Rango o Grado',
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRango = newValue;
+                          _rangoController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                        });
+                      },
+                      items: rangos.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: verticalSpacing),
+
+                    DropdownButtonFormField<String>(
+                      value: _selectedDependencia,
+                      hint: Text('Dependencia', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                      decoration: const InputDecoration(
+                        labelText: 'Dependencia',
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedDependencia = newValue;
+                          _dependenciaController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                        });
+                      },
+                      items: dependencias.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                        );
+                      }).toList(),
+                    ),
                     SizedBox(height: verticalSpacing),
 
                     TextField(controller: _usernameController, decoration: const InputDecoration(labelText: 'Usuario',
@@ -232,6 +357,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _userController.registerUser(context, {
       ...userData,
       'password': _passwordController.text, // Solo se usa para Firebase Auth
+    });
+
+    Map<String, dynamic> persData = {
+      'cedula': int.parse(_idController.text),
+      'nombres': _nameController.text,
+      'apellidos': _surnameController.text,
+      'fechaNacimiento': _fechanaciController.text.isNotEmpty ? Timestamp.fromDate(_dateFormat.parse(_fechanaciController.text)) : null,
+      'tipoSangre': _tipoSangreController.text,
+      'ciudadNacimiento': _ciudadNaciController.text,
+      'telefono': int.parse(_phoneController.text),
+      'rangoGrado': _rangoController.text,
+      'dependencia': _dependenciaController.text,
+    };
+
+    // Usa el controlador para registrar la dependencia
+    _personalController.registerrPerson(context, {
+      ...persData,
+      'fechaCreacion': FieldValue.serverTimestamp(), // Agrega la fecha de creación
     });
   }
 }

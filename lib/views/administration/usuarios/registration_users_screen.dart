@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +29,7 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-   final TextEditingController _fechanaciController = TextEditingController();
+  final TextEditingController _fechanaciController = TextEditingController();
   final TextEditingController _tipoSangreController = TextEditingController();
   final TextEditingController _ciudadNaciController = TextEditingController();
   final TextEditingController _rangoController = TextEditingController();
@@ -351,7 +352,14 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
     );
   }
 
-  void _registerUsers() {
+  void _registerUsers() async {
+    // Guarda las credenciales del usuario actual
+    auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
+    final auth.AuthCredential credential = auth.EmailAuthProvider.credential(
+      email: currentUser!.email!,
+      password: await _usersController.getCurrentUserPassword(context), // Método para obtener la contraseña actual del usuario
+    );
+
     // Recoge los datos del formulario y los pasa al controlador
     Map<String, dynamic> userData = {
       'nombres': _nameController.text,
@@ -365,12 +373,15 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
     };
 
     // Usa el controlador para registrar al usuario
-    _usersController.registerUsers(context, {
+    await _usersController.registerUsers(context, {
       ...userData,
       'password': _passwordController.text, // Solo se usa para Firebase Auth
     });
 
-    Map<String, dynamic> depData = {
+    // Reautentica al usuario actual
+    await auth.FirebaseAuth.instance.signInWithCredential(credential);
+
+    Map<String, dynamic> persData = {
       'cedula': int.parse(_idController.text),
       'nombres': _nameController.text,
       'apellidos': _surnameController.text,
@@ -383,8 +394,8 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
     };
 
     // Usa el controlador para registrar la dependencia
-    _personalController.registerPerson(context, {
-      ...depData,
+    _personalController.registerrPerson(context, {
+      ...persData,
       'fechaCreacion': FieldValue.serverTimestamp(), // Agrega la fecha de creación
     });
   }

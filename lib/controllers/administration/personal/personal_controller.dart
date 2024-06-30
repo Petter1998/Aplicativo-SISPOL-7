@@ -54,6 +54,15 @@ class PersonalController {
     }
   }
 
+  Future<void> registerrPerson(BuildContext context, Map<String, dynamic> persData) async {
+    try {
+      await personalModel.registerPerson(persData); 
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
+    }
+  }
+
   Future<List<Personal>> fetchPersonals() async {
     QuerySnapshot snapshot = await personalsCollection.get();
     List<Personal> personals = snapshot.docs.map((doc) => Personal.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
