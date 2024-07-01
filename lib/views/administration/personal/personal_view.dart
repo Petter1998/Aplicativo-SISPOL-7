@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
@@ -113,30 +114,69 @@ class _PersonalsViewState extends State<PersonalsView> {
 
   Future<void> _generatePDF() async {
     final pdf = pw.Document();
+    final logoImage = pw.MemoryImage(
+      (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+    );
+    final currentDate = DateTime.now();
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+    final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
     
     pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          // ignore: deprecated_member_use
-          return pw.Table.fromTextArray(
-            headers: <String>[
-              'ID', 'Cédula', 'Nombres', 'Apellidos', 'Fecha de Nacimiento', 'Tipo de Sangre', 
-              'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'],
-               data: _personals.map((personal) => [
-                personal.id.toString(),
-                personal.cedula.toString(),
-                personal.name,
-                personal.surname,
-                personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
-                personal.tipoSangre,
-                personal.ciudadNaci,
-                personal.telefono.toString(),
-                personal.rango,
-                personal.dependencia,
-                personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
-              ]).toList(),
-          );
-        },
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) => [
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Text(
+                  'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                  style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Personal Policial', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles del personal en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+                ],
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: <String>[
+                  'ID', 'Cédula', 'Nombres', 'Apellidos', 'Fecha de Nacimiento', 'Tipo de Sangre', 
+                  'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'],
+                  data: _personals.map((personal) => [
+                    personal.id.toString(),
+                    personal.cedula.toString(),
+                    personal.name,
+                    personal.surname,
+                    personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
+                    personal.tipoSangre,
+                    personal.ciudadNaci,
+                    personal.telefono.toString(),
+                    personal.rango,
+                    personal.dependencia,
+                    personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
+                  ]).toList(),
+                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+            ),
+          ], 
       ),
     );
 
@@ -145,7 +185,6 @@ class _PersonalsViewState extends State<PersonalsView> {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
 

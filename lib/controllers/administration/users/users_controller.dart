@@ -68,9 +68,11 @@ class UsersController {
       }
 
       // Navegar a la pantalla de confirmación
+      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, '/registwins');
     } catch (e) {
       // Mostrar mensaje de error
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
     }
   }

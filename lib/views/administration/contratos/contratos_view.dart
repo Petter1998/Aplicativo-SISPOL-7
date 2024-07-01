@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/administration/contratos/contrato_controller.dart';
@@ -6,12 +7,12 @@ import 'package:sispol_7/models/administration/contratos/contrato_model.dart';
 import 'package:sispol_7/views/administration/contratos/edit_contrato_view.dart';
 import 'package:sispol_7/views/administration/contratos/regist_contratos_view.dart';
 import 'package:sispol_7/views/administration/contratos/search_contrato_view.dart';
-//import 'package:pdf/pdf.dart';
+import 'package:pdf/pdf.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
-//import 'package:pdf/widgets.dart' as pw;
-//import 'package:printing/printing.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class ContratosView extends StatefulWidget {
   const ContratosView({super.key});
@@ -113,6 +114,85 @@ class _ContratosViewState extends State<ContratosView> {
       },
     );
   }
+
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    final logoImage = pw.MemoryImage(
+      (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+    );
+    final currentDate = DateTime.now();
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+    final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
+    
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) => [
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Text(
+                  'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                  style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Contratos', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles de los contratos en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+                ],
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: <String>[
+                  'ID', 'Nombre de Contrato',
+                 'Fecha de Inicio',
+                  'Fecha de\nFinalización',
+                  'Tipo de \nContrato',
+                  'Proveedor',
+                  'Tipo de \nRepuestos',
+                  'Vehículos \nCubiertos',
+                  'Monto', 'Fecha de Creación'],
+                  data: _contratos.map((contrato) => [
+                    contrato.id.toString(),
+                    contrato.nombre,
+                    contrato.fechainicio,
+                    contrato.fechafin,
+                    contrato.tipocontrato,
+                    contrato.proveedor,
+                    contrato.tiporepuestos,
+                    contrato.vehiculoscubiertos,
+                    contrato.monto.toString(),
+                    contrato.fechacrea != null ? _dateFormat.format(contrato.fechacrea!) : 'N/A',
+                  ]).toList(),
+                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+            ),
+          ], 
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -253,9 +333,7 @@ class _ContratosViewState extends State<ContratosView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed: () {
-              // Acción para generar PDF
-            },
+            onPressed: _generatePDF,
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.picture_as_pdf, size: iconSize, color: Colors.black),
