@@ -23,45 +23,6 @@ class SearchSubcircuitView extends StatelessWidget {
 
   SearchSubcircuitView({super.key, required this.searchResults});
 
-
- 
-  Future<void> _generatePDF() async {
-    final pdf = pw.Document();
-    
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          // ignore: deprecated_member_use
-          return pw.Table.fromTextArray(
-            headers: <String>[
-              'ID', 'Fecha de Creación', 'Provincia', 'No. Distritos', 'Parroquia', 
-              'Cod. Distrito', 'Nombre Distrito', 'No. Circuitos', 'Cod. Circuitos', 'Nombre Circuito', 
-              'No. Subcircuitos', 'Cod. Subcircuito', 'Nombre Subcircuito'],
-              data: searchResults.map((dependecy)  => [
-                dependecy.id.toString(),
-                dependecy.fechacrea != null ? dateFormat.format(dependecy.fechacrea!) : 'N/A',
-                dependecy.provincia,
-                dependecy.nDistr.toString(),
-                dependecy.parroquia,
-                dependecy.codDistr,
-                dependecy.nameDistr,
-                dependecy.nCircuit.toString(),
-                dependecy.codCircuit,
-                dependecy.nameCircuit,
-                dependecy.nsCircuit.toString(),
-                dependecy.codsCircuit,
-                dependecy.namesCircuit,
-              ]).toList(),
-          );
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -173,15 +134,6 @@ class SearchSubcircuitView extends StatelessWidget {
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
-
-          FloatingActionButton(
-            onPressed: _generatePDF,
-            tooltip: 'Generar PDF',
-            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
-          ),
-          const SizedBox(width: 20),
-
           FloatingActionButton(
             onPressed: () {
               Navigator.push(

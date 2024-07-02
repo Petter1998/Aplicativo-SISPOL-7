@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/administration/items/items_controller.dart';
@@ -9,9 +10,9 @@ import 'package:sispol_7/views/administration/items/regist_item_view.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
-//import 'package:pdf/widgets.dart' as pw;
-//import 'package:printing/printing.dart';
-//import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:pdf/pdf.dart';
 
 // ignore: must_be_immutable
 class SearchItemView extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SearchItemViewState extends State<SearchItemView> {
    @override
   void initState() {
     super.initState();
-    _searchResults = _searchResults;
+    _searchResults = widget.searchResults;
   }
 
   void _refreshData() async {
@@ -41,6 +42,84 @@ class _SearchItemViewState extends State<SearchItemView> {
       _searchResults = updatedItems;
     });
   }
+
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    final logoImage = pw.MemoryImage(
+      (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+    );
+    final currentDate = DateTime.now();
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+    final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
+    
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) => [
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Text(
+                  'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                  style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Ítems', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles de los Ítems en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+                ],
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: <String>[
+                  'ID', 'Nombre',
+                  'Fecha \nAdquisición',
+                  'Modelo',
+                  'Marca',
+                  'Estado',
+                  'Precio de Compra',
+                  'Cantidad', 'Fecha de Creación'],
+                  data: widget.searchResults.map((item) => [
+                    item.id.toString(),
+                    item.nombre,
+                    item.fechaadqui,
+                    item.modelo,
+                    item.marca,
+                    item.estado,
+                    item.precio.toString(),
+                    item.cantidad.toString(),
+                    item.fechacrea != null ? dateFormat.format(item.fechacrea!) : 'N/A',
+                  ]).toList(),
+                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+                  cellAlignment: pw.Alignment.center,
+            ),
+          ], 
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -144,7 +223,7 @@ class _SearchItemViewState extends State<SearchItemView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed:( ){},
+            onPressed:_generatePDF,
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),

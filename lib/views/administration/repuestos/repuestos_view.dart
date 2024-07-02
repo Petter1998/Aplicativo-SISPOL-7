@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/administration/repuestos/repuestos_controller.dart';
@@ -6,12 +7,12 @@ import 'package:sispol_7/models/administration/repuestos/repuestos_model.dart';
 import 'package:sispol_7/views/administration/repuestos/edit_repuesto_view.dart';
 import 'package:sispol_7/views/administration/repuestos/regist_repuestos_view.dart';
 import 'package:sispol_7/views/administration/repuestos/search_repuestos_view.dart';
-//import 'package:pdf/pdf.dart';
+import 'package:pdf/pdf.dart';
 import 'package:sispol_7/widgets/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/footer.dart';
-//import 'package:pdf/widgets.dart' as pw;
-//import 'package:printing/printing.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class RepuestosView extends StatefulWidget {
   const RepuestosView({super.key});
@@ -111,6 +112,86 @@ class _RepuestosViewState extends State<RepuestosView> {
           ],
         );
       },
+    );
+  }
+
+  Future<void> _generatePDF() async {
+    final pdf = pw.Document();
+    final logoImage = pw.MemoryImage(
+      (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+    );
+    final currentDate = DateTime.now();
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+    final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
+    
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) => [
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Text(
+                  'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                  style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Repuestos', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles de los Repuestos en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+                ],
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: <String>[
+                  'ID', 'Fecha de Creación','Nombre',
+                  'Fecha \nAdquisición',
+                  'Contrato',
+                  'Modelo',
+                  'Marca',
+                  'Ubicación \nen Almacén',
+                  'Precio \nde Compra',
+                  'Cantidad'],
+                  data: _repuestos.map((repuesto) => [
+                    repuesto.id.toString(),
+                    repuesto.fechacrea != null ? _dateFormat.format(repuesto.fechacrea!) : 'N/A',
+                    repuesto.nombre,
+                    repuesto.fechaadqui,
+                    repuesto.contrato,
+                    repuesto.modelo,
+                    repuesto.marca,
+                    repuesto.ubicacion,
+                    repuesto.precio.toString(),
+                    repuesto.cantidad.toString(),
+                    
+                  ]).toList(),
+                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+                  cellAlignment: pw.Alignment.center,
+            ),
+          ], 
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
     );
   }
 
@@ -251,9 +332,7 @@ class _RepuestosViewState extends State<RepuestosView> {
           const SizedBox(width: 20),
 
           FloatingActionButton(
-            onPressed: () {
-              // Acción para generar PDF
-            },
+            onPressed: _generatePDF,
             tooltip: 'Generar PDF',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.picture_as_pdf, size: iconSize, color: Colors.black),

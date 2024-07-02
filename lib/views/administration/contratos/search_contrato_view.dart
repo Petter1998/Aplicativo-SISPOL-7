@@ -139,15 +139,6 @@ class _SearchContratosViewState extends State<SearchContratosView> {
           const SizedBox(width: 20),
           FloatingActionButton(
             onPressed: () {
-              // Acción para generar PDF
-            },
-            tooltip: 'Generar PDF',
-            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.picture_as_pdf, size: iconSize, color: Colors.black),
-          ),
-          const SizedBox(width: 20),
-          FloatingActionButton(
-            onPressed: () {
               _refreshData();
             },
             tooltip: 'Refrescar',

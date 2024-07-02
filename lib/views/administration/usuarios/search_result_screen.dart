@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -25,28 +26,68 @@ class SearchResultsView extends StatelessWidget {
 
   Future<void> _generatePDF() async {
     final pdf = pw.Document();
+    final logoImage = pw.MemoryImage(
+      (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+    );
+    final currentDate = DateTime.now();
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+    final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
     
     pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          // ignore: deprecated_member_use
-          return pw.Table.fromTextArray(
-            headers: <String>[
-              'ID', 'Nombre', 'Apellido', 'Correo', 'Cédula', 'Cargo', 'Fecha de Creación',
-              'Teléfono', 'Usuario',],
-              data: searchResults.map((user) => [
-                user.id.toString(),
-                user.name,
-                user.surname,
-                user.email,
-                user.cedula,
-                user.cargo,
-                user.fechacrea != null ? dateFormat.format(user.fechacrea!) : 'N/A',
-                user.telefono,
-                user.user,
-              ]).toList(),
-          );
-        },
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) => [
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Text(
+                  'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                  style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Usuarios', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles de los Usuarios en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+                ],
+              ),
+              pw.TableHelper.fromTextArray(
+                headers: <String>[
+                  'ID', 'Nombres', 'Apellidos', 'Email', 'Cédula', 'Rol', 'Fecha de Creación',
+                  'Teléfono', 'Usuario',],
+                  data: searchResults.map((user) => [
+                    user.id.toString(),
+                    user.name,
+                    user.surname,
+                    user.email,
+                    user.cedula,
+                    user.cargo,
+                    user.fechacrea != null ? dateFormat.format(user.fechacrea!) : 'N/A',
+                    user.telefono,
+                    user.user,
+                  ]).toList(),
+                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+                  cellAlignment: pw.Alignment.center,
+            ),
+          ], 
       ),
     );
 

@@ -32,49 +32,10 @@ class _SearchVehicleViewState extends State<SearchVehicleView> {
 
   void _fetchVehicles() async {
     setState(() {
-      // Actualizar la lista de vehículos
+      // Actualiza la lista de vehículos
     });
   }
   
-
-  Future<void> _generatePDF() async {
-    final pdf = pw.Document();
-    
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          // ignore: deprecated_member_use
-          return pw.Table.fromTextArray(
-            headers: <String>[
-              'ID', 'Marca', 'Modelo', 'Motor', 'Placa', 'Chasis', 'Tipo', 'Cilindraje',
-              'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 
-              'Fecha de Creación'],
-               data: widget.searchResults.map((vehicle) => [
-                vehicle.id.toString(),
-                vehicle.marca,
-                vehicle.modelo,
-                vehicle.motor,
-                vehicle.placa,
-                vehicle.chasis,
-                vehicle.tipo,
-                vehicle.cilindraje.toString(),
-                vehicle.capacidadPas.toString(),
-                vehicle.capacidadCar.toString(),
-                vehicle.kilometraje.toString(),
-                vehicle.fechacrea != null
-                    ? dateFormat.format(vehicle.fechacrea!)
-                    : 'N/A',
-              ]).toList(),
-          );
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
-  }
-
   void _showDeleteDialog(BuildContext context, Vehicle vehicle) {
     final TextEditingController observationController = TextEditingController();
 
@@ -239,15 +200,6 @@ class _SearchVehicleViewState extends State<SearchVehicleView> {
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
           ),
           const SizedBox(width: 20),
-
-          FloatingActionButton(
-            onPressed: _generatePDF,
-            tooltip: 'Generar PDF',
-            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
-            child: Icon(Icons.picture_as_pdf, size: iconSize,color:  Colors.black),
-          ),
-          const SizedBox(width: 20),
-
           FloatingActionButton(
             onPressed: () {
               Navigator.push(
