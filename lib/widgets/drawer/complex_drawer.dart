@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/flota_vehicular/vehicle_controller.dart';
+import 'package:sispol_7/controllers/emergency/vehicle_part_controller.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
 import 'package:sispol_7/models/user_model.dart';
 import 'package:sispol_7/widgets/drawer/CDM.dart';
@@ -190,6 +191,12 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
         return '/listroles';
       case "Módulos por Roles":
         return '/registrole';
+      case "Vehiculos Personales":
+        return '/listvehpart';
+      case "Vehiculo Personal":
+        return '/registvehparti';
+      case "Gestión de Bonos":
+        return '/bonusview';
       default:
         return '';
     }
@@ -402,11 +409,18 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
       CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
       CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
       CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
-    //CDM(Icons.add, "Nueva Orden", [], route: '/registdoc'),
+
+      CDM(Icons.warning, "Emergencia Vehicular", ["Gestión de Bonos", "Vehiculo Personal", "Vehiculos Personales"]),
+
       CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),
       CDM(Icons.car_rental_outlined, "Mi Vehículo", [], onTap: () async {
-          await VehicleController().findVehicleForCurrentUser(context);
-        }),
+        await VehicleController().findVehicleForCurrentUser(context);
+      }),
+
+      CDM(Icons.car_rental_outlined, "Mi Vehículo Particular", [], onTap: () async {
+        await VehiclePartController().findVehicleForCurrentUser(context);
+      }),
+
       CDM(Icons.account_circle, "Cuenta", [], route: '/edituser'),
       CDM(Icons.settings_power_sharp, "Cerrar sesión", [], route: '/login'), // Este es el ícono de cerrar sesión
     ];

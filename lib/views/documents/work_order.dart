@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/documents/documents_controller.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:file_picker/file_picker.dart';
 
 
 class WorkOrderScreen extends StatefulWidget {
@@ -273,6 +272,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
       });
     } catch (e) {
       // Manejo de error
+      // ignore: avoid_print
       print('Error fetching tipoContrato: $e');
     }
   }
@@ -785,6 +785,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
         if (imageUrl != null) 'imagenUrl': imageUrl, // Solo agrega la URL si no es null
       };
 
+      // ignore: use_build_context_synchronously
       await _documentosController2.registerDoc(context, {
         ...docuData,
         'fechaCreacion': FieldValue.serverTimestamp(),

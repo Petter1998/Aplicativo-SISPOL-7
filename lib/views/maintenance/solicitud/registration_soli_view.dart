@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/maintenance/validation_controller.dart';
 import 'package:sispol_7/views/maintenance/solicitud/registration_sol_wins.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 
 class RegistrationSoliScreen extends StatefulWidget {
@@ -24,6 +24,7 @@ class _RegistrationSoliScreenState extends State<RegistrationSoliScreen> {
   final TextEditingController _kilometrajeController = TextEditingController();
   final TextEditingController _observacionController = TextEditingController();
   final ValidationController _validationController = ValidationController();
+  final TextEditingController _estadoController = TextEditingController(text: 'Pendiente'); // Inicializa con "Pendiente"
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -195,6 +196,8 @@ class _RegistrationSoliScreenState extends State<RegistrationSoliScreen> {
       'placa': vehicleData['placa'],
       'responsable': widget.nombreCompleto,
       'tipo': vehicleData['tipo'],
+      'estado': _estadoController.text,
+
     };
 
     _validationController.registerSoli(solData).then((_) {

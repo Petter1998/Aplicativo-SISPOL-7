@@ -125,7 +125,9 @@ class ValidationController {
   }
 
   Future<List<Map<String, dynamic>>> fetchSolicitudes() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('solicitud_mantenimiento').get();
+    QuerySnapshot snapshot = await soliCollection
+      .orderBy('estado', descending: true) // Ordena de forma descendente por el campo 'estado'
+      .get();
     return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 

@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/access/rol_controller.dart';
 import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
 import 'package:sispol_7/controllers/user_controller.dart';
-import 'package:sispol_7/widgets/custom_appbar.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/custom_appbar.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 
 class RegistrationScreen extends StatefulWidget {

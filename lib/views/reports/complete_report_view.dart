@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/models/documents/documents_model.dart';
 import 'package:sispol_7/models/reports/reports_model.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 class CompletReportView extends StatefulWidget {
   final Documentos documento;
@@ -91,6 +91,7 @@ class _CompletReportViewState extends State<CompletReportView> {
       }
     } catch (e) {
       // Maneja cualquier error que ocurra durante la obtención de datos
+      // ignore: avoid_print
       print("Error fetching data: $e");
     }
   }
@@ -130,6 +131,7 @@ class _CompletReportViewState extends State<CompletReportView> {
         .doc(newReport.id.toString())
         .set(newReport.toMap());
 
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 
@@ -141,7 +143,6 @@ class _CompletReportViewState extends State<CompletReportView> {
     double bodyFontSize = screenWidth < 600 ? 16 : (screenWidth < 1200 ? 18 : 20);
     double verticalSpacing = screenWidth < 600 ? 8 : (screenWidth < 1200 ? 25 : 30);
     double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);
-    double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
     double horizontalPadding = screenWidth < 800 ? screenWidth * 0.05 : screenWidth * 0.20;
     GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

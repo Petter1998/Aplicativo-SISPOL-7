@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sispol_7/widgets/footer.dart';
-import 'package:sispol_7/widgets/custom_appbar.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
+import 'package:sispol_7/widgets/global/custom_appbar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/widgets/floating_action_button.dart';
+import 'package:sispol_7/widgets/global/floating_action_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

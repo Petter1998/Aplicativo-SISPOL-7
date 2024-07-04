@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/recuperation/recovery.controller.dart';
-import 'package:sispol_7/widgets/custom_appbar.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/custom_appbar.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final String usuario;

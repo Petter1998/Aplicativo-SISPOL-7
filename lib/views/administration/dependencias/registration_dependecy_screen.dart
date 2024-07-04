@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/administration/dependencias/dependency_controller.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 
 class RegistrationDependecyScreen extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sispol_7/controllers/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
-import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dart';
 import 'package:sispol_7/views/access/modulos/modulos_view.dart';
 import 'package:sispol_7/views/access/modulos/register_modulo.dart';
 import 'package:sispol_7/views/access/moduroles/modulos_roles_view.dart';
@@ -13,7 +12,6 @@ import 'package:sispol_7/views/administration/contratos/regist_contrato_wins.dar
 import 'package:sispol_7/views/administration/dependencias/dependecys_view.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dep_wins.dart';
 import 'package:sispol_7/views/administration/dependencias/registration_dependecy_screen.dart';
-import 'package:sispol_7/views/administration/flota_vehicular/edit_my_vehicle.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/edit_wins_my.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_screen.dart';
 import 'package:sispol_7/views/administration/flota_vehicular/registration_vehicle_wins.dart';
@@ -39,6 +37,13 @@ import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/documents/order_wins.dart';
 import 'package:sispol_7/views/documents/work_order.dart';
+import 'package:sispol_7/views/emergency/bonus/bonus_view.dart';
+import 'package:sispol_7/views/emergency/vehiculo_particular/edit_my_part_wins.dart';
+import 'package:sispol_7/views/emergency/vehiculo_particular/regist_veh_part_screen.dart';
+import 'package:sispol_7/views/emergency/vehiculo_particular/registveh_part_wins.dart';
+import 'package:sispol_7/views/emergency/vehiculos_particulares/regist_veh_part.dart';
+import 'package:sispol_7/views/emergency/vehiculos_particulares/regist_veh_part_wins.dart';
+import 'package:sispol_7/views/emergency/vehiculos_particulares/vehicles_part_view.dart';
 import 'package:sispol_7/views/login_screen.dart';
 import 'package:sispol_7/views/maintenance/registro/register_sol_view.dart';
 import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
@@ -104,7 +109,6 @@ class MyApp extends StatelessWidget {
         '/listfleet': (context) => const VehiclesView(),
         '/registvehicle': (context) => const RegistrationVehicleScreen(),
         '/registvehiclewins': (context) => RegistrationVehicleWins(),
-        //'/editmyvehicle': (context) =>  EditMyVehicleScreen(vehicle:ModalRoute.of(context)!.settings.arguments as Vehicle,),
         '/editmyvehiclewins': (context) => RegistrationMyVehicleWins(),
         '/listpersub': (context) => const PersonalsSubcircuitView(),
         '/assigpersub': (context) => const SubcircuitoAssignedView(subcircuitoName: '',),
@@ -130,6 +134,14 @@ class MyApp extends StatelessWidget {
         '/listreportscreen': (context) => const ReportesView (),
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
+
+        '/listvehpart': (context) => const VehiclesPartView(),
+        '/registvehpart': (context) => const RegistrationVehiclePartScreen(),
+        '/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
+        '/registvehparti': (context) => const RegistrationVehiclePartiScreen(),
+        '/registvehiclepartiwins': (context) => RegistrationVehiclePartiWins(),
+        '/editmyvehiclepartwins': (context) => RegistrationMyVehiclePartWins(),
+        '/bonusview': (context) => const BonusView(),
       },
     );
   }

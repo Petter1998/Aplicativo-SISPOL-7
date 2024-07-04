@@ -7,10 +7,11 @@ import 'package:pdf/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/documents/documents_controller.dart';
 import 'package:sispol_7/models/documents/documents_model.dart';
+import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/documents/work_order.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 // ignore: must_be_immutable
 class SearchOrderView extends StatefulWidget {
@@ -30,6 +31,7 @@ class _SearchOrderViewState extends State<SearchOrderView> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // ignore: unused_field
   List<Documentos> _documentos = [];
+  // ignore: prefer_final_fields
   List<int> _selectedDocuments = [];
 
   @override
@@ -53,6 +55,7 @@ class _SearchOrderViewState extends State<SearchOrderView> {
     for (int id in _selectedDocuments) {
       await _controller.ordenCollection.doc(id.toString()).update({'estado': 'Finalizada'});
       // Buscar el documento correspondiente al id
+      // ignore: unused_local_variable
       Documentos documento = _documentos.firstWhere((doc) => doc.id == id);
       
       // Navegar a CompletReportView con el documento seleccionado
@@ -200,46 +203,81 @@ class _SearchOrderViewState extends State<SearchOrderView> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: [
-            _buildColumn('ID'),
-            _buildColumn('Fecha'),
-            _buildColumn('Hora'),
-            _buildColumn('Kilometraje \nActual'),
-            _buildColumn('Estado'),
-            _buildColumn('Tipo'),
-            _buildColumn('Placa'),
-            _buildColumn('Marca'),
-            _buildColumn('Modelo'),
-            _buildColumn('Cédula'),
-            _buildColumn('Responsable'),
-            _buildColumn('Asunto'),
-            _buildColumn('Detalle'),
-            _buildColumn('Tipo de Mantenimiento'),
-            _buildColumn('Mantenimiento Complementario'),
-            _buildColumn('Total'),
-            _buildColumn('Fecha de \nCreación'),
-            _buildColumn('Opciones'),
-          ],
+            DataColumn(label: Checkbox(
+                    value: _selectedDocuments.length == widget.searchResults.length && widget.searchResults.isNotEmpty,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        if (value == true) {
+                          _selectedDocuments = widget.searchResults.map((doc) => doc.id).toList();
+                        } else {
+                          _selectedDocuments.clear();
+                        }
+                      });
+                    },
+                  )),
+                  _buildColumn('ID'),
+                  _buildColumn('Fecha'),
+                  _buildColumn('Hora'),
+                  _buildColumn('Kilometraje \nActual'),
+                  _buildColumn('Estado'),
+                  _buildColumn('Tipo'),
+                  _buildColumn('Placa'),
+                  _buildColumn('Marca'),
+                  _buildColumn('Modelo'),
+                  _buildColumn('Cédula'),
+                  _buildColumn('Responsable'),
+                  _buildColumn('Asunto'),
+                  _buildColumn('Detalle'),
+                  _buildColumn('Tipo de Mantenimiento'),
+                  _buildColumn('Mantenimiento Complementario'),
+                  _buildColumn('Total'),
+                  _buildColumn('Fecha de \nCreación'),
+                  _buildColumn('Opciones'),
+                  ],
           rows: widget.searchResults.map((documentos) {
-            return DataRow(cells:[
-              _buildCell(documentos.id.toString()),
-              _buildCell(documentos.fecha.toString()),
-              _buildCell(documentos.hora),
-              _buildCell(documentos.kilometrajeActual.toString()),
-              _buildCell(documentos.estado),
-              _buildCell(documentos.tipo),
-              _buildCell(documentos.placa),
-              _buildCell(documentos.marca),
-              _buildCell(documentos.modelo),
-              _buildCell(documentos.cedula),
-              _buildCell(documentos.responsable),
-              _buildCell(documentos.asunto),
-              _buildCell(documentos.detalle),
-              _buildCell(documentos.tipoMant),
-              _buildCell(documentos.mantComple),
-              _buildCell(documentos.total.toString()),
-              _buildCell(documentos.fechacrea != null
-                  ? dateFormat.format(documentos.fechacrea!)
-                  : 'N/A'),
+            return DataRow(
+              selected: _selectedDocuments.contains(documentos.id),
+              onSelectChanged: (bool? selected) {
+                setState(() {
+                  if (selected == true) {
+                    _selectedDocuments.add(documentos.id);
+                  } else {
+                    _selectedDocuments.remove(documentos.id);
+                  }
+                });
+              },
+              cells: [
+                DataCell(Checkbox(
+                  value: _selectedDocuments.contains(documentos.id),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value == true) {
+                        _selectedDocuments.add(documentos.id);
+                      } else {
+                        _selectedDocuments.remove(documentos.id);
+                      }
+                    });
+                  },
+                )),
+                _buildCell(documentos.id.toString()),
+                _buildCell(documentos.fecha.toString()),
+                _buildCell(documentos.hora),
+                _buildCell(documentos.kilometrajeActual.toString()),
+                _buildCell(documentos.estado),
+                _buildCell(documentos.tipo),
+                _buildCell(documentos.placa),
+                _buildCell(documentos.marca),
+                _buildCell(documentos.modelo),
+                _buildCell(documentos.cedula),
+                _buildCell(documentos.responsable),
+                _buildCell(documentos.asunto),
+                _buildCell(documentos.detalle),
+                _buildCell(documentos.tipoMant),
+                _buildCell(documentos.mantComple),
+                _buildCell(documentos.total.toString()),
+                _buildCell(documentos.fechacrea != null
+                    ? dateFormat.format(documentos.fechacrea!)
+                    : 'N/A'),
               DataCell(
                 Center(
                   child: Row(
@@ -300,6 +338,18 @@ class _SearchOrderViewState extends State<SearchOrderView> {
             tooltip: 'Finalizar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.task_rounded, size: iconSize,color:  Colors.black),
+          ),
+
+          const SizedBox(width: 20),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DocumentosView()),
+              );
+            },
+            backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
+            child: Icon(Icons.arrow_back, size: iconSize, color:  Colors.black),
           ),
         ],
       ),

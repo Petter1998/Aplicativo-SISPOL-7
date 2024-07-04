@@ -47,7 +47,12 @@ class DocumentosController2 {
     try {
       await documentosController1.registerDoc(docuData);
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/registdocwins'); 
+      Navigator.pushNamed(
+        // ignore: use_build_context_synchronously
+        context, 
+        '/registdocwins',
+        arguments: docuData, // Pasando los datos a través de las rutas
+      ); 
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
@@ -57,7 +62,9 @@ class DocumentosController2 {
   Future<List<Documentos>> fetchDocumentos() async {
     QuerySnapshot snapshot = await ordenCollection.get();
     List<Documentos> documentos = snapshot.docs.map((doc) => Documentos.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
-    documentos.sort((a, b) => b.id.compareTo(a.id)); // Ordenar en orden descendente por id
+    // Ordenar por el campo "estado" en orden ascendente
+    documentos.sort((a, b) => a.estado.compareTo(b.estado));
+
     return documentos;
   }
 

@@ -8,9 +8,9 @@ import 'package:sispol_7/views/administration/items/edit_item_view.dart';
 import 'package:sispol_7/views/administration/items/regist_item_view.dart';
 import 'package:sispol_7/views/administration/items/search_item_view.dart';
 import 'package:pdf/pdf.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 

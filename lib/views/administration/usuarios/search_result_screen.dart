@@ -10,9 +10,9 @@ import 'package:intl/intl.dart';
 import 'package:sispol_7/views/administration/usuarios/edith_user_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/registration_users_screen.dart';
 import 'package:sispol_7/views/administration/usuarios/user_view.dart';
-import 'package:sispol_7/widgets/appbar_sis7.dart';
+import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
-import 'package:sispol_7/widgets/footer.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
 
 // ignore: must_be_immutable
 class SearchResultsView extends StatelessWidget {

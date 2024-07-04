@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sispol_7/controllers/login_controller.dart';
 import 'package:sispol_7/views/recuperation/recovery_screen.dart';
 import 'package:sispol_7/views/registration_screen.dart';
-import 'package:sispol_7/widgets/footer.dart';
-import 'package:sispol_7/widgets/custom_appbar.dart';
+import 'package:sispol_7/widgets/global/footer.dart';
+import 'package:sispol_7/widgets/global/custom_appbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
