@@ -37,13 +37,6 @@ import 'package:sispol_7/views/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/documents/order_wins.dart';
 import 'package:sispol_7/views/documents/work_order.dart';
-import 'package:sispol_7/views/emergency/bonus/bonus_view.dart';
-import 'package:sispol_7/views/emergency/vehiculo_particular/edit_my_part_wins.dart';
-import 'package:sispol_7/views/emergency/vehiculo_particular/regist_veh_part_screen.dart';
-import 'package:sispol_7/views/emergency/vehiculo_particular/registveh_part_wins.dart';
-import 'package:sispol_7/views/emergency/vehiculos_particulares/regist_veh_part.dart';
-import 'package:sispol_7/views/emergency/vehiculos_particulares/regist_veh_part_wins.dart';
-import 'package:sispol_7/views/emergency/vehiculos_particulares/vehicles_part_view.dart';
 import 'package:sispol_7/views/login_screen.dart';
 import 'package:sispol_7/views/maintenance/registro/register_sol_view.dart';
 import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
@@ -85,7 +78,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  DashboardScreen(),  //const HomePage
+        '/home': (context) =>  const HomePage(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -135,13 +128,13 @@ class MyApp extends StatelessWidget {
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
 
-        '/listvehpart': (context) => const VehiclesPartView(),
-        '/registvehpart': (context) => const RegistrationVehiclePartScreen(),
-        '/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
-        '/registvehparti': (context) => const RegistrationVehiclePartiScreen(),
-        '/registvehiclepartiwins': (context) => RegistrationVehiclePartiWins(),
-        '/editmyvehiclepartwins': (context) => RegistrationMyVehiclePartWins(),
-        '/bonusview': (context) => const BonusView(),
+        //'/listvehpart': (context) => const VehiclesPartView(),
+       //'/registvehpart': (context) => const RegistrationVehiclePartScreen(),
+        //'/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
+        //'/registvehparti': (context) => const RegistrationVehiclePartiScreen(),
+        //'/registvehiclepartiwins': (context) => RegistrationVehiclePartiWins(),
+        //'/editmyvehiclepartwins': (context) => RegistrationMyVehiclePartWins(),
+        //'/bonusview': (context) => const BonusView(),
       },
     );
   }

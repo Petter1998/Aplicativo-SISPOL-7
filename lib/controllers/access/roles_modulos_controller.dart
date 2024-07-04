@@ -19,7 +19,5 @@ class ModulesController {
       return [];
     }
   }
-
-  
 }
 
