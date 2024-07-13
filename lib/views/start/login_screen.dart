@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/controllers/login_controller.dart';
+import 'package:sispol_7/controllers/start/login_controller.dart';
 import 'package:sispol_7/views/recuperation/recovery_screen.dart';
-import 'package:sispol_7/views/registration_screen.dart';
+import 'package:sispol_7/views/start/registration_screen.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:sispol_7/widgets/global/custom_appbar.dart';
 
@@ -139,34 +139,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     SizedBox(height: vertiSpacing),
-
-                    Text('O', style: GoogleFonts.inter(fontSize: titleFontSize)),
-
-                    SizedBox(height: vertiSpacing),
-
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:  Colors.white, // Color de fondo
-                        
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0), // Bordes redondeados
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
-                      ),
-                      icon: Icon(FontAwesomeIcons.google, size: iconSize, color: Colors.black), // Asegúrate de que `iconSize` esté definido
-                      label: Text('Acceder con Google', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black)),
-                      onPressed: (null), //async {
-                        //bool result = await _controller.loginWithGoogle();
-                        //if (result) {
-                          // ignore: use_build_context_synchronously
-                          //Navigator.pushReplacementNamed(context, '/dashboard');
-                        //} else {
-                          // ignore: use_build_context_synchronously
-                          //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login with Google failed')));
-                        //}
-                      //},
-                    ),
-
                     SizedBox(height: vertiSpacing),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -177,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
                       ),
-                      icon: Icon(FontAwesomeIcons.question, size: iconSize, color: Colors.black), // Icono con color definido
+                      icon: Icon(FontAwesomeIcons.triangleExclamation, size: iconSize, color: Colors.black), // Icono con color definido
                       label: Text('¿Olvidó su contraseña?', style: GoogleFonts.inter(fontSize: titleFontSize, color: Colors.black)),
                       onPressed: (){
                         Navigator.push(

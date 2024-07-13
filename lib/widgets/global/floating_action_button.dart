@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/views/login_screen.dart';
+import 'package:sispol_7/views/start/login_screen.dart';
 
 class MyFAB extends StatelessWidget {
   const MyFAB({super.key});

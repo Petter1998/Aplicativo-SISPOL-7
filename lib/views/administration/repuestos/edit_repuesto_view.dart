@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +40,8 @@ class _EditRepuestoScreenState extends State<EditRepuestoScreen> {
     _ubicacionController = TextEditingController(text: widget.repuesto.ubicacion);
     _precioController = TextEditingController(text: widget.repuesto.precio.toString());
     _cantidadController = TextEditingController(text: widget.repuesto.cantidad.toString());
+    _fetchContratos();
+    _selectedContrato = widget.repuesto.contrato;
   }
 
   @override
@@ -52,6 +55,17 @@ class _EditRepuestoScreenState extends State<EditRepuestoScreen> {
     _precioController.dispose();
     _cantidadController.dispose();
     super.dispose();
+  }
+
+  String? _selectedContrato;
+  List<String> contratos = [];
+
+  Future<void> _fetchContratos() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('contratos').get();
+    List<String> fetchedContratos = snapshot.docs.map((doc) => doc['tipoContrato'] as String).toList();
+    setState(() {
+      contratos = fetchedContratos.toSet().toList(); // Eliminar duplicados
+    });
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -139,15 +153,26 @@ class _EditRepuestoScreenState extends State<EditRepuestoScreen> {
                               style: GoogleFonts.inter(fontSize: bodyFontSize),
                             ),
                             SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _contratoController,
+                            DropdownButtonFormField<String>(
+                              value: _selectedContrato,
+                              hint: Text('Tipo', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                               decoration: const InputDecoration(
-                                labelText: 'Contrato',
-                                hintText: 'Contrato',
+                                labelText: 'Tipo de Contrato',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
                               ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedContrato = newValue;
+                                  _contratoController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                                });
+                              },
+                              items: contratos.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                                );
+                              }).toList(),
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(

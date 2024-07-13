@@ -143,6 +143,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
   }
 
   Future<void> _generatePDF() async {
+  try {
     final pdf = pw.Document();
     final logoImage = pw.MemoryImage(
       (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
@@ -150,7 +151,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
     final currentDate = DateTime.now();
     final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
-    
+
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4.landscape,
@@ -166,66 +167,70 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
                 ),
               ),
               pw.SizedBox(height: 10),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Image(logoImage, width: 70, height: 70),
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.end,
-                      children: [
-                        pw.Text('Reporte de Personal asignado a Subcircuito', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
-                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  ],
-                ),
-                pw.SizedBox(height: 20),
-                pw.Text('Detalles del Personal - Subcircuito en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Image(logoImage, width: 70, height: 70),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    children: [
+                      pw.Text('Reporte de Personal asignado a Subcircuito', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                      pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                    ],
+                  ),
                 ],
               ),
-              pw.TableHelper.fromTextArray(
-                headers: <String>[
-                  'ID', 'Cédula', 'Nombres', 'Apellidos', 'Provincia', 'Parroquia', 
-                  'Nombre Circuito', 'Fecha de Nacimiento', 'Tipo de Sangre', 
-                  'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación'
-                  'Fecha Asignacion'
-                ],
-                data: personalData.map((item) {
-                  final personal = item['personal'] as Personal;
-                  final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?;
-                  final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
-                  return [
-                    personal.id.toString(),
-                    personal.cedula.toString(),
-                    personal.name,
-                    personal.surname,
-                    subcircuitoData?['provincia'] ?? 'N/A',
-                    subcircuitoData?['parroquia'] ?? 'N/A',
-                    subcircuitoData?['nombreCircuito'] ?? 'N/A',
-                    personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
-                    personal.tipoSangre,
-                    personal.ciudadNaci,
-                    personal.telefono.toString(),
-                    personal.rango,
-                    personal.dependencia,
-                    personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
-                    fechaAsignacion != null ? _dateFormat.format(fechaAsignacion) : 'N/A', // Formatea y agrega la fecha de asignación
-                  ];
-                }).toList(),
-                cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
-                headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
-                headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
-            ),
-          ], 
+              pw.SizedBox(height: 20),
+              pw.Text('Detalles del Personal - Subcircuito en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 10),
+            ],
+          ),
+          pw.TableHelper.fromTextArray(
+            headers: <String>[
+              'ID', 'Cédula', 'Nombres', 'Apellidos', 'Provincia', 'Parroquia', 
+              'Nombre Circuito', 'Fecha de Nacimiento', 'Tipo de Sangre', 
+              'Ciudad de Nacimiento', 'Teléfono', 'Rango', 'Dependencia', 'Fecha de Creación', 'Fecha Asignacion',
+            ],
+            data: personalData.map((item) {
+              final personal = item['personal'] as Personal;
+              final subcircuitoData = item['subcircuito'] as Map<String, dynamic>?;
+              final fechaAsignacion = subcircuitoData?['fechaAsignacion']; // Obtiene la fecha de asignación
+              return [
+                personal.id.toString(),
+                personal.cedula.toString(),
+                personal.name,
+                personal.surname,
+                subcircuitoData?['provincia'] ?? 'N/A',
+                subcircuitoData?['parroquia'] ?? 'N/A',
+                subcircuitoData?['nombreCircuito'] ?? 'N/A',
+                personal.fechanaci != null ? _dateFormat.format(personal.fechanaci!) : 'N/A',
+                personal.tipoSangre,
+                personal.ciudadNaci,
+                personal.telefono.toString(),
+                personal.rango,
+                personal.dependencia,
+                personal.fechacrea != null ? _dateFormat.format(personal.fechacrea!) : 'N/A',
+                fechaAsignacion != null ? _dateFormat.format((fechaAsignacion as Timestamp).toDate()) : 'N/A', // Formatea y agrega la fecha de asignación
+              ];
+            }).toList(),
+            cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+            headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+            headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+            cellAlignment: pw.Alignment.center,
+          ),
+        ], 
       ),
     );
 
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
+  } catch (e) {
+    print('Error generando el PDF: $e');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

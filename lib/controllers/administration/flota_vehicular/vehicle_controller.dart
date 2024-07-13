@@ -8,21 +8,25 @@ import 'package:sispol_7/views/administration/flota_vehicular/edit_my_vehicle.da
 class VehicleModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Obtiene el siguiente ID disponible para un nuevo vehículo
   Future<int> _getNextVehId() async {
     final DocumentReference counterRef = _firestore.collection('counters').doc('vechicleId');
     return _firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counterRef);
       if (!snapshot.exists) {
+        // Si no existe el documento de contador, lo crea y establece el ID inicial en 1
         transaction.set(counterRef, {'currentId': 1});
         return 1;
       }
 
+      // Incrementa el ID actual en 1 y actualiza el documento
       int newId = snapshot['currentId'] + 1;
       transaction.update(counterRef, {'currentId': newId});
       return newId;
     });
   }
 
+  // Registra un nuevo vehículo en Firestore
   Future<void> registerVehicle(Map<String, dynamic> vehData) async {
     // Verifica que todos los campos requeridos no estén vacíos
     for (String key in vehData.keys) {
@@ -34,6 +38,7 @@ class VehicleModel {
     // Obtener el próximo ID de Vehiculo
     int vehId = await _getNextVehId();
 
+    // Guarda el vehículo en Firestore con la fecha de creación actual
     await _firestore.collection('vehiculos').doc(vehId.toString()).set({
       'id': vehId,
       ...vehData,
@@ -46,6 +51,7 @@ class VehicleController {
   final VehicleModel vehicleModel = VehicleModel();
   final CollectionReference vehiclesCollection = FirebaseFirestore.instance.collection('vehiculos');
 
+  // Registra un nuevo vehículo y navega a otra pantalla en caso de éxito
   Future<void> registerVehicle(BuildContext context, Map<String, dynamic> vehData) async {
     try {
       await vehicleModel.registerVehicle(vehData);
@@ -57,6 +63,7 @@ class VehicleController {
     }
   }
 
+   // Obtiene una lista de todos los vehículos desde Firestore
   Future<List<Vehicle>> fetchVehicles() async {
     QuerySnapshot snapshot = await vehiclesCollection.get();
     List<Vehicle> vehicles = snapshot.docs.map((doc) => Vehicle.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
@@ -64,6 +71,7 @@ class VehicleController {
     return vehicles;
   }
 
+  // Actualiza un vehículo existente en Firestore
   Future<void> updateVehicle(Vehicle vehicle) async {
     try {
       await vehiclesCollection.doc(vehicle.id.toString()).update(vehicle.toMap());
@@ -73,8 +81,9 @@ class VehicleController {
     }
   }
 
+  // Elimina un vehículo de Firestore, registrando la observación
   Future<void> deleteVehicle(Vehicle vehicle, String observation) async {
-    // Almacenar la observación en la colección eliminacionVehiculo
+    // Almacena la observación en la colección eliminacionVehiculo
     await FirebaseFirestore.instance.collection('eliminacionVehiculo').add({
       'vehiculoId': vehicle.id,
       'modelo': vehicle.modelo,
@@ -89,6 +98,7 @@ class VehicleController {
     await vehiclesCollection.doc(vehicle.id.toString()).delete();
   }
 
+  // Busca vehículos en Firestore cuyo placa o chasis coincidan con la consulta dada
   Future<List<Vehicle>> searchVehicle(String query) async {
     Query queryRef = vehiclesCollection;
 
@@ -118,6 +128,7 @@ class VehicleController {
     return [];
   }
 
+  // Actualiza un vehículo propio y navega a otra pantalla en caso de éxito
   Future<void> updateMyVehicle(BuildContext context, Vehicle vehicle) async {
     try {
       await vehiclesCollection.doc(vehicle.id.toString()).update(vehicle.toMap());
@@ -131,6 +142,7 @@ class VehicleController {
   }
 
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection('usuarios');
+  // Busca el vehículo asignado al usuario actual
   Future<void> findVehicleForCurrentUser(BuildContext context) async {
     try {
       // Obtener el usuario actual
@@ -193,7 +205,7 @@ class VehicleController {
           },
         );
       } else {
-        // Si se encontró un vehículo, redirigir a la pantalla de edición del vehículo
+        // Si se encontró un vehículo, redirige a la pantalla de edición del vehículo
         Vehicle vehicle = Vehicle.fromMap(vehicleSnapshot.docs.first.data() as Map<String, dynamic>, vehicleSnapshot.docs.first.id);
         Navigator.push(
           // ignore: use_build_context_synchronously

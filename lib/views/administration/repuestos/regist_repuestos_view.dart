@@ -28,6 +28,23 @@ class _RegistRepuestoScreenState extends State<RegistRepuestoScreen> {
   final TextEditingController _cantidadController = TextEditingController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
+  String? _selectedContrato;
+  List<String> contratos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchContratos();
+  }
+
+  Future<void> _fetchContratos() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('contratos').get();
+    List<String> fetchedContratos = snapshot.docs.map((doc) => doc['tipoContrato'] as String).toList();
+    setState(() {
+      contratos = fetchedContratos.toSet().toList(); // Eliminar duplicados
+    });
+  }
+
   final RepuestosController _repuestosController = RepuestosController();
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -115,15 +132,26 @@ class _RegistRepuestoScreenState extends State<RegistRepuestoScreen> {
                               style: GoogleFonts.inter(fontSize: bodyFontSize),
                             ),
                             SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _contratoController,
+                            DropdownButtonFormField<String>(
+                              value: _selectedContrato,
+                              hint: Text('Tipo', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                               decoration: const InputDecoration(
-                                labelText: 'Contrato',
-                                hintText: 'Contrato',
+                                labelText: 'Tipo de Contrato',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
                               ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedContrato = newValue;
+                                  _contratoController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                                });
+                              },
+                              items: contratos.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value, style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                                );
+                              }).toList(),
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(

@@ -166,7 +166,7 @@ class _RegistCatalogoScreenState extends State<RegistCatalogoScreen> {
                             SizedBox(height: verticalSpacing),
                             DropdownButtonFormField<String>(
                               value: _selectedRepuestos,
-                              hint: Text('Tipo de Repuestos', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                              hint: Text('Tipo', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                               decoration: const InputDecoration(
                                 labelText: 'Tipo de Repuestos',
                                 fillColor: Colors.black,

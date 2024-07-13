@@ -58,7 +58,12 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     _responsable2Controller = TextEditingController(text: widget.vehicle.responsable2);
     _responsable3Controller = TextEditingController(text: widget.vehicle.responsable3);
     _responsable4Controller = TextEditingController(text: widget.vehicle.responsable4);
-
+    _selectedTipo = widget.vehicle.tipo;
+    _selectedDependencia = widget.vehicle.dependencia;
+    _selectedResponsable1 = widget.vehicle.responsable1;
+    _selectedResponsable2 = widget.vehicle.responsable2;
+    _selectedResponsable3 = widget.vehicle.responsable3;
+    _selectedResponsable4 = widget.vehicle.responsable4;
     _fetchDependencias();
   }
 

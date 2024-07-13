@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/controllers/access/rol_controller.dart';
 import 'package:sispol_7/controllers/administration/personal/personal_controller.dart';
-import 'package:sispol_7/controllers/user_controller.dart';
+import 'package:sispol_7/controllers/start/user_controller.dart';
 import 'package:sispol_7/widgets/global/custom_appbar.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controllers/splash_screen_controller.dart';
+import 'package:sispol_7/controllers/start/splash_screen_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreenWidget extends StatefulWidget {

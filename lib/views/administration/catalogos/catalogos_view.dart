@@ -266,26 +266,30 @@ class _CatalogosViewState extends State<CatalogosView> {
                         _buildCell(catalogo.tiporepuestos),
                         _buildCell(catalogo.vigente),
                         _buildCell(catalogo.fechacrea != null ? _dateFormat.format(catalogo.fechacrea!) : 'N/A'),
-                        DataCell(Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditCatalogoScreen(catalogo: catalogo),
-                                ));
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _controller.deleteCatalogo(catalogo.id);
-                                setState(() {
-                                  _fetchCatalogos();
-                                });
-                              },
-                            ),
-                          ],
+                        DataCell(
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => EditCatalogoScreen(catalogo: catalogo),
+                                    ));
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _controller.deleteCatalogo(catalogo.id);
+                                    setState(() {
+                                      _fetchCatalogos();
+                                    });
+                                  },
+                                ),
+                              ],
+                          ),
                         )),
                       ]);
                     }).toList(),

@@ -63,7 +63,7 @@ class _UserViewState extends State<UserView> {
             onChanged: (value) {
               query = value;
             },
-            decoration: const InputDecoration(hintText: "Ingrese los nombres"),
+            decoration: const InputDecoration(hintText: "Ingrese los dos nombres"),
             style: GoogleFonts.inter( color: Colors.black),
           ),
           actions: <Widget>[

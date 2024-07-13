@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sispol_7/models/user_model.dart';
+import 'package:sispol_7/models/start/user_model.dart';
 
 class UserModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

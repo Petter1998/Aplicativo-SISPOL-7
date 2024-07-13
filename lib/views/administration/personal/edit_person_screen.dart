@@ -44,7 +44,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
     _telefonoController = TextEditingController(text: widget.personal.telefono.toString());
     _rangoController = TextEditingController(text: widget.personal.rango);
     _dependenciaController = TextEditingController(text: widget.personal.dependencia);
-
+    _selectedDependencia = widget.personal.dependencia;
+    _selectedRango = widget.personal.rango;
     _fetchDependencias();
   }
 

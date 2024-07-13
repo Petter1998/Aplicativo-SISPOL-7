@@ -43,16 +43,15 @@ class _PersonSearchResultViewState extends State<PersonSearchResultView> {
     _fetchPersonals();
   }
 
-  void _refreshData() {
-    _fetchPersonals();
-  }
-
-
   void _fetchPersonals() async {
     List<Personal> personals = await _personalcontroller.fetchPersonals();
     setState(() {
       _personals= personals;
     });
+  }
+
+  void _refreshData() {
+    _fetchPersonals();
   }
 
   Future<void> _generatePDF() async {
@@ -118,6 +117,7 @@ class _PersonSearchResultViewState extends State<PersonSearchResultView> {
                   cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
                   headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
                   headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+                  cellAlignment: pw.Alignment.center,
             ),
           ], 
       ),

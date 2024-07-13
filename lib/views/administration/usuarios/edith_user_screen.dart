@@ -37,7 +37,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _cargoController = TextEditingController(text: widget.user.cargo);
     _telefonoController = TextEditingController(text: widget.user.telefono);
     _userController = TextEditingController(text: widget.user.user);
-
+    _selectedRole = widget.user.cargo;
     _fetchRol();
   }
 

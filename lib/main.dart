@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sispol_7/controllers/role_updater.dart';
+import 'package:sispol_7/controllers/start/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
 import 'package:sispol_7/views/access/modulos/modulos_view.dart';
 import 'package:sispol_7/views/access/modulos/register_modulo.dart';
@@ -33,23 +33,23 @@ import 'package:sispol_7/views/administration/usuarios/user_view.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_assig_subcircuit.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_search_screen.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
-import 'package:sispol_7/views/dashboard_screen.dart';
+import 'package:sispol_7/views/start/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/documents/order_wins.dart';
 import 'package:sispol_7/views/documents/work_order.dart';
-import 'package:sispol_7/views/login_screen.dart';
+import 'package:sispol_7/views/start/login_screen.dart';
 import 'package:sispol_7/views/maintenance/registro/register_sol_view.dart';
 import 'package:sispol_7/views/maintenance/solicitud/failed_validation_screen.dart';
 import 'package:sispol_7/views/maintenance/solicitud/validation_screen.dart';
 import 'package:sispol_7/views/recuperation/changue_password_screen.dart';
 import 'package:sispol_7/views/recuperation/success_page.dart';
-import 'package:sispol_7/views/registration_screen.dart';
-import 'package:sispol_7/views/registration_win.dart';
+import 'package:sispol_7/views/start/registration_screen.dart';
+import 'package:sispol_7/views/start/registration_win.dart';
 import 'package:sispol_7/views/reports/reports_view.dart';
-import 'package:sispol_7/views/user_edit_screen.dart';
-import 'controllers/splash_screen_controller.dart';
-import 'views/splash_screen_widget.dart';
-import 'views/home_page.dart';
+import 'package:sispol_7/views/start/user_edit_screen.dart';
+import 'controllers/start/splash_screen_controller.dart';
+import 'views/start/splash_screen_widget.dart';
+import 'views/start/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const HomePage(),  //const HomePage
+        '/home': (context) =>  const VehiclesSubcircuitView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -127,9 +127,8 @@ class MyApp extends StatelessWidget {
         '/listreportscreen': (context) => const ReportesView (),
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
-
         //'/listvehpart': (context) => const VehiclesPartView(),
-       //'/registvehpart': (context) => const RegistrationVehiclePartScreen(),
+        //'/registvehpart': (context) => const RegistrationVehiclePartScreen(),
         //'/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
         //'/registvehparti': (context) => const RegistrationVehiclePartiScreen(),
         //'/registvehiclepartiwins': (context) => RegistrationVehiclePartiWins(),

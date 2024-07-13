@@ -39,6 +39,10 @@ class _EditContratoScreenState extends State<EditContratoScreen> {
     _tiporepuestosController = TextEditingController(text: widget.contrato.tiporepuestos);
     _vehiculoscubiertosController = TextEditingController(text: widget.contrato.vehiculoscubiertos);
     _montoController = TextEditingController(text: widget.contrato.monto.toString());
+    _selectedContrat = widget.contrato.tipocontrato;
+    _selectedRepuestos = widget.contrato.tiporepuestos;
+    _selectedTipo = widget.contrato.vehiculoscubiertos;
+
   }
 
   @override

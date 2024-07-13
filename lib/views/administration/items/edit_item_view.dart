@@ -38,6 +38,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
     _estadoController = TextEditingController(text: widget.item.estado);
     _precioController = TextEditingController(text: widget.item.precio.toString());
     _cantidadController = TextEditingController(text: widget.item.cantidad.toString());
+    _selectedEstado = widget.item.estado;
   }
 
   @override

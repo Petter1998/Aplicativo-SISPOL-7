@@ -162,7 +162,7 @@ class _RepuestosViewState extends State<RepuestosView> {
                 headers: <String>[
                   'ID', 'Fecha de Creación','Nombre',
                   'Fecha \nAdquisición',
-                  'Contrato',
+                  'Tipo de \nContrato',
                   'Modelo',
                   'Marca',
                   'Ubicación \nen Almacén',
@@ -246,7 +246,7 @@ class _RepuestosViewState extends State<RepuestosView> {
                   _buildColumn('ID'),
                   _buildColumn('Nombre'),
                   _buildColumn('Fecha \nAdquisición'),
-                  _buildColumn('Contrato'),
+                  _buildColumn('Tipo de \nContrato'),
                   _buildColumn('Modelo'),
                   _buildColumn('Marca'),
                   _buildColumn('Ubicación \nen Almacén'),

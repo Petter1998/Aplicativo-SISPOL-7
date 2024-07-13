@@ -50,6 +50,9 @@ class _EditCatalogoScreenState extends State<EditCatalogoScreen> {
     _proveedorController = TextEditingController(text: widget.catalogo.proveedor);
     _tiporepuestosController = TextEditingController(text: widget.catalogo.tiporepuestos);
     _vigenteController = TextEditingController(text: widget.catalogo.vigente);
+    _selectedCategoria = widget.catalogo.categoria;
+    _selectedRepuestos = widget.catalogo.tiporepuestos;
+    _selectedVigencia = widget.catalogo.vigente;
   }
 
   @override

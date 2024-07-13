@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sispol_7/views/dashboard_screen.dart';
+import 'package:sispol_7/views/start/dashboard_screen.dart';
 
 
 class MyUSER5 extends StatelessWidget {
