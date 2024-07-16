@@ -6,21 +6,24 @@ class RolesController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference rolesCollection = FirebaseFirestore.instance.collection('roles');
 
+  // Función privada para obtener el próximo ID de rol utilizando una transacción
   Future<int> _getNextDocId() async {
     final DocumentReference counterRef = _firestore.collection('counters').doc('roleId');
     return _firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counterRef);
       if (!snapshot.exists) {
+        // Si el documento no existe, inicializar el contador
         transaction.set(counterRef, {'currentId': 1});
         return 1;
       }
 
-      int newId = snapshot['currentId'] + 1;
-      transaction.update(counterRef, {'currentId': newId});
+      int newId = snapshot['currentId'] + 1; // Incrementa el ID actual
+      transaction.update(counterRef, {'currentId': newId}); // Actualizar el contador en la base de datos
       return newId;
     });
   }
 
+  // Función para registrar un nuevo rol en Firestore
   Future<void> registerRole(BuildContext context, Map<String, dynamic> roleData) async {
     // Verifica que todos los campos requeridos no estén vacíos
     for (String key in roleData.keys) {
@@ -29,7 +32,7 @@ class RolesController {
       }
     }
 
-    // Obtener el próximo ID de rol
+    // Obtiene el próximo ID de rol
     int roleId = await _getNextDocId();
 
     await _firestore.collection('roles').doc(roleId.toString()).set({
@@ -39,14 +42,17 @@ class RolesController {
     });
 
     try {
+      // Navegar hacia atrás después de registrar el rol
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } catch (e) {
+      // Mostrar un mensaje de error si hay un problema al registrar
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al registrar: $e')));
     }
   }
 
+  // Función para obtener la lista de roles desde Firestore
   Future<List<Roles>> fetchRoles() async {
     QuerySnapshot snapshot = await rolesCollection.get();
     List<Roles> roles = snapshot.docs
@@ -57,6 +63,7 @@ class RolesController {
     return roles;
   }
 
+  // Función para actualizar un rol existente en Firestore
   Future<void> updateRole(Roles roles) async {
     try {
       await rolesCollection.doc(roles.id.toString()).update(roles.toMap());
@@ -65,15 +72,16 @@ class RolesController {
     }
   }
 
+  // Función para eliminar un rol de Firestore
   Future<void> deleteRole(int roleId) async {
     // Eliminar de Firestore
     await rolesCollection.doc(roleId.toString()).delete();
   }
 
+  // Función para obtener la lista de roles activos desde Firestore
   Future<List<String>> fetchRol() async {
     QuerySnapshot snapshot = await rolesCollection.where('estado', isEqualTo: 'Activo').get();
     List<String> roles = snapshot.docs.map((doc) => doc['rol'] as String).toList();
     return roles;
   }
-
 }

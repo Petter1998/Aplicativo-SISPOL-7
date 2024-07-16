@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sispol_7/models/documents/documents_model.dart';
 import 'package:sispol_7/models/reports/reports_model.dart';
+import 'package:sispol_7/views/reports/report_wins.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
@@ -131,8 +132,14 @@ class _CompletReportViewState extends State<CompletReportView> {
         .doc(newReport.id.toString())
         .set(newReport.toMap());
 
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
+    // Navega a la pantalla ReportWins pasando los datos del reporte
+    Navigator.push(
+      // ignore: use_build_context_synchronously
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReportWins(reportData: newReport.toMap()),
+      ),
+    );
   }
 
   @override

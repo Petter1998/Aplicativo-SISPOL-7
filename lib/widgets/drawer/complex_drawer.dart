@@ -184,6 +184,8 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
         return '/listcatalogos';
       case "Registro de Reportes":
         return '/listreportscreen';
+      case "Formato de Reporte":
+        return '/formatreport';
       case "Módulos":
         return '/listmodule';
       case "Roles":

@@ -93,5 +93,4 @@ class ValidationScreen extends StatelessWidget {
       bottomNavigationBar: Footer(screenWidth: screenWidth),
     );
   }
-
 }

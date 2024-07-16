@@ -205,7 +205,9 @@ class _RegistrationSoliScreenState extends State<RegistrationSoliScreen> {
         // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
-          builder: (context) => RegistrationWinsScreen(nombreCompleto: widget.nombreCompleto,),
+          builder: (context) => RegistrationWinsScreen(nombreCompleto: widget.nombreCompleto,
+          solicitudData: solData, // Pasar los datos de la solicitud
+          ),
         ),
     );
     }).catchError((error) {

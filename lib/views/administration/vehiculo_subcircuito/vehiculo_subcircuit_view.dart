@@ -174,17 +174,17 @@ class _VehiclesSubcircuitViewState extends State<VehiclesSubcircuitView> {
                     .toList();
 
                   try {
-                    // 1. Verificar si hay vehiculos seleccionado
+                    // 1. Verifica si hay vehiculos seleccionado
                     if (selectedVehicles.isEmpty) {
                       throw Exception('Seleccione al menos un registro.');
                     }
 
-                    // 2. Verificar si alguno ya está asignado a otro subcircuito
+                    // 2. Verifica si alguno ya está asignado a otro subcircuito
                     if (await _vehisubcontroller.isAnyVehicleAlreadyAssigned(selectedVehicles, selectedSubcircuito!)) {
                       throw Exception('Uno o más registros ya están asignados a otro subcircuito.');
                     }
 
-                    // 3. Verificar si ya pertenecen al subcircuito seleccionado
+                    // 3. Verifica si ya pertenecen al subcircuito seleccionado
                     bool alreadyAssignedToSelectedSubcircuit = false;
                     for (var vehicle in selectedVehicles) {
                       final subcircuitoDoc = await FirebaseFirestore.instance

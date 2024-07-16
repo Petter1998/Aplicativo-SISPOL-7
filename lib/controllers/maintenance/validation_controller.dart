@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 class ValidationController {
   final TextEditingController identiController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CollectionReference soliCollection = FirebaseFirestore.instance.collection('solicitud_mantenimiento');
 
+  // Función para validar la existencia de una persona y obtener sus datos
   Future<Map<String, dynamic>?> validatePerson(BuildContext context) async {
     String input = identiController.text.trim();
     bool isValid = false;
     DocumentSnapshot<Map<String, dynamic>>? personalDoc;
 
-    // Verificar si el input es un número de cédula
+    // Verifica si el input es un número de cédula
     if (RegExp(r'^\d+$').hasMatch(input)) {
       int cedula = int.parse(input); // Convertir el input a int
       QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
@@ -24,7 +26,7 @@ class ValidationController {
         print('Documento personal encontrado: ${personalDoc.data()}');
       }
     } else {
-      // Verificar si el input son dos nombres
+      // Verifica si el input son dos nombres
       List<String> nombres = input.split(' ');
       if (nombres.length >= 2) {
         QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
@@ -45,6 +47,7 @@ class ValidationController {
       // ignore: avoid_print
       print('Nombre completo: $nombreCompleto');
 
+     // Busca el vehículo asociado a la persona
      QuerySnapshot<Map<String, dynamic>> vehicleSnapshot = await FirebaseFirestore.instance
           .collection('vehiculos')
           .where('responsable1', isEqualTo: nombreCompleto)
@@ -82,30 +85,31 @@ class ValidationController {
         };
       }
     } else {
+      // Mostrar un mensaje si no se encuentra ninguna coincidencia
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No se encontró coincidencias.')));
       return null;
     }
   }
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final CollectionReference soliCollection = FirebaseFirestore.instance.collection('solicitud_mantenimiento');
-
+  // Función privada para obtener el próximo ID de solicitud de mantenimiento utilizando una transacción
   Future<int> _getNextSoliId() async {
     final DocumentReference counterRef = _firestore.collection('counters').doc('SoliId');
     return _firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counterRef);
       if (!snapshot.exists) {
+        // Si el documento no existe, inicializar el contador
         transaction.set(counterRef, {'currentId': 1});
         return 1;
       }
 
-      int newId = snapshot['currentId'] + 1;
-      transaction.update(counterRef, {'currentId': newId});
+      int newId = snapshot['currentId'] + 1; // Incrementar el ID actual
+      transaction.update(counterRef, {'currentId': newId}); // Actualizar el contador en la base de datos
       return newId;
     });
   }
 
+  // Función para registrar una nueva solicitud de mantenimiento en Firestore
   Future<void> registerSoli(Map<String, dynamic> solData) async {
     // Verifica que todos los campos requeridos no estén vacíos
     for (String key in solData.keys) {
@@ -124,6 +128,7 @@ class ValidationController {
     });
   }
 
+  // Función para obtener la lista de solicitudes de mantenimiento desde Firestore
   Future<List<Map<String, dynamic>>> fetchSolicitudes() async {
     QuerySnapshot snapshot = await soliCollection
       .orderBy('estado', descending: true) // Ordena de forma descendente por el campo 'estado'
@@ -131,10 +136,12 @@ class ValidationController {
     return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
+  // Función para eliminar una solicitud de mantenimiento de Firestore
   Future<void> deleteSolicitud(int id) async {
     await _firestore.collection('solicitud_mantenimiento').doc(id.toString()).delete();
   }
 
+  // Función para buscar solicitudes de mantenimiento por el campo 'placa'
   Future<List<Map<String, dynamic>>> searchSolicitudesByPlaca(String placa) async {
     QuerySnapshot snapshot = await _firestore.collection('solicitud_mantenimiento')
       .where('placa', isEqualTo: placa)

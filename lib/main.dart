@@ -33,6 +33,7 @@ import 'package:sispol_7/views/administration/usuarios/user_view.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_assig_subcircuit.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_search_screen.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
+import 'package:sispol_7/views/reports/generate_pdf_report.dart';
 import 'package:sispol_7/views/start/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
 import 'package:sispol_7/views/documents/order_wins.dart';
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const VehiclesSubcircuitView(),  //const HomePage
+        '/home': (context) =>  const RegisterSolView(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
         '/dashboard': (context) =>  DashboardScreen(),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
@@ -125,6 +126,7 @@ class MyApp extends StatelessWidget {
         '/registdocwins': (context) => OrderWins(),
         '/registdoc': (context) => const WorkOrderScreen(),
         '/listreportscreen': (context) => const ReportesView (),
+        '/formatreport': (context) => GeneratePDFReport(),
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
         //'/listvehpart': (context) => const VehiclesPartView(),

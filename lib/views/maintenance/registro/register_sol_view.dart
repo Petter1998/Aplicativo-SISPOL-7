@@ -388,7 +388,7 @@ class _RegisterSolViewState extends State<RegisterSolView> {
               // Acción para refrescar o actualizar
               _refreshData();
             },
-            tooltip: 'Refrescar',
+            tooltip: 'Refrescar o Regresar',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.refresh, size: iconSize, color: Colors.black),
           ),

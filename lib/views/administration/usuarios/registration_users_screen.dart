@@ -373,6 +373,7 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
     };
 
     // Usa el controlador para registrar al usuario
+    // ignore: use_build_context_synchronously
     await _usersController.registerUsers(context, {
       ...userData,
       'password': _passwordController.text, // Solo se usa para Firebase Auth
@@ -394,6 +395,7 @@ class _RegistrationUsersScreenState extends State<RegistrationUsersScreen> {
     };
 
     // Usa el controlador para registrar la dependencia
+    // ignore: use_build_context_synchronously
     _personalController.registerrPerson(context, {
       ...persData,
       'fechaCreacion': FieldValue.serverTimestamp(), // Agrega la fecha de creación

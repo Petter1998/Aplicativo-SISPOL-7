@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sispol_7/widgets/administration/floating_report.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:sispol_7/widgets/global/success_icon_animation.dart';
-import '../../widgets/documents/floating_order_wins.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class OrderWins extends StatelessWidget {
-  OrderWins({super.key});
+class ReportWins extends StatelessWidget {
+  ReportWins({super.key, required this.reportData});
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+  final Map<String, dynamic> reportData;
 
 
   Future<void> _generatePDF(BuildContext context) async {
@@ -27,10 +28,6 @@ class OrderWins extends StatelessWidget {
     final currentDate = DateTime.now();
     final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
-
-    // Obteniendo los datos de los campos
-    // ignore: use_build_context_synchronously
-    final Map<String, dynamic> docData = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ?? {};
 
     pdf.addPage(
       pw.MultiPage(
@@ -54,7 +51,7 @@ class OrderWins extends StatelessWidget {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text('Orden de Trabajo para Mantenimiento', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                      pw.Text('Orden de Trabajo Finalizada de Mantenimiento', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
                       pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
                       pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
                     ],
@@ -62,37 +59,40 @@ class OrderWins extends StatelessWidget {
                 ],
               ),
               pw.SizedBox(height: 20),
-              pw.Text('Detalles de la Orden de Trabajo en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+              pw.Text('Detalles de este Reporte en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
               pw.SizedBox(height: 20),
-              _buildRichText('Fecha: ', '${docData['fecha']}'),
+              _buildRichText('Fecha de Solicitud: ', reportData['fechaSolicitud'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Hora: ', '${docData['hora']}'),
+              _buildRichText('Fecha de Registro: ', reportData['fechaRegistro'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Kilometraje Actual: ', '${docData['kilometrajeActual']}'),
+              _buildRichText('Fecha de Entrega del Vehículo: ', reportData['fechaEntrega'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Estado: ', '${docData['estado']}'),
+              _buildRichText('Responsable que entregó el vehículo: ', reportData['responsableEntrega'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Tipo: ', '${docData['tipo']}'),
+              _buildRichText('Responsable que retira el vehículo: ', reportData['responsableRetira'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Placa: ', '${docData['placa']}'),
+              _buildRichText('Kilometraje Actual: ', reportData['kilometrajeActual'].toString()),
               pw.SizedBox(height: 14),
-              _buildRichText('Marca: ', '${docData['marca']}'),
+              _buildRichText('Kilometraje para el Próximo Mantenimiento: ', reportData['kilometrajeProximoMant'].toString()),
               pw.SizedBox(height: 14),
-              _buildRichText('Modelo: ', '${docData['modelo']}'),
+              _buildRichText('Tipo de Mantenimiento: ', reportData['tipoMantenimiento'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Cédula: ', '${docData['cedula']}'),
+              _buildRichText('Mantenimiento Complementario: ', reportData['mantenimientoComplementario'] ?? 'No proporcionado'),
               pw.SizedBox(height: 14),
-              _buildRichText('Responsable: ', '${docData['responsable']}'),
-              pw.SizedBox(height: 14),
-              _buildRichText('Asunto: ', '${docData['asunto']}'),
-              pw.SizedBox(height: 14),
-              _buildRichText('Detalle: ', '${docData['detalle']}'),
-              pw.SizedBox(height: 14),
-              _buildRichText('Tipo de Mantenimiento: ', '${docData['tipoMantenimiento']}'),
-              pw.SizedBox(height: 14),
-              _buildRichText('Mantenimiento Complementario: ', '${docData['mantenimientoComplementario']}'),
-              pw.SizedBox(height: 14),
-              _buildRichText('Total: ', '${docData['total']}'),
+              _buildRichText('Observaciones: ', reportData['observaciones'] ?? 'No proporcionado'),
+              pw.SizedBox(height: 30),
+              pw.Divider(),
+              pw.SizedBox(height: 30),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text('Firma:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+                  pw.Container(
+                    width: 200,
+                    child: pw.Divider(),
+                  ),
+                ],
+              ),
             ],
           ),
         ],
@@ -129,7 +129,7 @@ class OrderWins extends StatelessWidget {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      floatingActionButton: const MyUSER(),
+      floatingActionButton: const MyUSER24(),
       body: Center(
         child: Column (
           mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,7 @@ class OrderWins extends StatelessWidget {
             Padding (
               padding: EdgeInsets.symmetric(horizontal: customPadding , vertical: 20), // Ajusta el padding para controlar el ancho
               child: Text(
-                '¡Felicidades! Esta Orden de trabajo ha sido guardado en SISPOL-7. \n !GRACIAS¡',
+                '¡Felicidades! Esta Orden de trabajo finalizada ha sido guardado en SISPOL-7.\n!GRACIAS¡',
                 style: 
                 GoogleFonts.inter(fontSize: titleFontSize),
                 textAlign: TextAlign.center,
@@ -157,7 +157,7 @@ class OrderWins extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Padding interno del botón
                 ),
                 onPressed: () => _generatePDF(context),
-                child: Text('Generar Orden de Trabajo', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold,color: Colors.black)),
+                child: Text('Generar Reporte', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold,color: Colors.black)),
               ),
             ),
           ],

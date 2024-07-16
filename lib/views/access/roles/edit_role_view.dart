@@ -13,6 +13,7 @@ class EditRoleScreen extends StatefulWidget {
   const EditRoleScreen({super.key, required this.role});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditRoleScreenState createState() => _EditRoleScreenState();
 }
 

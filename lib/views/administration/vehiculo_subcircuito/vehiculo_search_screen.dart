@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -58,47 +59,92 @@ class _VehiculoSearchResultViewState extends State<VehiculoSearchResultView> {
 
 
   Future<void> _generatePDF() async {
-    final pdf = pw.Document();
-    
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          // ignore: deprecated_member_use
-          return pw.Table.fromTextArray(
-            headers: <String>[
-             'ID', 'Marca', 'Modelo', 'Motor', 'Placa', 'Chasis', 'Tipo', 'Cilindraje',
-              'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 'Dependencia',
-              'Responsable 1', 'Responsable 2', 'Responsable 3',
-              'Responsable 4','Fecha de Creación'],
-               data: _vehicles.map((vehicle) => [
-                vehicle.id.toString(),
-                vehicle.marca,
-                vehicle.modelo,
-                vehicle.motor,
-                vehicle.placa,
-                vehicle.chasis,
-                vehicle.tipo,
-                vehicle.cilindraje.toString(),
-                vehicle.capacidadPas.toString(),
-                vehicle.capacidadCar.toString(),
-                vehicle.kilometraje.toString(),
-                vehicle.dependencia,
-                vehicle.responsable1,
-                vehicle.responsable2,
-                vehicle.responsable3,
-                vehicle.responsable4,
-                vehicle.fechacrea != null
-                    ? dateFormat.format(vehicle.fechacrea!)
-                    : 'N/A',
-              ]).toList(),
-          );
-        },
-      ),
-    );
+    try {
+      final pdf = pw.Document();
+      final logoImage = pw.MemoryImage(
+        (await rootBundle.load('assets/images/Escudo.jpg')).buffer.asUint8List(),
+      );
+      final currentDate = DateTime.now();
+      final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+      final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
 
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+      pdf.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a4.landscape,
+          build: (pw.Context context) => [
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Center(
+                  child: pw.Text(
+                    'Sistema Integral de Automatización y Optimización para la Subzona 7 de la Policía Nacional en Loja',
+                    style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+                    textAlign: pw.TextAlign.center,
+                  ),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Image(logoImage, width: 70, height: 70),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text('Reporte de Vehiculos asignado a Subcircuito', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text('Detalles de Vehiculo - Subcircuito en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 10),
+              ],
+            ),
+            pw.TableHelper.fromTextArray(
+              headers: <String>[
+              'ID', 'Marca', 'Modelo', 'Motor', 'Placa', 'Chasis', 'Tipo', 'Cilindraje',
+                'Capacidad de Pasajeros', 'Capacidad de Carga', 'Kilometraje', 'Dependencia',
+                'Responsable 1', 'Responsable 2', 'Responsable 3',
+                'Responsable 4','Fecha de Creación'],
+                data: widget.searchResults.map((vehicle) => [
+                  vehicle.id.toString(),
+                  vehicle.marca,
+                  vehicle.modelo,
+                  vehicle.motor,
+                  vehicle.placa,
+                  vehicle.chasis,
+                  vehicle.tipo,
+                  vehicle.cilindraje.toString(),
+                  vehicle.capacidadPas.toString(),
+                  vehicle.capacidadCar.toString(),
+                  vehicle.kilometraje.toString(),
+                  vehicle.dependencia,
+                  vehicle.responsable1,
+                  vehicle.responsable2,
+                  vehicle.responsable3,
+                  vehicle.responsable4,
+                  vehicle.fechacrea != null
+                      ? dateFormat.format(vehicle.fechacrea!)
+                      : 'N/A',
+              ]).toList(),
+              cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+              headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+              headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+              cellAlignment: pw.Alignment.center,
+            ),
+          ], 
+        ),
+      );
+
+      await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save(),
+      );
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error generando el PDF: $e');
+    }
   }
 
   void _showAssignDialog() async{

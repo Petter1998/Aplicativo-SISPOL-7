@@ -47,6 +47,7 @@ class _CatalogosViewState extends State<CatalogosView> {
     _fetchCatalogos();
   }
 
+  // ignore: unused_element
   void _showSearchDialog() {
     String query = '';
     showDialog(

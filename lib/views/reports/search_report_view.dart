@@ -106,7 +106,7 @@ class _SearchReportViewState extends State<SearchReportView> {
                   'Mantenimiento \nComplementario',
                   'Observaciones',
                   'Fecha de \nCreación'],
-                  data: _reportes.map((reportes) => [
+                  data: widget.searchResults.map((reportes) => [
                     reportes.id.toString(),
                     reportes.fechasol,
                     reportes.fechareg,

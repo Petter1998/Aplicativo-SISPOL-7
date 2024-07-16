@@ -227,6 +227,7 @@ class _SubcircuitoAssignedViewState extends State<SubcircuitoAssignedView> {
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
   } catch (e) {
+    // ignore: avoid_print
     print('Error generando el PDF: $e');
   }
 }

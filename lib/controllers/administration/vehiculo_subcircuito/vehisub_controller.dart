@@ -5,27 +5,33 @@ import 'package:sispol_7/models/administration/flota_vehicular/vehicle_model.dar
 
 
 class VehiSubController {
-   final List<int> _selectedIds = [];
+  // Lista de IDs seleccionados
+  final List<int> _selectedIds = [];
 
-    void toggleSelection(int id) {
+  // Función para alternar la selección de un ID
+  void toggleSelection(int id) {
     if (_selectedIds.contains(id)) {
-      _selectedIds.remove(id);
+      _selectedIds.remove(id); // Remueve el ID si ya está seleccionado
     } else {
-      _selectedIds.add(id);
+      _selectedIds.add(id); // Añade el ID si no está seleccionado
     }
   }
 
+  // Función para limpiar todas las selecciones
   void clearSelection() {
     _selectedIds.clear();
   }
 
- List<int> get selectedIds => _selectedIds;
+  // Getter para obtener la lista de IDs seleccionados
+  List<int> get selectedIds => _selectedIds;
 
+  // Función asincrónica para obtener las dependencias desde Firestore
   Future<List<Dependecy>> fetchDependencias() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('dependencias').get();
     return snapshot.docs.map((doc) => Dependecy.fromMap(doc.data() as Map<String, dynamic>,doc.id)).toList();
   }
 
+  // Función asincrónica para asignar vehículos a un subcircuito
   Future<void> assignToSubcircuito(BuildContext context, List<Vehicle> vehicles, String subcircuitoName) async {
     // Obteniendo los datos del subcircuito seleccionado
     DocumentSnapshot subcircuitoDoc = await FirebaseFirestore.instance
@@ -36,10 +42,10 @@ class VehiSubController {
 
     String subcircuitoDistrito = subcircuitoDoc['nombreDistrito']; // Distrito del subcircuito
 
-    // Verificar si todos los seleccionados pertenecen al mismo distrito
+    // Verifica si todos los seleccionados pertenecen al mismo distrito
     for (var vehicle in vehicles) {
-      if (vehicle.dependencia != subcircuitoDistrito) { // Verificar coincidencia de distrito
-        // Lanzar una excepción si no coinciden
+      if (vehicle.dependencia != subcircuitoDistrito) { // Verifica coincidencia de distrito
+        // Lanza una excepción si no coinciden
         throw Exception('Uno o más vehículos no pueden ser asignados porque pertenecen a un distrito diferente.');
       }
     }
@@ -62,11 +68,12 @@ class VehiSubController {
       await subcircuitoCollection.doc(subcircuitoName).collection(subcircuitoName).add({
         ...vehicle.toMap(),
         'subcircuito': subcircuitoData,
-        'fechaAsignacion': fechaAsignacion, // Agregar el campo fechaAsignacion
+        'fechaAsignacion': fechaAsignacion, // Agrega el campo fechaAsignacion
       });
     }
   }
 
+  // Función asincrónica para verificar si algún vehículo ya está asignado a otro subcircuito
   Future<bool> isAnyVehicleAlreadyAssigned(List<Vehicle> vehicles, String selectedSubcircuito) async {
     final subcircuitoCollection = FirebaseFirestore.instance.collection('vehiculo_subcircuito');
 
@@ -77,16 +84,16 @@ class VehiSubController {
           .get();
 
       for (var doc in snapshot.docs) {
-        // Verificar si el vehiculo está asignado a un subcircuito diferente al actual
+        // Verifica si el vehiculo está asignado a un subcircuito diferente al actual
         if (doc.reference.parent.parent!.id != selectedSubcircuito) {
           return true; // El vehiculo ya está asignado a otro subcircuito
         }
       }
     }
-
     return false; // Ninguno de los vehiculos está asignado
   }
 
+  // Función asincrónica para obtener vehículos asignados con su dependencia
   Future<List<Map<String, dynamic>>> getAssignedVehicleWithDependency(String subcircuitoName) async {
     QuerySnapshot vehicleSnapshot = await FirebaseFirestore.instance
         .collection('vehiculo_subcircuito')
@@ -100,15 +107,15 @@ class VehiSubController {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       Vehicle vehicle = Vehicle.fromMap(data, doc.id);
 
-      // Obtener los datos del subcircuito directamente del documento de la flota vehicular
+      // Obtiene los datos del subcircuito directamente del documento de la flota vehicular
       Map<String, dynamic> subcircuitoData = data['subcircuito'] ?? {}; // Si no existe 'subcircuito', usar un mapa vacío
 
-      // Incluir 'fechaAsignacion' si existe en data
+      // Incluye 'fechaAsignacion' si existe en data
       if (data.containsKey('fechaAsignacion')) {
         subcircuitoData['fechaAsignacion'] = data['fechaAsignacion'];
       }
 
-      // Buscar la dependencia correspondiente al vehiculo (como antes)
+      // Busca la dependencia correspondiente al vehiculo
       var dependecy = (await fetchDependencias()).firstWhere(
             // ignore: unrelated_type_equality_checks
             (dep) => dep.id == vehicle.dependencia,
@@ -138,6 +145,7 @@ class VehiSubController {
     return combinedList;
   }
 
+  // Función asincrónica para obtener dependencias únicas
   Future<List<String>> getUniqueDependencias() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('vehiculos').get();
 
@@ -152,6 +160,7 @@ class VehiSubController {
     return uniqueDependencias.toList();
   }
 
+  // Función asincrónica para buscar vehículos por dependencia
   Future<List<Vehicle>> searchVehicle(String dependencia) async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('vehiculos')
@@ -161,6 +170,7 @@ class VehiSubController {
     return snapshot.docs.map((doc) => Vehicle.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
   }
 
+  // Función asincrónica para reasignar vehículos seleccionados a un nuevo subcircuito
   Future<void> reassignSelected(
     BuildContext context,
     List<Map<String, dynamic>> vehicleData,
@@ -176,14 +186,14 @@ class VehiSubController {
 
     String newSubcircuitoDistrito = newSubcircuitoDoc['nombreDistrito'];
 
-    // Filtrar el personalData para obtener solo los seleccionados
+    // Filtra el vehicleData para obtener solo los seleccionados
     List<Map<String, dynamic>> selectedVehicleData = vehicleData.where((item) => _selectedIds.contains(item['vehiculos'].id)).toList();
 
     if (selectedVehicleData.isEmpty) {
       throw Exception('No se ha seleccionado ningún vehiculo para reasignar.');
     }
 
-    // Verificar si todos los seleccionados pertenecen al mismo distrito
+    // Verifica si todos los seleccionados pertenecen al mismo distrito
     for (var item in selectedVehicleData) {
       final vehicle = item['vehiculos'] as Vehicle;
       if (vehicle.dependencia != newSubcircuitoDistrito) {
@@ -191,7 +201,7 @@ class VehiSubController {
       }
     }
 
-    // Actualizar los datos en Firestore dentro de una transacción
+    // Actualiza los datos en Firestore dentro de una transacción
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       for (var item in selectedVehicleData) {
         final vehicle = item['vehiculos'] as Vehicle;
@@ -205,10 +215,10 @@ class VehiSubController {
             .get();
 
         if (querySnapshot.docs.isNotEmpty) {
-          // Eliminar el documento del subcircuito actual
+          // Elimina el documento del subcircuito actual
           transaction.delete(querySnapshot.docs.first.reference);
 
-          // Crear los datos del nuevo subcircuito
+          // Crea los datos del nuevo subcircuito
           Map<String, dynamic> newSubcircuitoData = {
             'nombreCircuito': newSubcircuitoDoc['nombreCircuito'],
             'distrito': newSubcircuitoDoc['nombreDistrito'],
@@ -217,7 +227,7 @@ class VehiSubController {
             'nombreSubcircuito': newSubcircuitoDoc['nombreSubcircuito'],
           };
 
-          // Agregar el registro al nuevo subcircuito
+          // Agrega el registro al nuevo subcircuito
           transaction.set(FirebaseFirestore.instance
               .collection('vehiculo_subcircuito')
               .doc(newSubcircuitoName)
@@ -234,18 +244,18 @@ class VehiSubController {
     });
   }
 
+  // Función asincrónica para eliminar vehículos seleccionados de un subcircuito
   Future<void> deleteSelected(String currentSubcircuitoName) async {
     if (_selectedIds.isEmpty) {
       throw Exception('No se ha seleccionado ningún vehiculo para eliminar.');
     }
-
     try {
       await FirebaseFirestore.instance.runTransaction((transaction) async {
         for (int id in _selectedIds) {
           // ignore: avoid_print
           print('Intentando eliminar ID: $id'); 
 
-          // Buscar el documento del vehiculo en la subcolección
+          // Busca el documento del vehiculo en la subcolección
           QuerySnapshot querySnapshot = await FirebaseFirestore.instance
               .collection('vehiculo_subcircuito')
               .doc(currentSubcircuitoName)
