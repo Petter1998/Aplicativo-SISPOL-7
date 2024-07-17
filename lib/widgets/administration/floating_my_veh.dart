@@ -20,7 +20,7 @@ class MyUSER5 extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  DashboardScreen()),
+            MaterialPageRoute(builder: (context) =>  DashboardScreen(userId: '',)),
           );
         },
         icon: Icon(Icons.grid_view, size: iconSize,color:  Colors.black),  // Aumenta el tamaño del icono

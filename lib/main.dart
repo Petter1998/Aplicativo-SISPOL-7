@@ -79,9 +79,9 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  const RegisterSolView(),  //const HomePage
+        '/home': (context) =>  DashboardScreen(userId: '',),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
-        '/dashboard': (context) =>  DashboardScreen(),
+        '/dashboard': (context) =>  DashboardScreen(userId: '',),
         '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
         '/successPage': (context) => const SuccessPage(),
         '/registration': (context) => const RegistrationScreen(),

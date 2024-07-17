@@ -257,7 +257,7 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
                 checkPermissionAndNavigate(context, _usuario!.rol, submenus[0], subMenu, getRoute(subMenu));
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Cargando usuario, por favor espera...')),
+                  const SnackBar(content: Text('Cargando usuario, por favor espere...')),
                 );
               }
             },
