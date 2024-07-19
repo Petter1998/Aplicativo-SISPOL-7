@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sispol_7/controllers/start/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/repuests_view.dart';
 import 'package:sispol_7/views/access/modulos/modulos_view.dart';
 import 'package:sispol_7/views/access/modulos/register_modulo.dart';
 import 'package:sispol_7/views/access/moduroles/modulos_roles_view.dart';
@@ -129,6 +130,8 @@ class MyApp extends StatelessWidget {
         '/formatreport': (context) => GeneratePDFReport(),
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
+        '/listrepuest': (context) => const RepuestsView(),
+        '/registrepuest': (context) => const RepuestsView(),
         //'/listvehpart': (context) => const VehiclesPartView(),
         //'/registvehpart': (context) => const RegistrationVehiclePartScreen(),
         //'/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
