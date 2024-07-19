@@ -33,6 +33,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _rangoController = TextEditingController();
   final TextEditingController _dependenciaController = TextEditingController();
   final UserController _userController = UserController();
+  final TextEditingController _codeController = TextEditingController();
+  bool _showCodeField = false;
+
 
   String? _selectedRole;
   List<String> _roles = [];
@@ -269,6 +272,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         setState(() {
                           _selectedRole = newValue;
                           _positionController.text = newValue!; // Sincroniza el valor seleccionado con el controlador
+                           // Mostrar el campo de código solo para ciertos roles
+                          _showCodeField = _selectedRole == 'Administrador' || _selectedRole == 'Técnico 1' || _selectedRole == 'Técnico 2';
                         });
                       },
                       items: _roles.map<DropdownMenuItem<String>>((String value) {
@@ -278,6 +283,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         );
                       }).toList(),
                     ),
+                    if (_showCodeField)
+                      Column(
+                        children: [
+                          SizedBox(height: verticalSpacing),
+                          TextField(
+                            controller: _codeController,
+                            decoration: const InputDecoration(
+                              labelText: 'Código',
+                              hintText: 'Ingrese el código para validar el rol seleccionado',
+                              fillColor: Colors.black,
+                              border: OutlineInputBorder(),
+                            ),
+                            style: GoogleFonts.inter(fontSize: bodyFontSize),
+                          ),
+                        ],
+                      ),
                     SizedBox(height: verticalSpacing),
 
                     TextField(controller: _emailController, decoration: const InputDecoration(
@@ -341,6 +362,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _registerUser() {
+    String code = _codeController.text.trim();
+    String expectedCode = '${_selectedRole}_${_usernameController.text.trim()}';
+
+    if (_showCodeField && code != expectedCode) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Código incorrecto. Verifique el código e intente de nuevo.')),
+      );
+      return;
+    }
     // Recoge los datos del formulario y los pasa al controlador
     Map<String, dynamic> userData = {
       'nombres': _nameController.text,

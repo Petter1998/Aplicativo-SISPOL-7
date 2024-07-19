@@ -11,11 +11,9 @@ import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-
 class WorkOrderScreen extends StatefulWidget {
   const WorkOrderScreen({super.key});
 
-  
   @override
   // ignore: library_private_types_in_public_api
   _WorkOrderScreenState createState() => _WorkOrderScreenState();
@@ -419,7 +417,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: _selectedTipo,
-                          hint: Text('Tipo de Vehiculo', style: GoogleFonts.inter(fontSize: bodyFontSize)),
+                          hint: Text('Tipo', style: GoogleFonts.inter(fontSize: bodyFontSize)),
                           decoration: const InputDecoration(
                             labelText: 'Tipo de Vehiculo',
                             fillColor: Colors.black,
@@ -703,9 +701,10 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                         ),
                         onPressed: () => _pickImage(ImageSource.camera),
                       ),
+                      const SizedBox(width: 5),
                       ElevatedButton.icon(
                         icon: const Icon(Icons.photo_library, color:  Colors.black),
-                        label: Text('Seleccionar de Galería',
+                        label: Text('Seleccionar',
                         style: GoogleFonts.inter(fontSize: bodyFontSize,color: Colors.black),),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromRGBO(56, 171, 171, 1), // Color de fondo
@@ -720,7 +719,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
                     ],
                   ),
                   SizedBox(height: verticalSpacing),
-                  SizedBox(height: vertiSpacing),
+                 
                  
                 Center(
                   child: ElevatedButton(
@@ -760,9 +759,9 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
       String? imageUrl;
       if (_image != null) {
         imageUrl = await _uploadImage(_image!);
-        if (imageUrl == null) {
-          throw Exception('Error al subir la imagen'); // Manejo de error
-        }
+        //if (imageUrl == null) {
+          //throw Exception('Error al subir la imagen'); // Manejo de error
+        //}
       }
 
       final Map<String, dynamic> docuData = {

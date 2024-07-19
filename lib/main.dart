@@ -79,17 +79,17 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/': (context) => SplashScreenWidget(controller: splashController),
-        '/home': (context) =>  DashboardScreen(userId: '',),  //const HomePage
+        '/home': (context) =>  const HomePage(),  //const HomePage
         '/login': (context) => const LoginScreen(),  // Ruta para la pantalla de inicio de sesión
-        '/dashboard': (context) =>  DashboardScreen(userId: '',),
-        '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',),
-        '/successPage': (context) => const SuccessPage(),
-        '/registration': (context) => const RegistrationScreen(),
-        '/registwin': (context) => const RegistrationWin(),
-        '/listuser': (context) => const UserView(),
-        '/registusers': (context) => const RegistrationUsersScreen(),
-        '/registwins': (context) => RegistrationWins(),
-        '/edituser': (context) =>  const UserEditScreen(),
+        '/dashboard': (context) =>  DashboardScreen(userId: '',), // Ruta para la pantalla del Dashboard
+        '/changuepassword': (context) => const ChangePasswordScreen(usuario: '',), // Ruta para la pantalla de cambio de contraseña
+        '/successPage': (context) => const SuccessPage(), // Ruta para la pantalla de cambio de contraseña exitoso
+        '/registration': (context) => const RegistrationScreen(), // Ruta para la pantalla de registro de usuario
+        '/registwin': (context) => const RegistrationWin(), // Ruta para la pantalla de exito en el registro
+        '/listuser': (context) => const UserView(), // Ruta para la pantalla que lista a los usuarios del aplicativo
+        '/registusers': (context) => const RegistrationUsersScreen(), // Ruta para la pantalla de registro
+        '/registwins': (context) => RegistrationWins(), // Ruta para la pantalla de exito en el registro
+        '/edituser': (context) =>  const UserEditScreen(), // Ruta para la pantalla de edicion de un usuario
         '/listmodule': (context) => const ModulosView(),
         '/registmodule': (context) => const RegistModuleScreen(),
         '/listroles': (context) => const RolesView(),
