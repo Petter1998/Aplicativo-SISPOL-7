@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sispol_7/controllers/repuestos/repuests_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:sispol_7/controllers/lubricantes/lubricante_controller.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 
-class RegistRepuestScreen extends StatefulWidget {
-  const RegistRepuestScreen({super.key});
+class RegistLubricanteScreen extends StatefulWidget {
+  const RegistLubricanteScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RegistRepuestScreenState createState() => _RegistRepuestScreenState();
+  _RegistLubricanteScreenState createState() => _RegistLubricanteScreenState();
 }
 
-class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
-  final TextEditingController _nombreController = TextEditingController();
-  final TextEditingController _categoriaController = TextEditingController();
-  final TextEditingController _modeloController = TextEditingController();
+class _RegistLubricanteScreenState extends State<RegistLubricanteScreen> {
+  final TextEditingController _capacidadController = TextEditingController();
+  final TextEditingController _fechaVenceController = TextEditingController();
   final TextEditingController _marcaController = TextEditingController();
-  final TextEditingController _proveedorController = TextEditingController();
+  final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _precioController = TextEditingController();
+  final TextEditingController _proveedorController = TextEditingController();
   final TextEditingController _stockController = TextEditingController();
+  final TextEditingController _tipoController = TextEditingController();
+  final TextEditingController _viscosidadController = TextEditingController();
 
-  final RepuestoController _repuestoController = RepuestoController();
+  final LubricanteController _lubricanteController = LubricanteController();
+  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -87,46 +91,6 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(
-                              controller: _modeloController,
-                              decoration: const InputDecoration(
-                                labelText: 'Modelo',
-                                hintText: 'Modelo',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _categoriaController,
-                              decoration: const InputDecoration(
-                                labelText: 'Categoría',
-                                hintText: 'Categoría',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _stockController,
-                              decoration: const InputDecoration(
-                                labelText: 'Stock',
-                                hintText: 'Stock',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TextField(
                               controller: _marcaController,
                               decoration: const InputDecoration(
                                 labelText: 'Marca',
@@ -149,12 +113,90 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(
+                              controller: _tipoController,
+                              decoration: const InputDecoration(
+                                labelText: 'Tipo',
+                                hintText: 'Tipo',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _viscosidadController,
+                              decoration: const InputDecoration(
+                                labelText: 'Viscosidad',
+                                hintText: 'Viscosidad',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _capacidadController,
+                              decoration: const InputDecoration(
+                                labelText: 'Capacidad (Lt)',
+                                hintText: 'Capacidad (Lt)',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _stockController,
+                              decoration: const InputDecoration(
+                                labelText: 'Stock',
+                                hintText: 'Stock',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
                               controller: _precioController,
                               decoration: const InputDecoration(
                                 labelText: 'Precio',
                                 hintText: 'Precio',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _fechaVenceController,
+                              decoration: InputDecoration(
+                                labelText: 'Fecha de Vencimiento',
+                                hintText: 'Fecha de Vencimiento',
+                                fillColor: Colors.black,
+                                border: const OutlineInputBorder(),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.calendar_today),
+                                  onPressed: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1900),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (pickedDate != null) {
+                                      setState(() {
+                                        _fechaVenceController.text = _dateFormat.format(pickedDate);
+                                      });
+                                    }
+                                  },
+                                ),
                               ),
                               style: GoogleFonts.inter(fontSize: bodyFontSize),
                             ),
@@ -176,7 +218,7 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                       ),
                       onPressed: () {
-                        _registerRepuesto();
+                        _registerLubricante();
                       },
                       child: Text('Registrar', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black)),
                     ),
@@ -198,19 +240,21 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
     );
   }
 
-  void _registerRepuesto() {
-    Map<String, dynamic> repData = {
+  void _registerLubricante() {
+    Map<String, dynamic> lubData = {
       'nombre': _nombreController.text,
-      'categoria': _categoriaController.text,
-      'modelo': _modeloController.text,
+      'capacidad': double.parse(_capacidadController.text),
       'marca': _marcaController.text,
       'proveedor': _proveedorController.text,
       'precio': double.parse(_precioController.text),
       'stock': int.parse(_stockController.text),
+      'tipo': _tipoController.text,
+      'viscosidad': _viscosidadController.text,
+      'fechaVence': _dateFormat.parse(_fechaVenceController.text),
     };
 
-    _repuestoController.registerRepuesto(context, {
-      ...repData,
+    _lubricanteController.registerLubricante(context, {
+      ...lubData,
       'fechaIngreso': FieldValue.serverTimestamp(), // Agrega la fecha de creación
     });
   }

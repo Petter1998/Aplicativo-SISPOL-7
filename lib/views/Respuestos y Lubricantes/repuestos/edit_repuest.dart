@@ -1,29 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sispol_7/controllers/repuestos/repuests_controller.dart';
-import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
+import 'package:sispol_7/models/repuestos/repuest_model.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
+import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 
-class RegistRepuestScreen extends StatefulWidget {
-  const RegistRepuestScreen({super.key});
+class EditRepuestScreen extends StatefulWidget {
+  final Repuest repuesto;
+
+  const EditRepuestScreen({super.key, required this.repuesto});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RegistRepuestScreenState createState() => _RegistRepuestScreenState();
+  _EditRepuestScreenState createState() => _EditRepuestScreenState();
 }
 
-class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
-  final TextEditingController _nombreController = TextEditingController();
-  final TextEditingController _categoriaController = TextEditingController();
-  final TextEditingController _modeloController = TextEditingController();
-  final TextEditingController _marcaController = TextEditingController();
-  final TextEditingController _proveedorController = TextEditingController();
-  final TextEditingController _precioController = TextEditingController();
-  final TextEditingController _stockController = TextEditingController();
+class _EditRepuestScreenState extends State<EditRepuestScreen> {
+  late TextEditingController _nombreController;
+  late TextEditingController _categoriaController;
+  late TextEditingController _modeloController;
+  late TextEditingController _marcaController;
+  late TextEditingController _proveedorController;
+  late TextEditingController _precioController;
+  late TextEditingController _stockController;
 
-  final RepuestoController _repuestoController = RepuestoController();
+  @override
+  void initState() {
+    super.initState();
+    _nombreController = TextEditingController(text: widget.repuesto.nombre);
+    _categoriaController = TextEditingController(text: widget.repuesto.categoria);
+    _modeloController = TextEditingController(text: widget.repuesto.modelo);
+    _marcaController = TextEditingController(text: widget.repuesto.marca);
+    _proveedorController = TextEditingController(text: widget.repuesto.proveedor);
+    _precioController = TextEditingController(text: widget.repuesto.precio.toString());
+    _stockController = TextEditingController(text: widget.repuesto.stock.toString());
+  }
+
+  @override
+  void dispose() {
+    _nombreController.dispose();
+    _categoriaController.dispose();
+    _modeloController.dispose();
+    _marcaController.dispose();
+    _proveedorController.dispose();
+    _precioController.dispose();
+    _stockController.dispose();
+    super.dispose();
+  }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -39,7 +63,12 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
     double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);
     double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
-    double horizontalPadding = screenWidth < 800 ? screenWidth * 0.05 : screenWidth * 0.20;
+    double horizontalPadding;
+    if (screenWidth < 800) {
+      horizontalPadding = screenWidth * 0.05;
+    } else {
+      horizontalPadding = screenWidth * 0.20;
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -63,7 +92,7 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(90.0),
                     child: Icon(
-                      Icons.add_chart_rounded,
+                      Icons.edit_document,
                       size: imageSize,
                       color: Colors.black,
                     ),
@@ -175,10 +204,28 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                       ),
-                      onPressed: () {
-                        _registerRepuesto();
+                      onPressed: () async {
+                        final updatedRepuesto = Repuest(
+                          id: widget.repuesto.id,
+                          nombre: _nombreController.text,
+                          fechaIngreso: DateTime.now(),
+                          categoria: _categoriaController.text,
+                          modelo: _modeloController.text,
+                          marca: _marcaController.text,
+                          proveedor: _proveedorController.text,
+                          precio: double.tryParse(_precioController.text) ?? 0.0,
+                          stock: int.tryParse(_stockController.text) ?? 0,
+                          idUser: widget.repuesto.idUser,
+                        );
+
+                        await RepuestoController().updateRepuesto(updatedRepuesto);
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pop();
                       },
-                      child: Text('Registrar', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black)),
+                      child: Text(
+                        'Guardar cambios',
+                        style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
                     ),
                   ),
                 ],
@@ -196,22 +243,5 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
       ),
       bottomNavigationBar: Footer(screenWidth: screenWidth),
     );
-  }
-
-  void _registerRepuesto() {
-    Map<String, dynamic> repData = {
-      'nombre': _nombreController.text,
-      'categoria': _categoriaController.text,
-      'modelo': _modeloController.text,
-      'marca': _marcaController.text,
-      'proveedor': _proveedorController.text,
-      'precio': double.parse(_precioController.text),
-      'stock': int.parse(_stockController.text),
-    };
-
-    _repuestoController.registerRepuesto(context, {
-      ...repData,
-      'fechaIngreso': FieldValue.serverTimestamp(), // Agrega la fecha de creación
-    });
   }
 }

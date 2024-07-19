@@ -192,12 +192,14 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
         return '/listroles';
       case "Módulos por Roles":
         return '/registrole';
-      //case "Vehiculos Personales":
-        //return '/listvehpart';
-      //case "Vehiculo Personal":
-        //return '/registvehparti';
-      //case "Gestión de Bonos":
-        //return '/bonusview';
+      case "Repuesto":
+        return '/listrepuest';
+      case "Lubricantes":
+        return '/listlubview';
+      case "Registro de ordenes":
+        return '/';
+      case "Nueva orden":
+        return '/';
       default:
         return '';
     }
@@ -408,6 +410,9 @@ class _ComplexDrawerState extends State<ComplexDrawer> {
       "Personal", "Personal-Subcircuito", "Repuestos", "Usuarios", "Vehiculo-Subcircuito"]),
       CDM(Icons.key, "Control de Acceso", ["Módulos", "Módulos por Roles", "Roles", "Usuarios"]),
       CDM(Icons.description_outlined, "Documentos", ["Nueva Orden", "Registro de Ordenes"]),
+      CDM(Icons.edit_document, "Ordenes", ["Nueva orden", "Registro de ordenes"]),
+      CDM(Icons.settings_applications_sharp, "Repuestos y Lubricantes", ["Repuesto", "Lubricantes"]),
+
       CDM(Icons.manage_history_outlined, "Mantenimiento", ["Nueva Solicitud", "Registro de Mantenimiento"]),
       CDM(Icons.restore_page_outlined, "Reportes", ["Formato de Reporte", "Registro de Reportes"]),
       CDM(Icons.add, "Nueva Solicitud", [], route: '/validationscreen'),

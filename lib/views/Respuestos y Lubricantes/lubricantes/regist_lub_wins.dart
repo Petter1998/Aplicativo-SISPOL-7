@@ -4,11 +4,12 @@ import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:sispol_7/widgets/global/success_icon_animation.dart';
-import 'package:sispol_7/widgets/repuestos/floating_repuest.dart';
+import 'package:sispol_7/widgets/lubricantes/floatinf_lub.dart';
+
 
 // ignore: must_be_immutable
-class RegistrationRepuesttWins extends StatelessWidget {
-  RegistrationRepuesttWins({super.key});
+class RegistrationLubWins extends StatelessWidget {
+  RegistrationLubWins({super.key});
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -26,7 +27,7 @@ class RegistrationRepuesttWins extends StatelessWidget {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      floatingActionButton: const MyUSE(),
+      floatingActionButton: const MyUS(),
       body: Center(
         child: Column (
           mainAxisAlignment: MainAxisAlignment.center,

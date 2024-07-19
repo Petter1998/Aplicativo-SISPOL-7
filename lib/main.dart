@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sispol_7/controllers/start/role_updater.dart';
 import 'package:sispol_7/firebase_options.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/lubricantes_view.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/regist_lub.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/regist_lub_wins.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/regist_repuest.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/regist_win.dart';
 import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/repuests_view.dart';
 import 'package:sispol_7/views/access/modulos/modulos_view.dart';
 import 'package:sispol_7/views/access/modulos/register_modulo.dart';
@@ -34,6 +39,8 @@ import 'package:sispol_7/views/administration/usuarios/user_view.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_assig_subcircuit.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_search_screen.dart';
 import 'package:sispol_7/views/administration/vehiculo_subcircuito/vehiculo_subcircuit_view.dart';
+import 'package:sispol_7/views/ordenes/new_orden.dart';
+import 'package:sispol_7/views/ordenes/ordenes_view.dart';
 import 'package:sispol_7/views/reports/generate_pdf_report.dart';
 import 'package:sispol_7/views/start/dashboard_screen.dart';
 import 'package:sispol_7/views/documents/documents_view.dart';
@@ -131,14 +138,13 @@ class MyApp extends StatelessWidget {
         // ignore: equal_keys_in_map
         '/registdocwins': (context) => OrderWins(),
         '/listrepuest': (context) => const RepuestsView(),
-        '/registrepuest': (context) => const RepuestsView(),
-        //'/listvehpart': (context) => const VehiclesPartView(),
-        //'/registvehpart': (context) => const RegistrationVehiclePartScreen(),
-        //'/registvehiclepartwins': (context) => RegistrationVehiclePartWins(),
-        //'/registvehparti': (context) => const RegistrationVehiclePartiScreen(),
-        //'/registvehiclepartiwins': (context) => RegistrationVehiclePartiWins(),
-        //'/editmyvehiclepartwins': (context) => RegistrationMyVehiclePartWins(),
-        //'/bonusview': (context) => const BonusView(),
+        '/registrepuest': (context) => const RegistRepuestScreen(),
+        '/registreptpwins': (context) => RegistrationRepuesttWins(),
+        '/listlubview': (context) => const LubricantesView(),
+        '/registlub': (context) => const RegistLubricanteScreen(),
+        '/registlubwins': (context) => RegistrationLubWins(),
+        '/listordenes': (context) => const OrdenesView(),
+        '/registordenes': (context) => const WorkOrdenScreen(),
       },
     );
   }

@@ -3,49 +3,49 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
-import 'package:sispol_7/controllers/repuestos/repuests_controller.dart';
-import 'package:sispol_7/models/repuestos/repuest_model.dart';
-import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/edit_repuest.dart';
-import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/regist_repuest.dart';
-import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/repuestos/search_repuest.dart';
+import 'package:sispol_7/controllers/lubricantes/lubricante_controller.dart';
+import 'package:sispol_7/models/lubricantes/lubricantes_model.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/edit_lub.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/regist_lub.dart';
+import 'package:sispol_7/views/Respuestos%20y%20Lubricantes/lubricantes/search_lub.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
 import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class RepuestsView extends StatefulWidget {
-  const RepuestsView({super.key});
+class LubricantesView extends StatefulWidget {
+  const LubricantesView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RepuestsViewState createState() => _RepuestsViewState();
+  _LubricantesViewState createState() => _LubricantesViewState();
 }
 
-class _RepuestsViewState extends State<RepuestsView> {
-  final RepuestoController _controller = RepuestoController();
+class _LubricantesViewState extends State<LubricantesView> {
+  final LubricanteController _controller = LubricanteController();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // ignore: unused_field
-  List<Repuest> _repuestos = [];
+  List<Lubricante> _lubricantes = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchRepuestos();
+    _fetchLubricantes();
   }
 
-  void _fetchRepuestos() async {
-    List<Repuest> repuestos = await _controller.fetchRepuestos();
+  void _fetchLubricantes() async {
+    List<Lubricante> lubricantes = await _controller.fetchLubricantes();
     setState(() {
-      _repuestos = repuestos;
+      _lubricantes = lubricantes;
     });
   }
 
   void _refreshData() {
-    _fetchRepuestos();
+    _fetchLubricantes();
   }
 
   void _showSearchDialog() {
@@ -54,14 +54,14 @@ class _RepuestsViewState extends State<RepuestsView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Buscar Repuesto',
+          title: Text('Buscar Lubricante',
             style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
           ),
           content: TextField(
             onChanged: (value) {
               query = value;
             },
-            decoration: const InputDecoration(hintText: "Ingrese el nombre del repuesto"),
+            decoration: const InputDecoration(hintText: "Ingrese el nombre del lubricante"),
             style: GoogleFonts.inter(color: Colors.black),
           ),
           actions: <Widget>[
@@ -70,14 +70,14 @@ class _RepuestsViewState extends State<RepuestsView> {
                 style: GoogleFonts.inter(color: Colors.black),
               ),
               onPressed: () async {
-                List<Repuest> results = await _controller.searchRepuestos(query);
+                List<Lubricante> results = await _controller.searchLubricantes(query);
                 if (results.isEmpty) {
                   _showNoResultsAlert();
                 } else {
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => SearchRepuestView(searchResults: results),
+                      builder: (context) => SearchLubricantesView(searchResults: results),
                     ),
                   );
                 }
@@ -97,7 +97,7 @@ class _RepuestsViewState extends State<RepuestsView> {
           title: Text('No se encontraron resultados',
             style: GoogleFonts.inter(color: Colors.black),
           ),
-          content: Text('No se encontró ningún repuesto con ese nombre.',
+          content: Text('No se encontró ningún lubricante con ese nombre.',
             style: GoogleFonts.inter(color: Colors.black),
           ),
           actions: <Widget>[
@@ -123,7 +123,7 @@ class _RepuestsViewState extends State<RepuestsView> {
     final currentDate = DateTime.now();
     final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     final formattedTime = DateFormat('HH:mm:ss').format(currentDate);
-    
+
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4.landscape,
@@ -139,46 +139,60 @@ class _RepuestsViewState extends State<RepuestsView> {
                 ),
               ),
               pw.SizedBox(height: 10),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Image(logoImage, width: 70, height: 70),
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.end,
-                      children: [
-                        pw.Text('Reporte de Repuestos', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
-                        pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  ],
-                ),
-                pw.SizedBox(height: 20),
-                pw.Text('Detalles de los Repuestos en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Image(logoImage, width: 70, height: 70),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    children: [
+                      pw.Text('Reporte de Lubricantes', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                      pw.Text('Fecha: $formattedDate', style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Hora: $formattedTime', style: const pw.TextStyle(fontSize: 12)),
+                    ],
+                  ),
                 ],
               ),
-              pw.TableHelper.fromTextArray(
-                headers: <String>[
-                  'ID', 'ID Emisor', 'Nombre', 'Fecha de Ingreso', 'Categoría', 'Marca', 'Modelo', 'Proveedor', 'Precio', 'Stock'],
-                  data: _repuestos.map((repuesto) => [
-                    repuesto.id.toString(),
-                    repuesto.idUser.toString(),
-                    repuesto.nombre,
-                    _dateFormat.format(repuesto.fechaIngreso),
-                    repuesto.categoria,
-                    repuesto.marca,
-                    repuesto.modelo,
-                    repuesto.proveedor,
-                    repuesto.precio.toString(),
-                    repuesto.stock.toString(),
-                  ]).toList(),
-                  cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
-                  headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
-                  headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
-                  cellAlignment: pw.Alignment.center,
-            ),
-          ], 
+              pw.SizedBox(height: 20),
+              pw.Text('Detalles de los Lubricantes en Sispol - 7', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 10),
+            ],
+          ),
+          pw.TableHelper.fromTextArray(
+            headers: <String>[
+              'ID',
+              'ID Emisor',
+              'Nombre',
+              'Fecha de Ingreso',
+              'Fecha de Vencimiento',
+              'Marca',
+              'Precio',
+              'Proveedor',
+              'Stock',
+              'Tipo',
+              'Capacidad(Lt)',
+              'Viscosidad'
+            ],
+            data: _lubricantes.map((lubricante) => [
+              lubricante.id.toString(),
+              lubricante.idUser.toString(),
+              lubricante.nombre,
+              _dateFormat.format(lubricante.fechaIngreso),
+              _dateFormat.format(lubricante.fechaVence),
+              lubricante.marca,
+              lubricante.precio.toString(),
+              lubricante.proveedor,
+              lubricante.stock.toString(),
+              lubricante.tipo,
+              lubricante.capacidad,
+              lubricante.viscosidad.toString(),
+            ]).toList(),
+            cellStyle: const pw.TextStyle(fontSize: 8), // Reduce el tamaño de la fuente de los datos
+            headerStyle: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), // Aplica fontWeight.bold a los encabezados
+            headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+            cellAlignment: pw.Alignment.center,
+          ),
+        ],
       ),
     );
 
@@ -222,15 +236,15 @@ class _RepuestsViewState extends State<RepuestsView> {
       key: scaffoldKey,
       appBar: AppBarSis7(onDrawerPressed: () => scaffoldKey.currentState?.openDrawer()),
       drawer: const ComplexDrawer(),
-      body: FutureBuilder<List<Repuest>>(
-        future: _controller.fetchRepuestos(),
+      body: FutureBuilder<List<Lubricante>>(
+        future: _controller.fetchLubricantes(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final repuestos = snapshot.data!;
+            final lubricantes = snapshot.data!;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
@@ -239,42 +253,46 @@ class _RepuestsViewState extends State<RepuestsView> {
                   _buildColumn('ID \nEmisor'),
                   _buildColumn('Nombre'),
                   _buildColumn('Fecha \nIngreso'),
-                  _buildColumn('Categoría'),
+                  _buildColumn('Fecha \nVence'),
                   _buildColumn('Marca'),
-                  _buildColumn('Modelo'),
-                  _buildColumn('Proveedor'),
                   _buildColumn('Precio'),
+                  _buildColumn('Proveedor'),
                   _buildColumn('Stock'),
+                  _buildColumn('Tipo'),
+                  _buildColumn('Capacidad\n(Lt)'),
+                  _buildColumn('Viscosidad'),
                   _buildColumn('Opciones'),
                 ],
-                rows: repuestos.map((repuesto) {
+                rows: lubricantes.map((lubricante) {
                   return DataRow(cells: [
-                    _buildCell(repuesto.id.toString()),
-                    _buildCell(repuesto.idUser.toString()),
-                    _buildCell(repuesto.nombre),
-                    _buildCell(_dateFormat.format(repuesto.fechaIngreso)),
-                    _buildCell(repuesto.categoria),
-                    _buildCell(repuesto.marca),
-                    _buildCell(repuesto.modelo),
-                    _buildCell(repuesto.proveedor),
-                    _buildCell(repuesto.precio.toString()),
-                    _buildCell(repuesto.stock.toString()),
+                    _buildCell(lubricante.id.toString()),
+                    _buildCell(lubricante.idUser.toString()),
+                    _buildCell(lubricante.nombre),
+                    _buildCell(_dateFormat.format(lubricante.fechaIngreso)),
+                    _buildCell(_dateFormat.format(lubricante.fechaVence)),
+                    _buildCell(lubricante.marca),
+                    _buildCell(lubricante.precio.toString()),
+                    _buildCell(lubricante.proveedor),
+                    _buildCell(lubricante.stock.toString()),
+                    _buildCell(lubricante.tipo),
+                    _buildCell(lubricante.capacidad.toString()),
+                    _buildCell(lubricante.viscosidad),
                     DataCell(Row(
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditRepuestScreen(repuesto: repuesto),
+                              builder: (context) => EditLubricanteScreen(lubricante: lubricante),
                             ));
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _controller.deleteRepuesto(repuesto.id);
+                            _controller.deleteLubricante(lubricante.id);
                             setState(() {
-                              _fetchRepuestos();
+                              _fetchLubricantes();
                             });
                           },
                         ),
@@ -294,10 +312,10 @@ class _RepuestsViewState extends State<RepuestsView> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RegistRepuestScreen()),
+                MaterialPageRoute(builder: (context) => const RegistLubricanteScreen()),
               );
             },
-            tooltip: 'Registrar un Nuevo Repuesto',
+            tooltip: 'Registrar un Nuevo Lubricante',
             backgroundColor: const Color.fromRGBO(56, 171, 171, 1),
             child: Icon(Icons.add, size: iconSize, color: Colors.black),
           ),

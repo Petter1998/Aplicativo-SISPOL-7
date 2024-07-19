@@ -12,7 +12,7 @@ class Lubricante {
   final String proveedor;
   final int stock;
   final String tipo;
-  final int viscosidad;
+  final String viscosidad;
 
   Lubricante({
     required this.capacidad,
@@ -46,7 +46,7 @@ class Lubricante {
       proveedor: data['proveedor'] ?? '',
       stock: data['stock'] ?? 0,
       tipo: data['tipo'] ?? '',
-      viscosidad: data['viscosidad'] ?? 0,
+      viscosidad: data['viscosidad'] ?? '',
     );
   }
 

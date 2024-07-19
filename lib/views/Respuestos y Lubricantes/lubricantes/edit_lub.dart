@@ -1,29 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sispol_7/controllers/repuestos/repuests_controller.dart';
-import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
+import 'package:intl/intl.dart';
+import 'package:sispol_7/controllers/lubricantes/lubricante_controller.dart';
+import 'package:sispol_7/models/lubricantes/lubricantes_model.dart';
 import 'package:sispol_7/widgets/global/appbar_sis7.dart';
+import 'package:sispol_7/widgets/drawer/complex_drawer.dart';
 import 'package:sispol_7/widgets/global/footer.dart';
 
-class RegistRepuestScreen extends StatefulWidget {
-  const RegistRepuestScreen({super.key});
+class EditLubricanteScreen extends StatefulWidget {
+  final Lubricante lubricante;
+
+  const EditLubricanteScreen({super.key, required this.lubricante});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RegistRepuestScreenState createState() => _RegistRepuestScreenState();
+  _EditLubricanteScreenState createState() => _EditLubricanteScreenState();
 }
 
-class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
-  final TextEditingController _nombreController = TextEditingController();
-  final TextEditingController _categoriaController = TextEditingController();
-  final TextEditingController _modeloController = TextEditingController();
-  final TextEditingController _marcaController = TextEditingController();
-  final TextEditingController _proveedorController = TextEditingController();
-  final TextEditingController _precioController = TextEditingController();
-  final TextEditingController _stockController = TextEditingController();
+class _EditLubricanteScreenState extends State<EditLubricanteScreen> {
+  late TextEditingController _capacidadController;
+  late TextEditingController _fechaVenceController;
+  late TextEditingController _marcaController;
+  late TextEditingController _nombreController;
+  late TextEditingController _precioController;
+  late TextEditingController _proveedorController;
+  late TextEditingController _stockController;
+  late TextEditingController _tipoController;
+  late TextEditingController _viscosidadController;
+  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
 
-  final RepuestoController _repuestoController = RepuestoController();
+  @override
+  void initState() {
+    super.initState();
+    _capacidadController = TextEditingController(text: widget.lubricante.capacidad.toString());
+    _fechaVenceController = TextEditingController(text: _dateFormat.format(widget.lubricante.fechaVence));
+    _marcaController = TextEditingController(text: widget.lubricante.marca);
+    _nombreController = TextEditingController(text: widget.lubricante.nombre);
+    _precioController = TextEditingController(text: widget.lubricante.precio.toString());
+    _proveedorController = TextEditingController(text: widget.lubricante.proveedor);
+    _stockController = TextEditingController(text: widget.lubricante.stock.toString());
+    _tipoController = TextEditingController(text: widget.lubricante.tipo);
+    _viscosidadController = TextEditingController(text: widget.lubricante.viscosidad.toString());
+  }
+
+  @override
+  void dispose() {
+    _capacidadController.dispose();
+    _fechaVenceController.dispose();
+    _marcaController.dispose();
+    _nombreController.dispose();
+    _precioController.dispose();
+    _proveedorController.dispose();
+    _stockController.dispose();
+    _tipoController.dispose();
+    _viscosidadController.dispose();
+    super.dispose();
+  }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -39,7 +71,12 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
     double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);
     double iconSize = screenWidth > 480 ? 34.0 : 27.0;
 
-    double horizontalPadding = screenWidth < 800 ? screenWidth * 0.05 : screenWidth * 0.20;
+    double horizontalPadding;
+    if (screenWidth < 800) {
+      horizontalPadding = screenWidth * 0.05;
+    } else {
+      horizontalPadding = screenWidth * 0.20;
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -63,7 +100,7 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(90.0),
                     child: Icon(
-                      Icons.add_chart_rounded,
+                      Icons.edit_document,
                       size: imageSize,
                       color: Colors.black,
                     ),
@@ -87,46 +124,6 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(
-                              controller: _modeloController,
-                              decoration: const InputDecoration(
-                                labelText: 'Modelo',
-                                hintText: 'Modelo',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _categoriaController,
-                              decoration: const InputDecoration(
-                                labelText: 'Categoría',
-                                hintText: 'Categoría',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                            TextField(
-                              controller: _stockController,
-                              decoration: const InputDecoration(
-                                labelText: 'Stock',
-                                hintText: 'Stock',
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(),
-                              ),
-                              style: GoogleFonts.inter(fontSize: bodyFontSize),
-                            ),
-                            SizedBox(height: verticalSpacing),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TextField(
                               controller: _marcaController,
                               decoration: const InputDecoration(
                                 labelText: 'Marca',
@@ -149,12 +146,90 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                             ),
                             SizedBox(height: verticalSpacing),
                             TextField(
+                              controller: _tipoController,
+                              decoration: const InputDecoration(
+                                labelText: 'Tipo',
+                                hintText: 'Tipo',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _viscosidadController,
+                              decoration: const InputDecoration(
+                                labelText: 'Viscosidad',
+                                hintText: 'Viscosidad',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _capacidadController,
+                              decoration: const InputDecoration(
+                                labelText: 'Capacidad (Lt)',
+                                hintText: 'Capacidad (Lt)',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _stockController,
+                              decoration: const InputDecoration(
+                                labelText: 'Stock',
+                                hintText: 'Stock',
+                                fillColor: Colors.black,
+                                border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
                               controller: _precioController,
                               decoration: const InputDecoration(
                                 labelText: 'Precio',
                                 hintText: 'Precio',
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(),
+                              ),
+                              style: GoogleFonts.inter(fontSize: bodyFontSize),
+                            ),
+                            SizedBox(height: verticalSpacing),
+                            TextField(
+                              controller: _fechaVenceController,
+                              decoration: InputDecoration(
+                                labelText: 'Fecha de Vencimiento',
+                                hintText: 'Fecha de Vencimiento',
+                                fillColor: Colors.black,
+                                border: const OutlineInputBorder(),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.calendar_today),
+                                  onPressed: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1900),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (pickedDate != null) {
+                                      setState(() {
+                                        _fechaVenceController.text = _dateFormat.format(pickedDate);
+                                      });
+                                    }
+                                  },
+                                ),
                               ),
                               style: GoogleFonts.inter(fontSize: bodyFontSize),
                             ),
@@ -175,10 +250,30 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                       ),
-                      onPressed: () {
-                        _registerRepuesto();
+                      onPressed: () async {
+                        final updatedLubricante = Lubricante(
+                          id: widget.lubricante.id,
+                          capacidad: double.tryParse(_capacidadController.text) ?? 0.0,
+                          fechaIngreso: widget.lubricante.fechaIngreso,
+                          fechaVence: _dateFormat.parse(_fechaVenceController.text),
+                          idUser: widget.lubricante.idUser,
+                          marca: _marcaController.text,
+                          nombre: _nombreController.text,
+                          precio: double.tryParse(_precioController.text) ?? 0.0,
+                          proveedor: _proveedorController.text,
+                          stock: int.tryParse(_stockController.text) ?? 0,
+                          tipo: _tipoController.text,
+                          viscosidad: _viscosidadController.text,
+                        );
+
+                        await LubricanteController().updateLubricante(updatedLubricante);
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pop();
                       },
-                      child: Text('Registrar', style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black)),
+                      child: Text(
+                        'Guardar cambios',
+                        style: GoogleFonts.inter(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
                     ),
                   ),
                 ],
@@ -196,22 +291,5 @@ class _RegistRepuestScreenState extends State<RegistRepuestScreen> {
       ),
       bottomNavigationBar: Footer(screenWidth: screenWidth),
     );
-  }
-
-  void _registerRepuesto() {
-    Map<String, dynamic> repData = {
-      'nombre': _nombreController.text,
-      'categoria': _categoriaController.text,
-      'modelo': _modeloController.text,
-      'marca': _marcaController.text,
-      'proveedor': _proveedorController.text,
-      'precio': double.parse(_precioController.text),
-      'stock': int.parse(_stockController.text),
-    };
-
-    _repuestoController.registerRepuesto(context, {
-      ...repData,
-      'fechaIngreso': FieldValue.serverTimestamp(), // Agrega la fecha de creación
-    });
   }
 }

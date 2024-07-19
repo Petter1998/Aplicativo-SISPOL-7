@@ -287,7 +287,7 @@ class _WorkOrderScreenState extends State<WorkOrderScreen> {
     // Determinar el espacio vertical basado en el ancho de la pantalla
     double verticalSpacing = screenWidth < 600 ? 8 : (screenWidth < 1200 ? 25 : 30);
     // Determinar el espacio vertical para botones basado en el ancho de la pantalla
-    double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);
+    //double vertiSpacing = screenWidth < 600 ? 20 : (screenWidth < 1200 ? 35 : 40);
     double iconSize = screenWidth > 480 ? 34.0 : 27.0;
     // Establecemos el padding basado en el ancho de la pantalla
     double horizontalPadding;
