@@ -30,7 +30,7 @@ class Footer extends StatelessWidget {
             height: 3,
           ),
           Text(
-            '© 2024 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés',
+            '© 2025 www.policia.gob.ec | Design by: Arévalo Samaniego Pedro Andrés',
               style: GoogleFonts.inter(
                 color: Colors.white, 
                 fontSize: titleFontSize, 
